@@ -120,7 +120,7 @@ class LalelaGamesApp {
       this.game.scene.add('CheckersGame', CheckersGame);
 
       // Setup audio manager
-      this.audioManager.preloadCommonSounds();
+      await this.audioManager.preloadCommonSounds();
 
       // Setup global event listeners
       this.setupEventListeners();

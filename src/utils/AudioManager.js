@@ -141,27 +141,27 @@ export class AudioManager {
   /**
    * Load a sound effect
    */
-  loadSound(key, url, options = {}) {
+  async loadSound(key, url, options = {}) {
     if (typeof Howl === 'undefined') return null;
 
-    const sound = new Howl({
-      src: Array.isArray(url) ? url : [url],
-      volume: (this.sfxVolume * this.masterVolume) * (options.volume || 1.0),
-      loop: options.loop || false,
-      preload: options.preload !== false,
-      onload: () => {
-        console.log(`Loaded sound: ${key}`);
-      },
-      onloaderror: (id, error) => {
-        console.warn(`Failed to load sound ${key}:`, error.message || 'File not found');
-        // Don't add to sounds map if loading failed
-        return;
-      },
-      ...options
+    return new Promise((resolve, reject) => {
+      const sound = new Howl({
+        src: Array.isArray(url) ? url : [url],
+        volume: (this.sfxVolume * this.masterVolume) * (options.volume || 1.0),
+        loop: options.loop || false,
+        preload: options.preload !== false,
+        ...options,
+        onload: () => {
+          console.log(`Loaded sound: ${key}`);
+          this.sounds.set(key, sound);
+          resolve(sound);
+        },
+        onloaderror: (id, error) => {
+          console.warn(`Failed to load sound ${key}:`, error.message || 'File not found');
+          reject(error);
+        },
+      });
     });
-
-    this.sounds.set(key, sound);
-    return sound;
   }
 
   /**
@@ -360,8 +360,12 @@ export class AudioManager {
   /**
    * Preload common game sounds
    */
-  preloadCommonSounds() {
-    this.loadSound('click', 'assets/sounds/audioclick.wav');
+  async preloadCommonSounds() {
+    try {
+      await this.loadSound('click', 'assets/sounds/audioclick.wav');
+    } catch (error) {
+      console.warn("Could not preload common sounds:", error);
+    }
   }
 
   /**
