@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { Draughts } from '../utils/engine.js';
+import Draughts from '../utils/engine.js';
 
 export class CheckersGame extends Phaser.Scene {
   constructor() {
@@ -178,8 +178,8 @@ export class CheckersGame extends Phaser.Scene {
     const row = Math.floor(boardPos / numberOfCases);
     const col = boardPos % numberOfCases;
 
-    const x = boardStartX + col * tileSize + tileSize / 2;
-    const y = boardStartY + row * tileSize + tileSize / 2;
+          const x = boardStartX + col * tileSize + tileSize / 2;
+          const y = boardStartY + row * tileSize + tileSize / 2;
 
     // Map piece types to asset names
     const assetMap = {

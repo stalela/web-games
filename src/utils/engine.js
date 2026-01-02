@@ -1278,3 +1278,7 @@ if (typeof define !== 'undefined') {
     return Draughts
   })
 }
+
+// ES6 module export for modern bundlers
+export default Draughts;
+export { Draughts }
