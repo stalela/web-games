@@ -795,7 +795,6 @@ export class GameMenuScene extends Phaser.Scene {
     if (this.bottomControls) {
       this.bottomControls.forEach(control => {
         if (control.button && control.button.destroy) control.button.destroy();
-        if (control.shadow && control.shadow.destroy) control.shadow.destroy();
         if (control.icon && control.icon.destroy) control.icon.destroy();
         if (control.label && control.label.destroy) control.label.destroy();
       });
@@ -809,89 +808,67 @@ export class GameMenuScene extends Phaser.Scene {
   createBottomControls(width, height) {
     const barY = height - 55;
     const buttonSize = 72;
-    const spacing = 95; // Reduced spacing to fit 6 buttons comfortably
+    const spacing = 95;
+    const buttonRadius = 10;
 
     let controls = [
-      { icon: 'help', action: 'help', color: 0x00B378 },           // Green
-      { icon: 'settings', action: 'settings', color: 0x0062FF },   // Blue (GCompris 'config' maps to 'settings')
-      { icon: 'activityConfig', action: 'activityConfig', color: 0x904DB9 }, // Purple
-      { icon: 'about', action: 'about', color: 0xF05A28 }         // Orange (GCompris 'about' button)
+        { icon: 'help', action: 'help', color: 0x00B378 },
+        { icon: 'settings', action: 'settings', color: 0x0062FF },
+        { icon: 'activityConfig', action: 'activityConfig', color: 0x904DB9 },
+        { icon: 'about', action: 'about', color: 0xF05A28 }
     ];
 
-    // Conditionally add the exit button for non-mobile devices
     if (!(this.sys.game.device.os.android || this.sys.game.device.os.iOS)) {
-      controls.push({ icon: 'exit', action: 'exit', color: 0xE32528 }); // Red
+        controls.push({ icon: 'exit', action: 'exit', color: 0xE32528 });
     }
 
-    const totalWidth = (controls.length - 1) * spacing + buttonSize;
-    const startX = (width - totalWidth) / 2 + buttonSize / 2;
+    const totalWidth = (controls.length * buttonSize) + ((controls.length - 1) * (spacing - buttonSize));
+    const startX = (width - totalWidth) / 2;
 
     controls.forEach((control, index) => {
-      const x = startX + index * spacing;
+        const x = startX + index * spacing;
+        
+        const button = this.add.graphics();
+        if (control.action === 'activityConfig' && this.activityConfigMode) {
+            button.fillStyle(0xFACA2A); // Active color
+        } else {
+            button.fillStyle(control.color);
+        }
+        button.fillRoundedRect(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize, buttonRadius);
+        button.lineStyle(2, 0xFFFFFF, 0.8);
+        button.strokeRoundedRect(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize, buttonRadius);
 
-      // GCompris-style 3D shadow (shifted slightly right and down)
-      const shadow = this.add.circle(x + 3, barY + 3, buttonSize / 2, 0x000000, 0.3);
+        button.setInteractive(new Phaser.Geom.Rectangle(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize), Phaser.Geom.Rectangle.Contains);
+        
+        const icon = this.add.sprite(x, barY, control.icon);
+        icon.setScale((buttonSize * 0.6) / icon.width);
+        icon.setTint(0xFFFFFF);
 
-      // Circular button background
-      const button = this.add.graphics();
-      
-      // Update activityConfig button appearance based on its mode
-      if (control.action === 'activityConfig' && this.activityConfigMode) {
-        button.fillStyle(0xFACA2A); // Active color (e.g., Lalela Yellow)
-        button.lineStyle(4, 0xFFFFFF); // White border
-      } else {
-        button.fillStyle(control.color);
-        button.lineStyle(4, 0xFFFFFF); // White border
-      }
-      
-      button.fillCircle(x, barY, buttonSize / 2);
-      button.strokeCircle(x, barY, buttonSize / 2);
-      button.setInteractive(new Phaser.Geom.Circle(x, barY, buttonSize / 2), Phaser.Geom.Circle.Contains);
-
-      // Control icon
-      const icon = this.add.sprite(x, barY, control.icon);
-      icon.setScale((buttonSize * 0.65) / 100);
-      icon.setTint(0xFFFFFF);
-
-      // Interaction Logic
-      button.on('pointerdown', () => {
-        if (this.app?.audioManager) this.app.audioManager.playClickSound();
-
-        // 3D Press visual effect
-        icon.y += 2;
-        shadow.alpha = 0;
-
-        this.handleControlAction(control.action);
-
-        this.time.delayedCall(100, () => {
-          icon.y -= 2;
-          shadow.alpha = 0.3;
-          // Recreate controls to update the activityConfig button's appearance
-          this.clearBottomControls();
-          this.createBottomControls(width, height);
+        button.on('pointerdown', () => {
+            if (this.app?.audioManager) this.app.audioManager.playClickSound();
+            icon.y += 2;
+            this.handleControlAction(control.action);
+            this.time.delayedCall(150, () => {
+                this.clearBottomControls();
+                this.createBottomControls(width, height);
+            });
         });
-      });
 
-      // Hover scaling
-      button.on('pointerover', () => icon.setScale((buttonSize * 0.72) / 100));
-      button.on('pointerout', () => {
-          // Only scale down if it's not the active activityConfig button
-          if (!(control.action === 'activityConfig' && this.activityConfigMode)) {
-              icon.setScale((buttonSize * 0.65) / 100);
-          }
-      });
+        button.on('pointerover', () => {
+            this.tweens.add({ targets: icon, scale: (buttonSize * 0.65) / icon.width, duration: 100 });
+        });
+        button.on('pointerout', () => {
+            this.tweens.add({ targets: icon, scale: (buttonSize * 0.6) / icon.width, duration: 100 });
+        });
 
-      this.bottomControls.push({
-        button: button,
-        shadow: shadow,
-        icon: icon,
-        action: control.action
-      });
+        this.bottomControls.push({
+            button: button,
+            icon: icon,
+            action: control.action
+        });
 
-      // Set depths for bottom controls
-      button.setDepth(100); // Bottom dock depth
-      shadow.setDepth(99); // Shadow below button
-      icon.setDepth(101); // Icon above button
+        button.setDepth(100);
+        icon.setDepth(101);
     });
   }
 
