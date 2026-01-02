@@ -1,0 +1,400 @@
+/**
+ * GameMenuScene - GCompris-style main menu with category-based game selection
+ * Features layered background, animal category icons, square game cards, and bottom controls
+ */
+import { InputManager } from '../utils/InputManager.js';
+
+export class GameMenuScene extends Phaser.Scene {
+  constructor() {
+    super({ key: 'GameMenu' });
+
+    // Category definitions with animal icons and associated games
+    this.categories = [
+      {
+        id: 'basics',
+        name: 'Basics',
+        icon: 'cat.svg',
+        color: 0xFFD93D, // Lalela Yellow
+        games: ['AdjacentNumbers', 'SoundButtonGame']
+      },
+      {
+        id: 'math',
+        name: 'Math',
+        icon: 'cow.svg',
+        color: 0x0062FF, // River Blue
+        games: ['EnumerateGame', 'SmallnumbersGame', 'Smallnumbers2Game', 'LearnQuantitiesGame', 'LearnAdditionsGame', 'LearnSubtractionsGame', 'VerticalAdditionGame', 'MemoryMathAddGame', 'Guesscount', 'LearnDigitsGame']
+      },
+      {
+        id: 'logic',
+        name: 'Logic',
+        icon: 'panda.svg',
+        color: 0xAB47BC, // Soft Purple
+        games: ['BabyMatchGame', 'ColorMixGame']
+      },
+      {
+        id: 'memory',
+        name: 'Memory',
+        icon: 'penguin.svg',
+        color: 0x00B378, // Aloe Green
+        games: ['MemoryImageGame', 'MemorySoundGame']
+      },
+      {
+        id: 'world',
+        name: 'World',
+        icon: 'frog.svg',
+        color: 0xFD5E1A, // Bead Orange
+        games: ['GeographyMapGame']
+      }
+    ];
+
+    // Game definitions with metadata
+    this.allGames = [
+      {
+        scene: 'AdjacentNumbers',
+        name: 'Adjacent Numbers',
+        icon: 'adjacent_numbers.svg',
+        difficulty: 2,
+        category: 'basics'
+      },
+      {
+        scene: 'EnumerateGame',
+        name: 'Count Objects',
+        icon: 'enumerate.svg',
+        difficulty: 1,
+        category: 'math'
+      },
+      {
+        scene: 'SmallnumbersGame',
+        name: 'Numbers with Dice',
+        icon: 'dice1.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'Smallnumbers2Game',
+        name: 'Numbers with Dominoes',
+        icon: 'smallnumbers2.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'LearnQuantitiesGame',
+        name: 'Learn Quantities',
+        icon: 'learn_quantities.svg',
+        difficulty: 1,
+        category: 'math'
+      },
+      {
+        scene: 'LearnAdditionsGame',
+        name: 'Learn Addition',
+        icon: 'learn_additions.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'LearnSubtractionsGame',
+        name: 'Learn Subtraction',
+        icon: 'learn_subtractions.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'VerticalAdditionGame',
+        name: 'Vertical Addition',
+        icon: 'vertical_addition.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathAddGame',
+        name: 'Addition Memory Game',
+        icon: 'memory-math-add.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'Guesscount',
+        name: 'Guesscount Math',
+        icon: 'guesscount.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryImageGame',
+        name: 'Memory Images',
+        icon: 'memory.svg',
+        difficulty: 2,
+        category: 'memory'
+      },
+      {
+        scene: 'MemorySoundGame',
+        name: 'Memory Sounds',
+        icon: 'memory-sound.svg',
+        difficulty: 2,
+        category: 'memory'
+      },
+      {
+        scene: 'BabyMatchGame',
+        name: 'Baby Match',
+        icon: 'babymatch.svg',
+        difficulty: 1,
+        category: 'logic'
+      },
+      {
+        scene: 'ColorMixGame',
+        name: 'Color Mix',
+        icon: 'color_mix.svg',
+        difficulty: 2,
+        category: 'logic'
+      },
+      {
+        scene: 'GeographyMapGame',
+        name: 'Geography Map',
+        icon: 'geography.svg',
+        difficulty: 2,
+        category: 'world'
+      },
+      {
+        scene: 'SoundButtonGame',
+        name: 'Sound Buttons',
+        icon: 'instruments.svg',
+        difficulty: 1,
+        category: 'basics'
+      },
+      {
+        scene: 'LearnDigitsGame',
+        name: 'Learn Digits',
+        icon: 'learn_digits.svg',
+        difficulty: 1,
+        category: 'math'
+      }
+    ];
+
+    // Current state
+    this.currentCategory = 'all'; // 'all' or category id
+    this.categoryButtons = [];
+    this.gameCards = [];
+    this.bottomControls = [];
+  }
+
+  init(data) {
+    this.app = data.app;
+  }
+
+  preload() {
+    // Load category animal icons
+    this.categories.forEach(category => {
+      this.load.svg(category.icon.replace('.svg', ''), `assets/category-icons/${category.icon}`);
+    });
+
+    // Load game icons
+    this.allGames.forEach(game => {
+      this.load.svg(game.icon.replace('.svg', ''), `assets/game-icons/${game.icon}`);
+    });
+
+    // Load UI control icons
+    const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
+    uiIcons.forEach(icon => {
+      this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`);
+    });
+
+    // Load difficulty stars
+    for (let i = 1; i <= 3; i++) {
+      this.load.svg(`difficulty${i}`, `assets/category-icons/difficulty${i}.svg`);
+    }
+  }
+
+  create() {
+    // Initialize input manager for this scene
+    if (this.app) {
+      this.app.inputManager = new InputManager(this);
+    }
+
+    const { width, height } = this.game.config;
+
+    // Create layered background environment
+    this.createBackground(width, height);
+
+    // Create title in top area (above category bar)
+    this.createTitle(width, height);
+
+    // Clear and recreate category bar with animal icons
+    this.clearCategoryButtons();
+    this.createCategoryBar(width, height);
+
+    // Create game grid area (responsive)
+    this.createGameGrid(width, height);
+
+    // Clear and recreate bottom control bar
+    this.clearBottomControls();
+    this.createBottomControls(width, height);
+
+    // Set up keyboard navigation
+    this.setupKeyboardNavigation();
+
+    // Start with all games visible
+    this.filterGamesByCategory('all');
+
+    // Set initial focus (only if cards exist)
+    this.currentFocusIndex = 0;
+    if (this.gameCards && this.gameCards.length > 0) {
+      this.focusGameCard(0);
+    }
+  }
+
+  /**
+   * Create layered background with sky, clouds, sun, and grass
+   */
+  createBackground(width, height) {
+    // Sky gradient background
+    const skyGradient = this.add.graphics();
+    skyGradient.fillGradientStyle(0xA2D2FF, 0xA2D2FF, 0x87CEEB, 0x87CEEB, 1);
+    skyGradient.fillRect(0, 0, width, height * 0.75);
+
+    // Grass area at bottom
+    const grass = this.add.rectangle(width / 2, height * 0.875, width, height * 0.25, 0x00B378);
+    grass.setStrokeStyle(2, 0x009950);
+
+    // Animated clouds
+    this.createClouds(width, height);
+
+    // Bright sun in top-right
+    this.createSun(width, height);
+  }
+
+  /**
+   * Create animated floating clouds
+   */
+  createClouds(width, height) {
+    this.clouds = [];
+
+    for (let i = 0; i < 4; i++) {
+      // Create cloud shape using circles
+      const cloudX = Math.random() * width;
+      const cloudY = 50 + Math.random() * (height * 0.3);
+
+      const cloud = this.add.container(cloudX, cloudY);
+
+      // Cloud parts (white circles)
+      const cloudParts = [
+        this.add.circle(0, 0, 25, 0xFFFFFF, 0.8),
+        this.add.circle(20, -5, 30, 0xFFFFFF, 0.8),
+        this.add.circle(40, 0, 25, 0xFFFFFF, 0.8),
+        this.add.circle(20, 10, 20, 0xFFFFFF, 0.8)
+      ];
+
+      cloud.add(cloudParts);
+
+      // Animate cloud movement
+      this.tweens.add({
+        targets: cloud,
+        x: cloud.x + 100,
+        duration: 20000 + Math.random() * 10000,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut'
+      });
+
+      this.clouds.push(cloud);
+    }
+  }
+
+  /**
+   * Create bright animated sun
+   */
+  createSun(width, height) {
+    const sun = this.add.circle(width - 80, 80, 40, 0xFACA2A);
+    sun.setStrokeStyle(3, 0xFFD93D);
+
+    // Sun rays animation (scale)
+    this.tweens.add({
+      targets: sun,
+      scale: 1.1,
+      duration: 2000,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut'
+    });
+
+    // Sun rotation animation
+    this.tweens.add({
+      targets: sun,
+      angle: 360,
+      duration: 20000,
+      repeat: -1,
+      ease: 'Linear'
+    });
+  }
+
+  /**
+   * Create title area
+   */
+  createTitle(width, height) {
+    const title = this.add.text(width / 2, 40, 'Lalela Web Games', {
+      fontSize: '42px',
+      color: '#FACA2A',
+      fontStyle: 'bold',
+      fontFamily: 'Fredoka One, cursive',
+      stroke: '#FFFFFF',
+      strokeThickness: 3
+    }).setOrigin(0.5);
+
+    const subtitle = this.add.text(width / 2, 85, 'Educational Games for Children', {
+      fontSize: '20px',
+      color: '#101012', // Ink Black for better contrast
+      fontFamily: 'Nunito, sans-serif'
+    }).setOrigin(0.5);
+  }
+
+  /**
+   * Clear existing category buttons to prevent duplicates on scene restart
+   */
+  clearCategoryButtons() {
+    if (this.categoryButtons) {
+      this.categoryButtons.forEach(btn => {
+        if (btn.container && btn.container.destroy) btn.container.destroy();
+        if (btn.circle && btn.circle.destroy) btn.circle.destroy();
+        if (btn.shadow && btn.shadow.destroy) btn.shadow.destroy();
+        if (btn.icon && btn.icon.destroy) btn.icon.destroy();
+        if (btn.nameText && btn.nameText.destroy) btn.nameText.destroy();
+      });
+    }
+    this.categoryButtons = [];
+  }
+
+  /**
+   * Create category bar with animal icons (Sticker Style)
+   */
+  createCategoryBar(width, height) {
+    const barHeight = 140;
+    const barY = 135;
+    const iconSize = 85; // Increased size for more prominence
+    const spacing = width / (this.categories.length + 1);
+
+    // Background for category bar (no border for sticker look)
+    const categoryBg = this.add.rectangle(width / 2, barY, width - 40, barHeight, 0xFDFAED, 0.95);
+
+    // Category label
+    this.add.text(width / 2, barY - barHeight / 2 - 15, 'Choose a Category', {
+      fontSize: '18px',
+      color: '#101012',
+      fontFamily: 'Nunito, sans-serif',
+      fontStyle: 'bold'
+    }).setOrigin(0.5);
+
+    // Create category buttons
+    this.categories.forEach((category, index) => {
+      const x = spacing * (index + 1);
+      const y = barY;
+
+      // Category circle background with drop shadow effect
+      const circle = this.add.circle(x, y, iconSize / 2 + 15, category.color, 0.9);
+      circle.setStrokeStyle(5, 0xFFFFFF); // Thick white stroke for sticker look
+
+      // Add drop shadow (slightly offset darker circle)
+      const shadow = this.add.circle(x + 2, y + 2, iconSize / 2 + 15, 0x000000, 0.3);
+      circle.setInteractive({ useHandCursor: true });
+
+      // Animal icon (larger and more prominent)
+      const icon = this.add.sprite(x, y, category.icon.replace('.svg', ''));
+      icon.setScale(iconSize / 100);

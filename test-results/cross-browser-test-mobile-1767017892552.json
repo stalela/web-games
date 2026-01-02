@@ -1,0 +1,37 @@
+{
+  "browser": "mobile",
+  "timestamp": "2025-12-29T14:17:56.154Z",
+  "success": false,
+  "tests": {
+    "basicLoad": true,
+    "gamesLoad": false,
+    "navigationWorks": false,
+    "renderingWorks": true,
+    "audioWorks": false,
+    "storageWorks": false,
+    "touchWorks": false,
+    "responsiveWorks": false,
+    "mobileOptimized": false,
+    "error": "page.waitForTimeout is not a function"
+  },
+  "errors": [],
+  "performance": {
+    "loadTime": 2335,
+    "domReady": 2230,
+    "firstPaint": 104,
+    "fps": 0,
+    "memoryUsage": {
+      "used": 45324790,
+      "total": 49899890
+    }
+  },
+  "compatibility": {
+    "webgl": false,
+    "audio": true,
+    "localStorage": true,
+    "indexedDB": true,
+    "touchEvents": true,
+    "es6": true,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1"
+  }
+}

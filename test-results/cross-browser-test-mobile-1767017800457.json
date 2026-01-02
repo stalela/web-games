@@ -1,0 +1,11 @@
+{
+  "browser": "mobile",
+  "timestamp": "2025-12-29T14:16:36.131Z",
+  "success": false,
+  "tests": {},
+  "errors": [
+    "browserType is not defined"
+  ],
+  "performance": {},
+  "compatibility": {}
+}

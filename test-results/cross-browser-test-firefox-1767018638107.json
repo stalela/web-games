@@ -1,0 +1,33 @@
+{
+  "browser": "firefox",
+  "timestamp": "2025-12-29T14:29:53.609Z",
+  "success": true,
+  "tests": {
+    "basicLoad": true,
+    "gamesLoad": true,
+    "navigationWorks": true,
+    "renderingWorks": true,
+    "audioWorks": false,
+    "storageWorks": true
+  },
+  "errors": [],
+  "performance": {
+    "loadTime": 3753,
+    "domReady": 3267,
+    "firstPaint": 316,
+    "fps": 0,
+    "memoryUsage": {
+      "used": 45572790,
+      "total": 49375474
+    }
+  },
+  "compatibility": {
+    "webgl": false,
+    "audio": true,
+    "localStorage": true,
+    "indexedDB": true,
+    "touchEvents": false,
+    "es6": true,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/143.0.0.0 Safari/537.36"
+  }
+}

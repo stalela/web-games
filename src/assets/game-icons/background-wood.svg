@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <pattern id="woodGrain" patternUnits="userSpaceOnUse" width="50" height="50">
+      <rect width="50" height="50" fill="#8B4513"/>
+      <rect x="0" y="0" width="50" height="2" fill="#654321"/>
+      <rect x="0" y="10" width="50" height="1" fill="#654321"/>
+      <rect x="0" y="20" width="50" height="2" fill="#654321"/>
+      <rect x="0" y="30" width="50" height="1" fill="#654321"/>
+      <rect x="0" y="40" width="50" height="1" fill="#654321"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="600" fill="url(#woodGrain)"/>
+  <rect x="0" y="0" width="800" height="600" fill="#654321" opacity="0.3"/>
+</svg>

@@ -1,0 +1,116 @@
+{
+  "timestamp": "2025-12-29T14:26:47.635Z",
+  "summary": {
+    "totalTests": 13,
+    "passedTests": 11,
+    "failedTests": 2,
+    "skippedTests": 0,
+    "duration": 408230
+  },
+  "testSuites": {
+    "unit": {
+      "name": "Unit Tests",
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "error": "spawnSync C:\\WINDOWS\\system32\\cmd.exe ETIMEDOUT"
+    },
+    "integration": {
+      "name": "Integration Tests",
+      "tests": [
+        {
+          "name": "Production Build",
+          "status": "passed",
+          "details": "Webpack build completed successfully"
+        },
+        {
+          "name": "Asset Loading",
+          "status": "passed",
+          "details": "All required assets are present"
+        },
+        {
+          "name": "Configuration Validation",
+          "status": "passed",
+          "details": "All configuration files are valid"
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browser": {
+      "name": "Browser Compatibility Tests",
+      "browsers": {
+        "chrome": {
+          "status": "passed",
+          "output": "🎯 CHROME Test Results:\n   Success: ✅\n   Tests Passed: 5/6\n   Errors: 0\n"
+        },
+        "firefox": {
+          "status": "passed",
+          "output": "🎯 FIREFOX Test Results:\n   Success: ✅\n   Tests Passed: 5/6\n   Errors: 0\n"
+        },
+        "safari": {
+          "status": "passed",
+          "output": "🎯 SAFARI Test Results:\n   Success: ✅\n   Tests Passed: 7/7\n   Errors: 0\n"
+        },
+        "edge": {
+          "status": "failed",
+          "error": "spawnSync C:\\WINDOWS\\system32\\cmd.exe ETIMEDOUT"
+        },
+        "mobile": {
+          "status": "passed",
+          "output": "🎯 MOBILE Test Results:\n   Success: ✅\n   Tests Passed: 7/9\n   Errors: 0\n"
+        }
+      },
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0
+    },
+    "performance": {
+      "name": "Performance Tests",
+      "metrics": {
+        "bundleSize": {
+          "status": "failed",
+          "error": "ENOENT: no such file or directory, stat 'C:\\Users\\HomePC\\Documents\\DF\\https___superchill.org_en_\\superchill.org\\lalela\\web-games\\dist\\bundle.js'"
+        },
+        "loadTime": {
+          "value": 2500,
+          "unit": "ms",
+          "acceptable": true,
+          "status": "passed"
+        }
+      },
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0
+    },
+    "accessibility": {
+      "name": "Accessibility Tests",
+      "checks": [
+        {
+          "name": "ARIA Labels",
+          "status": "passed",
+          "details": "Interactive elements have ARIA labels"
+        },
+        {
+          "name": "Keyboard Navigation",
+          "status": "passed",
+          "details": "Basic keyboard navigation supported"
+        },
+        {
+          "name": "Color Contrast",
+          "status": "passed",
+          "details": "Brand colors meet WCAG AA contrast requirements"
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "recommendations": [
+    "Fix browser compatibility issues for better cross-platform support",
+    "Optimize performance issues, particularly bundle size"
+  ]
+}

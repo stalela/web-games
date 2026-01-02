@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lalela Web Games - Educational games for children">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic reset and loading styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', 'Inter', sans-serif;
+            background-color: #FDFAED; /* Warm Cream background */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensure canvas has proper background */
+        #game-container canvas {
+            background-color: #FDFAED;
+        }
+
+
+        #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="search-input" style="position: absolute; top: 15px; left: 15px; width: 200px; display: none;">
+    <div id="game-container"></div>
+
+    <!-- Game scripts will be injected here by webpack -->
+</body>
+</html>

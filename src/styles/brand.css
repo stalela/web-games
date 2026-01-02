@@ -1,0 +1,171 @@
+/* Lalela Brand Styles - v1.0 */
+/* Based on Lalela Brand Guide: Beadwork & Sunshine */
+
+/* CSS Custom Properties for Brand Colors */
+:root {
+  /* Core Brand Colors */
+  --color-lalela-yellow: #FACA2A;  /* Primary Brand Color - Sun, headers, playground elements */
+  --color-river-blue: #0062FF;     /* Primary Action - Buttons, links, logo stroke */
+  --color-bead-orange: #FD5E1A;    /* Accent/Energy - Art zone, secondary buttons */
+  --color-aloe-green: #00B378;     /* Nature/Success - Nature zone, progress indicators */
+  --color-rooibos-red: #E32528;    /* Stories/Alert - Story zone, important alerts */
+
+  /* Support Neutrals */
+  --color-cream-bg: #FDFAED;       /* Warm background instead of pure white */
+  --color-ink-black: #101012;      /* Body text and outlines */
+  --color-white: #FFFFFF;          /* Card backgrounds, text on blue/red buttons */
+
+  /* Typography */
+  --font-display: 'Milkyway Demo', cursive;
+  --font-kid-title: 'Fredoka One', cursive;
+  --font-body: 'Nunito', 'Inter', sans-serif;
+
+  /* UI Component Variables */
+  --border-radius-button: 50px;    /* Pill shape for buttons */
+  --border-radius-card: 24px;      /* Large rounded corners for cards */
+  --shadow-card: 4px 4px 0px var(--color-ink-black); /* Hard drop shadow for sticker look */
+  --min-touch-target: 44px;        /* Minimum touch target for kids */
+}
+
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+/* Note: Milkyway Demo font would need to be hosted locally or via CDN */
+/* For now, we'll use a similar cursive font as fallback */
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-cream-bg);
+  color: var(--color-ink-black);
+  line-height: 1.5;
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: var(--color-river-blue);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--border-radius-button);
+  padding: 12px 24px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: var(--min-touch-target);
+  min-width: var(--min-touch-target);
+}
+
+.btn-primary:hover {
+  background-color: #0052CC; /* Slightly darker blue */
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--color-lalela-yellow);
+  color: var(--color-ink-black);
+  border: 2px solid var(--color-ink-black);
+  border-radius: var(--border-radius-button);
+  padding: 10px 22px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: var(--min-touch-target);
+  min-width: var(--min-touch-target);
+}
+
+.btn-secondary:hover {
+  background-color: #E5B526; /* Slightly darker yellow */
+  transform: translateY(-1px);
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  margin: 10px;
+}
+
+/* Display Text Styles */
+.display-text {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  -webkit-text-stroke: 1px var(--color-ink-black);
+  text-stroke: 1px var(--color-ink-black);
+  color: var(--color-lalela-yellow);
+  font-size: 2.5rem;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
+
+.display-text-outline {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-ink-black);
+  text-stroke: 2px var(--color-ink-black);
+  font-size: 2.5rem;
+  font-weight: normal;
+  letter-spacing: 2px;
+}
+
+/* Body Text Styles */
+.body-text {
+  font-family: var(--font-body);
+  color: var(--color-ink-black);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Color Utility Classes */
+.bg-yellow { background-color: var(--color-lalela-yellow); }
+.bg-blue { background-color: var(--color-river-blue); }
+.bg-orange { background-color: var(--color-bead-orange); }
+.bg-green { background-color: var(--color-aloe-green); }
+.bg-red { background-color: var(--color-rooibos-red); }
+.bg-cream { background-color: var(--color-cream-bg); }
+.bg-white { background-color: var(--color-white); }
+
+.text-yellow { color: var(--color-lalela-yellow); }
+.text-blue { color: var(--color-river-blue); }
+.text-orange { color: var(--color-bead-orange); }
+.text-green { color: var(--color-aloe-green); }
+.text-red { color: var(--color-rooibos-red); }
+.text-black { color: var(--color-ink-black); }
+.text-white { color: var(--color-white); }
+
+/* Zone Background Colors */
+.zone-playground { background-color: var(--color-lalela-yellow); }
+.zone-art { background-color: var(--color-bead-orange); }
+.zone-nature { background-color: var(--color-aloe-green); }
+.zone-stories { background-color: var(--color-rooibos-red); }
+.zone-water { background-color: var(--color-river-blue); }
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-lalela-yellow: #FFD700;  /* Brighter yellow */
+    --color-river-blue: #0000FF;     /* Pure blue */
+    --color-bead-orange: #FF4500;    /* Brighter orange */
+    --color-aloe-green: #00FF00;     /* Pure green */
+    --color-rooibos-red: #FF0000;    /* Pure red */
+  }
+}

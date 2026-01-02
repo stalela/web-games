@@ -1,0 +1,36 @@
+{
+  "browser": "mobile",
+  "timestamp": "2025-12-29T14:33:13.522Z",
+  "success": true,
+  "tests": {
+    "basicLoad": true,
+    "gamesLoad": true,
+    "navigationWorks": true,
+    "renderingWorks": true,
+    "audioWorks": false,
+    "storageWorks": true,
+    "touchWorks": true,
+    "responsiveWorks": false,
+    "mobileOptimized": true
+  },
+  "errors": [],
+  "performance": {
+    "loadTime": 2085,
+    "domReady": 1820,
+    "firstPaint": 96,
+    "fps": 0,
+    "memoryUsage": {
+      "used": 45370586,
+      "total": 49899890
+    }
+  },
+  "compatibility": {
+    "webgl": false,
+    "audio": true,
+    "localStorage": true,
+    "indexedDB": true,
+    "touchEvents": true,
+    "es6": true,
+    "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Mobile/15E148 Safari/604.1"
+  }
+}

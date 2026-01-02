@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-12-29T14:26:47.635Z",
+  "summary": {
+    "totalTests": 13,
+    "passedTests": 11,
+    "failedTests": 2,
+    "skippedTests": 0,
+    "duration": 408230
+  },
+  "recommendations": [
+    "Fix browser compatibility issues for better cross-platform support",
+    "Optimize performance issues, particularly bundle size"
+  ]
+}

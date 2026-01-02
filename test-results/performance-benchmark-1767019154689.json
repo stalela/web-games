@@ -1,0 +1,261 @@
+{
+  "timestamp": "2025-12-29T14:37:09.711Z",
+  "benchmarks": {
+    "devices": {
+      "mobile": {
+        "device": "Mobile (iPhone 12)",
+        "loadTime": 3490,
+        "initialMetrics": {
+          "loadTime": 2524,
+          "domReady": 2413,
+          "firstPaint": 620,
+          "memoryUsage": {
+            "used": 45537856,
+            "total": 49900060,
+            "limit": 4294967296,
+            "usagePercent": 1.060260832309723
+          },
+          "resourceTiming": {
+            "totalResources": 6,
+            "totalSize": 1326582,
+            "averageLoadTime": 187.5333333313465
+          },
+          "timestamp": 1767019034482
+        },
+        "gameplayMetrics": {
+          "actionsPerformed": 0,
+          "averageResponseTime": 0,
+          "errors": 1,
+          "frameRate": 0,
+          "errorMessage": "page.waitForTimeout is not a function"
+        },
+        "finalMetrics": {
+          "loadTime": 2524,
+          "domReady": 2413,
+          "firstPaint": 620,
+          "memoryUsage": {
+            "used": 45537856,
+            "total": 49900060,
+            "limit": 4294967296,
+            "usagePercent": 1.060260832309723
+          },
+          "resourceTiming": {
+            "totalResources": 6,
+            "totalSize": 1326582,
+            "averageLoadTime": 187.5333333313465
+          },
+          "timestamp": 1767019034485
+        },
+        "score": 85
+      },
+      "tablet": {
+        "device": "Tablet (iPad)",
+        "loadTime": 5502,
+        "initialMetrics": {
+          "loadTime": 3810,
+          "domReady": 3625,
+          "firstPaint": 1084,
+          "memoryUsage": {
+            "used": 45790388,
+            "total": 49375776,
+            "limit": 4294967296,
+            "usagePercent": 1.0661405511200428
+          },
+          "resourceTiming": {
+            "totalResources": 6,
+            "totalSize": 1326582,
+            "averageLoadTime": 261.19999998807907
+          },
+          "timestamp": 1767019043285
+        },
+        "gameplayMetrics": {
+          "actionsPerformed": 0,
+          "averageResponseTime": 0,
+          "errors": 1,
+          "frameRate": 0,
+          "errorMessage": "page.waitForTimeout is not a function"
+        },
+        "finalMetrics": {
+          "loadTime": 3810,
+          "domReady": 3625,
+          "firstPaint": 1084,
+          "memoryUsage": {
+            "used": 45790388,
+            "total": 49375776,
+            "limit": 4294967296,
+            "usagePercent": 1.0661405511200428
+          },
+          "resourceTiming": {
+            "totalResources": 6,
+            "totalSize": 1326582,
+            "averageLoadTime": 261.19999998807907
+          },
+          "timestamp": 1767019043296
+        },
+        "score": 75
+      },
+      "desktop": {
+        "device": "Desktop (1080p)",
+        "loadTime": 3170,
+        "initialMetrics": {
+          "loadTime": 2127,
+          "domReady": 2039,
+          "firstPaint": 604,
+          "memoryUsage": {
+            "used": 45620123,
+            "total": 49899927,
+            "limit": 4294967296,
+            "usagePercent": 1.0621762601658702
+          },
+          "resourceTiming": {
+            "totalResources": 6,
+            "totalSize": 1326554,
+            "averageLoadTime": 175.44999997814497
+          },
+          "timestamp": 1767019048935
+        },
+        "gameplayMetrics": {
+          "actionsPerformed": 0,
+          "averageResponseTime": 0,
+          "errors": 1,
+          "frameRate": 0,
+          "errorMessage": "page.waitForTimeout is not a function"
+        },
+        "finalMetrics": {
+          "loadTime": 2127,
+          "domReady": 2039,
+          "firstPaint": 604,
+          "memoryUsage": {
+            "used": 45620123,
+            "total": 49899927,
+            "limit": 4294967296,
+            "usagePercent": 1.0621762601658702
+          },
+          "resourceTiming": {
+            "totalResources": 6,
+            "totalSize": 1326554,
+            "averageLoadTime": 175.44999997814497
+          },
+          "timestamp": 1767019048937
+        },
+        "score": 85
+      },
+      "lowEnd": {
+        "device": "Low-End Device",
+        "loadTime": 11328,
+        "initialMetrics": {
+          "loadTime": 6877,
+          "domReady": 6474,
+          "firstPaint": 884,
+          "memoryUsage": {
+            "used": 44429297,
+            "total": 49102945,
+            "limit": 4294967296,
+            "usagePercent": 1.034450181759894
+          },
+          "resourceTiming": {
+            "totalResources": 6,
+            "totalSize": 1326629,
+            "averageLoadTime": 177.16666665673256
+          },
+          "timestamp": 1767019062392
+        },
+        "gameplayMetrics": {
+          "actionsPerformed": 0,
+          "averageResponseTime": 0,
+          "errors": 1,
+          "frameRate": 0,
+          "errorMessage": "page.waitForTimeout is not a function"
+        },
+        "finalMetrics": {
+          "loadTime": 6877,
+          "domReady": 6474,
+          "firstPaint": 884,
+          "memoryUsage": {
+            "used": 44429297,
+            "total": 49102945,
+            "limit": 4294967296,
+            "usagePercent": 1.034450181759894
+          },
+          "resourceTiming": {
+            "totalResources": 6,
+            "totalSize": 1326629,
+            "averageLoadTime": 177.16666665673256
+          },
+          "timestamp": 1767019062406
+        },
+        "score": 60
+      }
+    },
+    "network": {
+      "fast3g": {
+        "network": "Fast 3G",
+        "loadTime": 10638,
+        "totalRequests": 14,
+        "totalSize": 3411,
+        "averageResponseTime": 1135940831097.6433,
+        "score": 90
+      },
+      "slow3g": {
+        "network": "Slow 3G",
+        "loadTime": 25416,
+        "totalRequests": 14,
+        "totalSize": 3411,
+        "averageResponseTime": 1135940844470.3325,
+        "score": 80
+      },
+      "fast": {
+        "network": "Fast Network",
+        "loadTime": 4881,
+        "totalRequests": 14,
+        "totalSize": 3411,
+        "averageResponseTime": 1135940854710.5737,
+        "score": 100
+      }
+    },
+    "memory": {
+      "error": "page.waitForTimeout is not a function"
+    },
+    "frameRate": {
+      "mobile": {
+        "device": "Mobile (iPhone 12)",
+        "baselineFps": 60,
+        "gameplayFps": 60,
+        "averageFps": 60,
+        "stable60Fps": true,
+        "score": 100
+      },
+      "tablet": {
+        "device": "Tablet (iPad)",
+        "baselineFps": 60,
+        "gameplayFps": 60,
+        "averageFps": 60,
+        "stable60Fps": true,
+        "score": 100
+      },
+      "desktop": {
+        "device": "Desktop (1080p)",
+        "baselineFps": 60,
+        "gameplayFps": 60,
+        "averageFps": 60,
+        "stable60Fps": true,
+        "score": 100
+      },
+      "lowEnd": {
+        "device": "Low-End Device",
+        "baselineFps": 60,
+        "gameplayFps": 60,
+        "averageFps": 60,
+        "stable60Fps": true,
+        "score": 100
+      }
+    }
+  },
+  "summary": {
+    "overallScore": 89,
+    "recommendations": [
+      "Performance meets acceptable standards",
+      "Continue monitoring performance in production"
+    ]
+  }
+}

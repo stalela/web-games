@@ -1,0 +1,21 @@
+{
+  "browser": "edge",
+  "timestamp": "2025-12-29T14:31:01.582Z",
+  "success": false,
+  "tests": {
+    "basicLoad": false,
+    "gamesLoad": false,
+    "navigationWorks": false,
+    "renderingWorks": false,
+    "audioWorks": false,
+    "storageWorks": false,
+    "error": "Navigation timeout of 30000 ms exceeded"
+  },
+  "errors": [],
+  "performance": {
+    "error": "Navigation timeout of 30000 ms exceeded"
+  },
+  "compatibility": {
+    "error": "Navigation timeout of 30000 ms exceeded"
+  }
+}

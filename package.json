@@ -1,0 +1,50 @@
+{
+  "name": "lalela-web-games",
+  "version": "1.0.0",
+  "description": "Web-based GCompris educational games for Lalela platform",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "webpack serve --mode development --open",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
+    "test": "jest",
+    "serve": "webpack serve --mode development",
+    "test:browser": "node test-cross-browser.js",
+    "test:chrome": "node test-cross-browser.js chrome",
+    "test:firefox": "node test-cross-browser.js firefox",
+    "test:safari": "node test-cross-browser.js safari",
+    "test:edge": "node test-cross-browser.js edge",
+    "test:mobile": "node test-cross-browser.js mobile",
+    "test:comprehensive": "node test-comprehensive.js",
+    "benchmark": "node benchmark-performance.js"
+  },
+  "keywords": [
+    "education",
+    "games",
+    "children",
+    "phaser",
+    "web"
+  ],
+  "author": "Lalela Development Team",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.22.0",
+    "@babel/preset-react": "^7.22.0",
+    "babel-loader": "^9.1.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.0",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "puppeteer": "^24.34.0",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.88.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "dependencies": {
+    "howler": "^2.2.4",
+    "phaser": "^3.80.0"
+  }
+}

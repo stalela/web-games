@@ -1,0 +1,238 @@
+    if (visibleCards.length === 0) return;
+
+    this.currentFocusIndex = (this.currentFocusIndex + 1) % visibleCards.length;
+    this.focusGameCard(this.currentFocusIndex);
+  }
+
+  /**
+   * Navigate to previous card
+   */
+  navigatePrevious() {
+    const visibleCards = this.gameCards.filter(card => card.visible);
+    if (visibleCards.length === 0) return;
+
+    this.currentFocusIndex = this.currentFocusIndex === 0 ?
+      visibleCards.length - 1 : this.currentFocusIndex - 1;
+    this.focusGameCard(this.currentFocusIndex);
+  }
+
+  /**
+   * Navigate up in grid
+   */
+  navigateUp() {
+    this.navigateInDirection(-1, 0);
+  }
+
+  /**
+   * Navigate down in grid
+   */
+  navigateDown() {
+    this.navigateInDirection(1, 0);
+  }
+
+  /**
+   * Navigate left in grid
+   */
+  navigateLeft() {
+    this.navigateInDirection(0, -1);
+  }
+
+  /**
+   * Navigate right in grid
+   */
+  navigateRight() {
+    this.navigateInDirection(0, 1);
+  }
+
+  /**
+   * Navigate in a specific direction
+   */
+  navigateInDirection(deltaRow, deltaCol) {
+    const visibleCards = this.gameCards.filter(card => card.visible);
+    if (visibleCards.length === 0) return;
+
+    const gridWidth = this.gridConfig.areaRight - this.gridConfig.areaLeft;
+    const cols = Math.floor(gridWidth / (this.gridConfig.cardSize + this.gridConfig.spacing));
+
+    const currentCard = visibleCards[this.currentFocusIndex];
+    const currentIndex = this.allGames.findIndex(game => game.scene === currentCard.gameData.scene);
+    const currentRow = Math.floor(currentIndex / cols);
+    const currentCol = currentIndex % cols;
+
+    const newRow = currentRow + deltaRow;
+    const newCol = currentCol + deltaCol;
+
+    if (newRow >= 0 && newCol >= 0 && newCol < cols) {
+      const newIndex = newRow * cols + newCol;
+      if (newIndex < this.allGames.length) {
+        const newCard = this.gameCards.find(card => card.gameData.scene === this.allGames[newIndex].scene);
+        if (newCard && newCard.visible) {
+          this.currentFocusIndex = visibleCards.indexOf(newCard);
+          this.focusGameCard(this.currentFocusIndex);
+        }
+      }
+    }
+  }
+
+  /**
+   * Focus a specific game card
+   */
+  focusGameCard(index) {
+    // Ensure we have game cards and they're initialized
+    if (!this.gameCards || this.gameCards.length === 0) {
+      return;
+    }
+
+    const visibleCards = this.gameCards.filter(card => card.visible);
+    if (!visibleCards || visibleCards.length === 0 || !visibleCards[index]) {
+      return;
+    }
+
+    // Remove focus from all cards
+    this.gameCards.forEach((card, i) => {
+      // Safely get the background element
+      const background = card.getAt && card.getAt(0); // First element should be background
+      if (!background) {
+        console.warn('Could not find background for card', card.gameData?.name);
+        return;
+      }
+
+      if (visibleCards.includes(card)) {
+        const cardIndex = visibleCards.indexOf(card);
+        if (cardIndex === index) {
+          // Add focus to this card
+          if (background.setStrokeStyle) {
+            background.setStrokeStyle(5, 0x000000); // Thick black border
+          }
+          if (card.setScale) {
+            card.setScale(1.05);
+          }
+          this.announceToScreenReader(`Selected: ${card.gameData.name}`);
+        } else {
+          // Remove focus from other visible cards
+          if (background.setStrokeStyle) {
+            background.setStrokeStyle(3, 0x0062FF);
+          }
+          if (card.setScale) {
+            card.setScale(1.0);
+          }
+        }
+      }
+    });
+  }
+
+  /**
+   * Activate the currently focused card
+   */
+  activateCurrentCard() {
+    const visibleCards = this.gameCards.filter(card => card.visible);
+    if (!visibleCards || !visibleCards[this.currentFocusIndex]) return;
+
+    const gameScene = visibleCards[this.currentFocusIndex].gameData.scene;
+    this.startGame(gameScene);
+  }
+
+  /**
+   * Announce message to screen readers
+   */
+  announceToScreenReader(message) {
+    // Create a temporary element for screen reader announcements
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.style.position = 'absolute';
+    announcement.style.left = '-10000px';
+    announcement.style.width = '1px';
+    announcement.style.height = '1px';
+    announcement.style.overflow = 'hidden';
+
+    announcement.textContent = message;
+    document.body.appendChild(announcement);
+
+    // Remove after announcement
+    setTimeout(() => {
+      document.body.removeChild(announcement);
+    }, 1000);
+  }
+
+  startGame(gameScene) {
+    console.log(`Starting game: ${gameScene}`);
+
+    // Close any open modals
+    if (this.helpModal) {
+      this.closeHelpModal();
+    }
+
+    // Stop current scene
+    this.scene.stop('GameMenu');
+
+    // Start the selected game scene with app data
+    this.scene.start(gameScene, {
+      app: this.app
+    });
+  }
+
+  /**
+   * Clean up when scene is destroyed
+   */
+  destroy() {
+    // Clean up animations
+    if (this.clouds) {
+      this.clouds.forEach(cloud => {
+        if (cloud && cloud.destroy) cloud.destroy();
+      });
+    }
+
+    // Clean up game cards
+    if (this.gameCards) {
+      this.gameCards.forEach(card => {
+        if (card && card.destroy) card.destroy();
+      });
+    }
+
+    // Clean up category buttons
+    if (this.categoryButtons) {
+      this.categoryButtons.forEach(btn => {
+        if (btn.circle && btn.circle.destroy) btn.circle.destroy();
+        if (btn.shadow && btn.shadow.destroy) btn.shadow.destroy();
+        if (btn.icon && btn.icon.destroy) btn.icon.destroy();
+        if (btn.text && btn.text.destroy) btn.text.destroy();
+      });
+    }
+
+    // Clean up bottom controls
+    if (this.bottomControls) {
+      this.bottomControls.forEach(control => {
+        if (control.button && control.button.destroy) control.button.destroy();
+        if (control.shadow && control.shadow.destroy) control.shadow.destroy();
+        if (control.icon && control.icon.destroy) control.icon.destroy();
+      });
+    }
+
+    // Close help modal if open
+    if (this.helpModal) {
+      this.closeHelpModal();
+    }
+
+    // Remove keyboard listeners
+    if (this.input && this.input.keyboard) {
+      this.input.keyboard.off('keydown-TAB');
+      this.input.keyboard.off('keydown-SHIFT_TAB');
+      this.input.keyboard.off('keydown-ENTER');
+      this.input.keyboard.off('keydown-SPACE');
+      this.input.keyboard.off('keydown-UP');
+      this.input.keyboard.off('keydown-DOWN');
+      this.input.keyboard.off('keydown-LEFT');
+      this.input.keyboard.off('keydown-RIGHT');
+      this.input.keyboard.off('keydown-ESCAPE');
+      this.input.keyboard.off('keydown-H');
+
+      // Remove number key listeners
+      for (let i = 1; i <= this.categories.length; i++) {
+        this.input.keyboard.off(`keydown-${i}`);
+      }
+    }
+
+    super.destroy();
+  }
+}
