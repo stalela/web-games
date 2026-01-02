@@ -58,12 +58,13 @@ export class CheckersGame extends Phaser.Scene {
   create() {
     const { width, height } = this.game.config;
 
-    // Calculate tile size for 10x10 board
-    this.gameConfig.tileSize = Math.min(width, height) / this.gameConfig.numberOfCases;
+    // Calculate tile size for 10x10 board with proper centering
+    const boardSize = Math.min(width, height) * 0.75; // Use 75% of available space
+    this.gameConfig.tileSize = boardSize / this.gameConfig.numberOfCases;
 
-    // Calculate board position (centered)
-    this.gameConfig.boardStartX = (width - (this.gameConfig.numberOfCases * this.gameConfig.tileSize)) / 2;
-    this.gameConfig.boardStartY = (height - (this.gameConfig.numberOfCases * this.gameConfig.tileSize)) / 2;
+    // Calculate board position (perfectly centered)
+    this.gameConfig.boardStartX = (width - boardSize) / 2;
+    this.gameConfig.boardStartY = (height - boardSize) / 2;
 
     // Create background
     this.createBackground(width, height);
@@ -210,14 +211,23 @@ export class CheckersGame extends Phaser.Scene {
   createTurnIndicator() {
     const { width } = this.game.config;
 
-    // Create turn indicator panel at the top
-    this.turnIndicator = this.add.rectangle(width / 2, 40, 300, 50, 0x000000, 0.7);
-    this.turnIndicator.setStrokeStyle(2, 0xFFFFFF);
+    // Create turn indicator panel at the top (GCompris instruction panel style)
+    const panelWidth = 280;
+    const panelHeight = 45;
+    const panelY = 35;
 
-    this.turnText = this.add.text(width / 2, 40, "White's turn", {
-      fontSize: '20px',
+    // Black rounded rectangle with white stroke
+    this.turnIndicator = this.add.graphics();
+    this.turnIndicator.fillStyle(0x000000, 0.7);
+    this.turnIndicator.fillRoundedRect(width / 2 - panelWidth / 2, panelY - panelHeight / 2, panelWidth, panelHeight, 8);
+    this.turnIndicator.lineStyle(2, 0xFFFFFF, 0.8);
+    this.turnIndicator.strokeRoundedRect(width / 2 - panelWidth / 2, panelY - panelHeight / 2, panelWidth, panelHeight, 8);
+
+    this.turnText = this.add.text(width / 2, panelY, "White's turn", {
+      fontSize: '18px',
       color: '#FFFFFF',
-      fontFamily: 'Arial, sans-serif'
+      fontFamily: 'Arial, sans-serif',
+      fontWeight: 'bold'
     }).setOrigin(0.5);
 
     this.updateTurnIndicator();
@@ -229,56 +239,123 @@ export class CheckersGame extends Phaser.Scene {
   }
 
   createBottomControls(width, height) {
-    const barY = height - 55;
-    const buttonSize = 72;
-    const spacing = 95;
+    const barY = height - 50;
+    const buttonWidth = 80;
+    const buttonHeight = 60;
+    const spacing = 85;
 
-    // Create 5 buttons: Help, Home, Undo, Level, Redo
+    // GCompris Activity Bar: Help, Home, Undo, Level Selector, Redo
     const controls = [
       { icon: 'help', action: 'help' },
       { icon: 'home', action: 'home' },
       { icon: 'undo', action: 'undo' },
-      { icon: 'turn', action: 'level' }, // Level indicator
+      { icon: null, action: 'level' }, // Special level selector
       { icon: 'redo', action: 'redo' }
     ];
 
-    const totalWidth = (controls.length * buttonSize) + ((controls.length - 1) * (spacing - buttonSize));
+    const totalWidth = (controls.length * buttonWidth) + ((controls.length - 1) * (spacing - buttonWidth));
     const startX = (width - totalWidth) / 2;
 
     controls.forEach((control, index) => {
-      const x = startX + index * spacing;
+      const x = startX + index * buttonWidth + (index * (spacing - buttonWidth));
       const y = barY;
 
-      // Button background
+      // White rounded rectangle button (GCompris Sticker style)
       const button = this.add.graphics();
-      button.fillStyle(0xFFFFFF, 0.8);
-      button.fillRoundedRect(x - buttonSize / 2, y - buttonSize / 2, buttonSize, buttonSize, 10);
-      button.lineStyle(2, 0xFFFFFF, 0.8);
-      button.strokeRoundedRect(x - buttonSize / 2, y - buttonSize / 2, buttonSize, buttonSize, 10);
-      button.setInteractive(new Phaser.Geom.Rectangle(x - buttonSize / 2, y - buttonSize / 2, buttonSize, buttonSize), Phaser.Geom.Rectangle.Contains);
+      button.fillStyle(0xFFFFFF, 0.9);
+      button.fillRoundedRect(x - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight, 8);
+      button.lineStyle(2, 0xCCCCCC, 0.8);
+      button.strokeRoundedRect(x - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight, 8);
+      button.setInteractive(new Phaser.Geom.Rectangle(x - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight), Phaser.Geom.Rectangle.Contains);
 
-      // Icon
-      const icon = this.add.image(x, y, control.icon);
-      icon.setDisplaySize(buttonSize * 0.6, buttonSize * 0.6);
-
-      // Level indicator text (special case for level button)
+      // Special handling for level selector
       if (control.action === 'level') {
-        this.levelText = this.add.text(x, y + 15, this.gameConfig.currentLevel.toString(), {
-          fontSize: '16px',
-          color: '#FFFFFF',
-          fontFamily: 'Arial, sans-serif'
+        // Left arrow
+        const leftArrow = this.add.text(x - 15, y, '<', {
+          fontSize: '24px',
+          color: '#F05A28',
+          fontFamily: 'Arial, sans-serif',
+          fontWeight: 'bold'
         }).setOrigin(0.5);
+
+        // Level number
+        this.levelText = this.add.text(x, y, this.gameConfig.currentLevel.toString(), {
+          fontSize: '20px',
+          color: '#333333',
+          fontFamily: 'Arial, sans-serif',
+          fontWeight: 'bold'
+        }).setOrigin(0.5);
+
+        // Right arrow
+        const rightArrow = this.add.text(x + 15, y, '>', {
+          fontSize: '24px',
+          color: '#F05A28',
+          fontFamily: 'Arial, sans-serif',
+          fontWeight: 'bold'
+        }).setOrigin(0.5);
+
+        // Make arrows clickable for level changing
+        leftArrow.setInteractive();
+        rightArrow.setInteractive();
+
+        leftArrow.on('pointerdown', () => {
+          if (this.app?.audioManager) this.app.audioManager.playClickSound();
+          this.changeLevel(-1);
+        });
+
+        rightArrow.on('pointerdown', () => {
+          if (this.app?.audioManager) this.app.audioManager.playClickSound();
+          this.changeLevel(1);
+        });
+
+        this.bottomControls.push({
+          button: button,
+          leftArrow: leftArrow,
+          levelText: this.levelText,
+          rightArrow: rightArrow,
+          action: control.action
+        });
+
+        button.setDepth(200);
+        leftArrow.setDepth(201);
+        this.levelText.setDepth(201);
+        rightArrow.setDepth(201);
+
+      } else {
+        // Regular icon button
+        const icon = this.add.image(x, y, control.icon);
+        icon.setDisplaySize(buttonWidth * 0.5, buttonHeight * 0.5);
+
+        button.on('pointerdown', () => {
+          if (this.app?.audioManager) this.app.audioManager.playClickSound();
+          this.handleControlAction(control.action);
+        });
+
+        button.on('pointerover', () => {
+          button.clear();
+          button.fillStyle(0xF0F0F0, 0.9);
+          button.fillRoundedRect(x - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight, 8);
+          button.lineStyle(2, 0x999999, 0.8);
+          button.strokeRoundedRect(x - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight, 8);
+        });
+
+        button.on('pointerout', () => {
+          button.clear();
+          button.fillStyle(0xFFFFFF, 0.9);
+          button.fillRoundedRect(x - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight, 8);
+          button.lineStyle(2, 0xCCCCCC, 0.8);
+          button.strokeRoundedRect(x - buttonWidth / 2, y - buttonHeight / 2, buttonWidth, buttonHeight, 8);
+        });
+
+        this.bottomControls.push({
+          button: button,
+          icon: icon,
+          action: control.action
+        });
+
+        button.setDepth(200);
+        icon.setDepth(201);
       }
-
-      button.on('pointerdown', () => {
-        if (this.app?.audioManager) {
-          this.app.audioManager.playClickSound();
-        }
-        this.handleControlAction(control.action);
-      });
-
-      button.setDepth(100);
-      icon.setDepth(101);
     });
   }
 
@@ -322,9 +399,9 @@ export class CheckersGame extends Phaser.Scene {
           this.currentPlayer = this.currentPlayer === 'W' ? 'B' : 'W';
           this.updateTurnIndicator();
 
-          // AI move if it's Black's turn
+          // AI move if it's Black's turn (with longer delay for better UX)
           if (this.currentPlayer === 'B') {
-            this.time.delayedCall(500, () => this.makeAIMove());
+            this.time.delayedCall(800, () => this.makeAIMove());
           }
         } else {
           // Move failed, return piece to original position
@@ -370,17 +447,24 @@ export class CheckersGame extends Phaser.Scene {
     const moves = this.state.moves();
     const fromEngine = this.viewPosToEngine(this.from);
 
-    moves.forEach(move => {
-      if (move.from === fromEngine) {
-        const toView = this.engineToViewPos(move.to);
-        const pixelPos = this.boardPosToPixel(toView);
+    // Filter moves to only show mandatory captures if any exist
+    let validMoves = moves.filter(move => move.from === fromEngine);
 
-        // Create move indicator (gray semi-transparent circle)
-        const indicator = this.add.circle(pixelPos.x, pixelPos.y, this.gameConfig.tileSize * 0.3, 0x808080, 0.5);
-        indicator.setDepth(5);
+    // If there are captures available, only show capture moves
+    const captureMoves = moves.filter(move => move.captures && move.captures.length > 0);
+    if (captureMoves.length > 0) {
+      validMoves = validMoves.filter(move => move.captures && move.captures.length > 0);
+    }
 
-        this.moveIndicators.push(indicator);
-      }
+    validMoves.forEach(move => {
+      const toView = this.engineToViewPos(move.to);
+      const pixelPos = this.boardPosToPixel(toView);
+
+      // Create move indicator (gray semi-transparent circle)
+      const indicator = this.add.circle(pixelPos.x, pixelPos.y, this.gameConfig.tileSize * 0.3, 0x808080, 0.6);
+      indicator.setDepth(5);
+
+      this.moveIndicators.push(indicator);
     });
   }
 
@@ -420,19 +504,39 @@ export class CheckersGame extends Phaser.Scene {
     const piece = this.pieces.find(p => p.boardPos === from);
     if (piece) {
       const toPixel = this.boardPosToPixel(to);
-      piece.setPosition(toPixel.x, toPixel.y);
-      piece.boardPos = to;
-      piece.row = Math.floor(to / this.gameConfig.numberOfCases);
-      piece.col = to % this.gameConfig.numberOfCases;
 
-      // Handle captures (remove jumped pieces)
-      if (move.jumps && move.jumps.length > 0) {
-        move.jumps.forEach(jumpPos => {
-          const jumpViewPos = this.engineToViewPos(jumpPos);
-          const jumpedPiece = this.pieces.find(p => p.boardPos === jumpViewPos);
-          if (jumpedPiece) {
-            jumpedPiece.destroy();
-            this.pieces = this.pieces.filter(p => p !== jumpedPiece);
+      // Animate piece movement
+      this.tweens.add({
+        targets: piece,
+        x: toPixel.x,
+        y: toPixel.y,
+        duration: 300,
+        ease: 'Power2',
+        onComplete: () => {
+          piece.boardPos = to;
+          piece.row = Math.floor(to / this.gameConfig.numberOfCases);
+          piece.col = to % this.gameConfig.numberOfCases;
+        }
+      });
+
+      // Handle captures (animate removal of jumped pieces)
+      if (move.captures && move.captures.length > 0) {
+        move.captures.forEach(capturePos => {
+          const captureViewPos = this.engineToViewPos(capturePos);
+          const capturedPiece = this.pieces.find(p => p.boardPos === captureViewPos);
+          if (capturedPiece) {
+            // Animate capture (shrink and fade)
+            this.tweens.add({
+              targets: capturedPiece,
+              scale: 0,
+              alpha: 0,
+              duration: 400,
+              ease: 'Power2',
+              onComplete: () => {
+                capturedPiece.destroy();
+                this.pieces = this.pieces.filter(p => p !== capturedPiece);
+              }
+            });
           }
         });
       }
@@ -441,16 +545,32 @@ export class CheckersGame extends Phaser.Scene {
 
   checkPromotion(piece, to) {
     const { numberOfCases } = this.gameConfig;
+    let promoted = false;
 
     // White promotion (reaching the top)
     if (piece.pieceType === 'w' && to <= numberOfCases - 1) {
       piece.pieceType = 'wk';
-      piece.setTexture('wk');
+      promoted = true;
     }
     // Black promotion (reaching the bottom)
     else if (piece.pieceType === 'b' && to >= (numberOfCases * (numberOfCases - 1))) {
       piece.pieceType = 'bk';
-      piece.setTexture('bk');
+      promoted = true;
+    }
+
+    if (promoted) {
+      // Animate promotion (scale up and down like "crowning")
+      this.tweens.add({
+        targets: piece,
+        scaleX: piece.scaleX * 1.3,
+        scaleY: piece.scaleY * 1.3,
+        duration: 200,
+        yoyo: true,
+        ease: 'Power2',
+        onComplete: () => {
+          piece.setTexture(piece.pieceType);
+        }
+      });
     }
   }
 
@@ -483,12 +603,21 @@ export class CheckersGame extends Phaser.Scene {
       case 'undo':
         this.undoMove();
         break;
+      case 'level':
+        // Level selection is handled by the arrow buttons
+        break;
       case 'redo':
         this.redoMove();
         break;
-      case 'level':
-        // Could implement level selection here
-        break;
+    }
+  }
+
+  changeLevel(delta) {
+    const newLevel = this.gameConfig.currentLevel + delta;
+    if (newLevel >= 1 && newLevel <= this.gameConfig.numberOfLevel) {
+      this.gameConfig.currentLevel = newLevel;
+      this.levelText.setText(newLevel.toString());
+      // In a full implementation, you might want to adjust AI difficulty here
     }
   }
 
