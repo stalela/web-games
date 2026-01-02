@@ -190,6 +190,7 @@ export class GameMenuScene extends Phaser.Scene {
     this.categoryButtons = [];
     this.gameCards = [];
     this.bottomControls = [];
+    this.activityConfigMode = false;
   }
 
   init(data) {
@@ -217,9 +218,16 @@ export class GameMenuScene extends Phaser.Scene {
     });
 
     // Load UI control icons
-    const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
+    const uiIcons = [
+      { name: 'exit.svg', path: 'category-icons' },
+      { name: 'settings.svg', path: 'category-icons' },
+      { name: 'help.svg', path: 'category-icons' },
+      { name: 'bar_about.svg', path: 'game-icons', key: 'about' },
+      { name: 'bar_activity_config.svg', path: 'game-icons', key: 'activityConfig' }
+    ];
     uiIcons.forEach(icon => {
-      this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`);
+      const key = icon.key || icon.name.replace('.svg', '');
+      this.load.svg(key, `assets/${icon.path}/${icon.name}`);
     });
 
     // Load difficulty stars
@@ -545,7 +553,7 @@ export class GameMenuScene extends Phaser.Scene {
 
     // Play selection sound (if audio is available)
     if (this.app && this.app.audioManager) {
-      this.app.audioManager.playSound('click');
+      this.app.audioManager.playClickSound();
     }
   }
 
@@ -688,6 +696,11 @@ export class GameMenuScene extends Phaser.Scene {
       });
   
       card.on('pointerdown', () => {
+          // Play click sound
+          if (this.app && this.app.audioManager) {
+              this.app.audioManager.playClickSound();
+          }
+
           this.playStarAnimation(card.x, card.y); // Use the particle effect you wrote
           this.time.delayedCall(200, () => this.startGame(game.scene));
       });
@@ -795,15 +808,20 @@ export class GameMenuScene extends Phaser.Scene {
    */
   createBottomControls(width, height) {
     const barY = height - 55;
-    const buttonSize = 72; // 20% larger (60 * 1.2)
-    const spacing = 120; // Adjusted for larger buttons
+    const buttonSize = 72;
+    const spacing = 95; // Reduced spacing to fit 6 buttons comfortably
 
-    const controls = [
-      { icon: 'exit', action: 'exit', color: 0xE32528 },
-      { icon: 'settings', action: 'settings', color: 0x0062FF },
-      { icon: 'help', action: 'help', color: 0x00B378 },
-      { icon: 'home', action: 'home', color: 0xFACA2A }
+    let controls = [
+      { icon: 'help', action: 'help', color: 0x00B378 },           // Green
+      { icon: 'settings', action: 'settings', color: 0x0062FF },   // Blue (GCompris 'config' maps to 'settings')
+      { icon: 'activityConfig', action: 'activityConfig', color: 0x904DB9 }, // Purple
+      { icon: 'about', action: 'about', color: 0xF05A28 }         // Orange (GCompris 'about' button)
     ];
+
+    // Conditionally add the exit button for non-mobile devices
+    if (!(this.sys.game.device.os.android || this.sys.game.device.os.iOS)) {
+      controls.push({ icon: 'exit', action: 'exit', color: 0xE32528 }); // Red
+    }
 
     const totalWidth = (controls.length - 1) * spacing + buttonSize;
     const startX = (width - totalWidth) / 2 + buttonSize / 2;
@@ -811,56 +829,56 @@ export class GameMenuScene extends Phaser.Scene {
     controls.forEach((control, index) => {
       const x = startX + index * spacing;
 
-      // GCompris-style 3D shadow effect
-      const shadow = this.add.circle(x + 4, barY + 4, buttonSize / 2, 0x000000, 0.4);
+      // GCompris-style 3D shadow (shifted slightly right and down)
+      const shadow = this.add.circle(x + 3, barY + 3, buttonSize / 2, 0x000000, 0.3);
 
-      // Circular button background (GCompris Sticker style)
+      // Circular button background
       const button = this.add.graphics();
-      button.fillStyle(control.color);
+      
+      // Update activityConfig button appearance based on its mode
+      if (control.action === 'activityConfig' && this.activityConfigMode) {
+        button.fillStyle(0xFACA2A); // Active color (e.g., Lalela Yellow)
+        button.lineStyle(4, 0xFFFFFF); // White border
+      } else {
+        button.fillStyle(control.color);
+        button.lineStyle(4, 0xFFFFFF); // White border
+      }
+      
       button.fillCircle(x, barY, buttonSize / 2);
-      button.lineStyle(5, 0xFFFFFF); // Thick white border
       button.strokeCircle(x, barY, buttonSize / 2);
       button.setInteractive(new Phaser.Geom.Circle(x, barY, buttonSize / 2), Phaser.Geom.Circle.Contains);
 
       // Control icon
       const icon = this.add.sprite(x, barY, control.icon);
-      icon.setScale((buttonSize * 0.7) / 100); // Slightly larger relative to button
+      icon.setScale((buttonSize * 0.65) / 100);
       icon.setTint(0xFFFFFF);
 
-      // 3D Press effect (move down 2px and hide shadow)
+      // Interaction Logic
       button.on('pointerdown', () => {
-        // Move button and icon down
-        button.clear();
-        button.fillStyle(control.color);
-        button.fillCircle(x, barY + 2, buttonSize / 2);
-        button.lineStyle(5, 0xFFFFFF);
-        button.strokeCircle(x, barY + 2, buttonSize / 2);
+        if (this.app?.audioManager) this.app.audioManager.playClickSound();
 
-        icon.setPosition(x, barY + 2);
-        shadow.setVisible(false); // Hide shadow for pressed effect
+        // 3D Press visual effect
+        icon.y += 2;
+        shadow.alpha = 0;
 
         this.handleControlAction(control.action);
 
-        // Reset after short delay
-        this.time.delayedCall(150, () => {
-          button.clear();
-          button.fillStyle(control.color);
-          button.fillCircle(x, barY, buttonSize / 2);
-          button.lineStyle(5, 0xFFFFFF);
-          button.strokeCircle(x, barY, buttonSize / 2);
-
-          icon.setPosition(x, barY);
-          shadow.setVisible(true);
+        this.time.delayedCall(100, () => {
+          icon.y -= 2;
+          shadow.alpha = 0.3;
+          // Recreate controls to update the activityConfig button's appearance
+          this.clearBottomControls();
+          this.createBottomControls(width, height);
         });
       });
 
-      // Hover effects
-      button.on('pointerover', () => {
-        icon.setScale((buttonSize * 0.75) / 100);
-      });
-
+      // Hover scaling
+      button.on('pointerover', () => icon.setScale((buttonSize * 0.72) / 100));
       button.on('pointerout', () => {
-        icon.setScale((buttonSize * 0.7) / 100);
+          // Only scale down if it's not the active activityConfig button
+          if (!(control.action === 'activityConfig' && this.activityConfigMode)) {
+              icon.setScale((buttonSize * 0.65) / 100);
+          }
       });
 
       this.bottomControls.push({
@@ -882,23 +900,27 @@ export class GameMenuScene extends Phaser.Scene {
    */
   handleControlAction(action) {
     switch (action) {
-      case 'exit':
-        if (window.confirm('Are you sure you want to exit the game?')) {
-          window.close();
-        }
+      case 'activityConfig':
+        // Toggles between play mode and configuration mode (the purple button)
+        this.activityConfigMode = !this.activityConfigMode;
+        console.log('Activity Settings Mode Toggled:', this.activityConfigMode);
+        // Re-creating controls is handled in pointerdown now to reflect the state change
         break;
-      case 'settings':
-        // Open settings dialog
-        console.log('Settings clicked');
+      case 'exit':
+        if (window.confirm('Quit GCompris?')) window.close();
+        break;
+      case 'about':
+        // Shows the GCompris About dialog
+        console.log('About GCompris clicked');
+        this.showAboutDialog(); // You would create this method
         break;
       case 'help':
-        // Show help modal
         this.showHelpModal();
         break;
-      case 'home':
-        // Reset to show all games
-        this.selectCategory('all');
+      case 'settings':
+        console.log('Main Configuration clicked');
         break;
+
     }
   }
 
@@ -934,7 +956,13 @@ export class GameMenuScene extends Phaser.Scene {
     // Close button
     const closeBtn = this.add.circle(width / 2 + 220, height / 2 - 180, 20, 0xE32528);
     closeBtn.setInteractive({ useHandCursor: true });
-    closeBtn.on('pointerdown', () => this.closeHelpModal());
+    closeBtn.on('pointerdown', () => {
+        // Play click sound
+        if (this.app && this.app.audioManager) {
+            this.app.audioManager.playClickSound();
+        }
+        this.closeHelpModal();
+    });
 
     const closeText = this.add.text(width / 2 + 220, height / 2 - 180, '×', {
       fontSize: '24px',
@@ -1182,6 +1210,54 @@ export class GameMenuScene extends Phaser.Scene {
     this.scene.start(gameScene, {
       app: this.app
     });
+  }
+
+  showAboutDialog() {
+    const { width, height } = this.game.config;
+
+    // Simple placeholder modal for About
+    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7);
+    overlay.setInteractive();
+    const modalBg = this.add.rectangle(width / 2, height / 2, 600, 400, 0xFDFAED);
+    modalBg.setStrokeStyle(4, 0xF05A28); // Orange border for About
+
+    const aboutText = this.add.text(width / 2, height / 2, 'Lalela Web Games\n\nBased on GCompris activities.\n\nVersion 1.0.0', {
+      fontSize: '24px',
+      color: '#101012',
+      fontFamily: 'Nunito, sans-serif',
+      align: 'center',
+      wordWrap: { width: 550 }
+    }).setOrigin(0.5);
+
+    const closeBtn = this.add.circle(width / 2 + 280, height / 2 - 180, 20, 0xE32528);
+    closeBtn.setInteractive({ useHandCursor: true });
+    closeBtn.on('pointerdown', () => {
+      if (this.app?.audioManager) this.app.audioManager.playClickSound();
+      this.closeAboutDialog();
+    });
+
+    const closeText = this.add.text(width / 2 + 280, height / 2 - 180, '×', {
+      fontSize: '24px',
+      color: '#FFFFFF',
+      fontFamily: 'Fredoka One, cursive'
+    }).setOrigin(0.5);
+
+    this.aboutModal = [overlay, modalBg, aboutText, closeBtn, closeText];
+    overlay.on('pointerdown', () => this.closeAboutDialog()); // Close on overlay click
+  }
+
+  closeAboutDialog() {
+    if (this.aboutModal) {
+      this.aboutModal.forEach(element => element.destroy());
+      this.aboutModal = null;
+    }
+  }
+
+  toggleActivityConfigMode() {
+    // Placeholder for toggling activity configuration mode
+    console.log('Activity Configuration Mode Toggled');
+    // In a real scenario, this would likely change a state variable
+    // and re-render game cards to show config options instead of play.
   }
 
   /**
