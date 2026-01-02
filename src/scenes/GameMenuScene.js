@@ -160,7 +160,7 @@ export class GameMenuScene extends Phaser.Scene {
         name: 'Checkers',
         icon: 'checkers.svg',
         difficulty: 4,
-        category: 'logic'
+        category: 'strategy'
       },
       {
         scene: 'GeographyMapGame',

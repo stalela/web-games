@@ -381,17 +381,7 @@ class LalelaGamesApp {
       });
     } else if (gameScene === 'CheckersGame') {
       this.game.scene.start('CheckersGame', {
-        app: this,
-        gameManager: this.gameManager,
-        assetManager: this.assetManager,
-        uiManager: this.uiManager,
-        inputManager: this.inputManager,
-        audioManager: this.audioManager,
-        dataManager: this.dataManager,
-        performanceMonitor: this.performanceMonitor,
-        renderingOptimizer: this.renderingOptimizer,
-        tweenPool: this.tweenPool,
-        helpSystem: this.helpSystem
+        app: this
       });
     } else {
       // For other games, show placeholder
