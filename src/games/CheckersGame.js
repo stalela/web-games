@@ -25,6 +25,7 @@ export class CheckersGame extends Phaser.Scene {
     this.selectedPiece = null;
     this.possibleMoves = [];
     this.moveIndicators = [];
+    this.bottomControls = [];
     this.currentPlayer = 'W'; // W for White, B for Black
   }
 
@@ -238,7 +239,23 @@ export class CheckersGame extends Phaser.Scene {
     this.turnText.setText(playerName);
   }
 
+  clearBottomControls() {
+    if (this.bottomControls) {
+      this.bottomControls.forEach(control => {
+        if (control.button && control.button.destroy) control.button.destroy();
+        if (control.icon && control.icon.destroy) control.icon.destroy();
+        if (control.leftArrow && control.leftArrow.destroy) control.leftArrow.destroy();
+        if (control.rightArrow && control.rightArrow.destroy) control.rightArrow.destroy();
+        if (control.levelText && control.levelText.destroy) control.levelText.destroy();
+      });
+    }
+    this.bottomControls = [];
+  }
+
   createBottomControls(width, height) {
+    // Clear existing controls first
+    this.clearBottomControls();
+
     const barY = height - 50;
     const buttonWidth = 80;
     const buttonHeight = 60;
