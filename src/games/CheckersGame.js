@@ -146,6 +146,10 @@ export class CheckersGame extends Phaser.Scene {
     }).setOrigin(0.5).setDepth(51);
   }
 
+  updateTurnIndicator() {
+    this.turnText.setText(this.currentPlayer === 'W' ? "White's turn" : "Black's turn");
+  }
+
   setupInputHandling() {
     this.input.on('gameobjectdown', (pointer, gameObject) => {
         if (this.gameOver || this.currentPlayer === 'B') return;
