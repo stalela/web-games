@@ -78,18 +78,26 @@ export class CheckersGame extends Phaser.Scene {
   createBoard() {
     const { boardStartX, boardStartY, tileSize, numberOfCases } = this.gameConfig;
     this.tiles = [];
+
+    // Loop through every single square (100 total)
     for (let row = 0; row < numberOfCases; row++) {
       for (let col = 0; col < numberOfCases; col++) {
         const x = boardStartX + col * tileSize + tileSize / 2;
         const y = boardStartY + row * tileSize + tileSize / 2;
-        const isPlayable = (row + col) % 2 === 1;
-        if (isPlayable) {
-          const tile = this.add.image(x, y, 'checkers-black');
-          tile.setDisplaySize(tileSize, tileSize).setDepth(1);
-          tile.boardPos = row * numberOfCases + col;
-          tile.setInteractive(); // Make tiles clickable for destination selection
-          this.tiles.push(tile);
+
+        // Alternate colors to create the checkerboard pattern
+        const isBlackTile = (row + col) % 2 === 1;
+        const tileKey = isBlackTile ? 'checkers-black' : 'checkers-white';
+
+        const tile = this.add.image(x, y, tileKey);
+        tile.setDisplaySize(tileSize, tileSize).setDepth(1);
+        tile.boardPos = row * numberOfCases + col;
+        tile.isPlayable = isBlackTile;
+
+        if (isBlackTile) {
+            tile.setInteractive();
         }
+        this.tiles.push(tile);
       }
     }
   }
@@ -165,7 +173,7 @@ export class CheckersGame extends Phaser.Scene {
             }
         }
         // If we clicked a tile while a piece was selected
-        else if (gameObject.boardPos !== undefined && this.from !== -1) {
+        else if (gameObject.isPlayable && this.from !== -1) {
             this.handleMoveAttempt(gameObject.boardPos);
         }
     });
@@ -191,7 +199,7 @@ export class CheckersGame extends Phaser.Scene {
       if (this.selectedPiece !== gameObject) return;
 
       const tile = this.getTileAtPosition(pointer.x, pointer.y);
-      if (tile) {
+      if (tile && tile.isPlayable) {
           this.handleMoveAttempt(tile.boardPos);
       } else {
           this.resetPiecePosition(gameObject);
@@ -334,16 +342,24 @@ export class CheckersGame extends Phaser.Scene {
     }
   }
 
+  // --- Logic Fix: Correct Coordinate Mapping for Top-Left 0 indexing ---
+
   viewPosToEngine(pos) {
-    const casesNumber = 100;
-    const a = 10 * Math.floor((casesNumber - pos) / 10 + 1);
-    let b = (pos % 10 === 0) ? 20 : (casesNumber - pos) % 10;
-    let newPos = Math.floor((a - b + 1) / 2 + 0.5);
-    return newPos;
+    const row = Math.floor(pos / 10);
+    const col = pos % 10;
+    // Map visual rows to Engine rows (White is 31-50 at visual Top)
+    const engineRow = row;
+    const engineCol = Math.floor(col / 2);
+    const engineIndex = engineRow * 5 + engineCol + 1;
+    // Flip so white pieces (31-50) are visual top
+    return 51 - engineIndex;
   }
 
   engineToViewPos(pos) {
-    return 90 - 10 * Math.floor((2 * pos - 1) / 10) + 2 * ((pos - 1) % 5) + 1 + ((-1 + Math.pow(-1, Math.floor((2 * pos - 1) / 10))) / 2);
+    const flippedPos = 51 - pos;
+    const row = Math.floor((flippedPos - 1) / 5);
+    const col = ((flippedPos - 1) % 5) * 2 + (row % 2);
+    return row * 10 + col;
   }
 
   simplifiedState(position) {
@@ -381,7 +397,8 @@ export class CheckersGame extends Phaser.Scene {
         const bg = this.add.graphics();
         bg.fillStyle(0xFFFFFF, 0.9).fillRoundedRect(-40, -30, 80, 60, 8);
         bg.lineStyle(2, 0xCCCCCC).strokeRoundedRect(-40, -30, 80, 60, 8);
-        const icon = this.add.image(0, 0, action === 'reload' ? 'reload' : action === 'undo' ? 'undo' : action === 'redo' ? 'redo' : action);
+        const iconKey = action === 'reload' ? 'reload' : action === 'undo' ? 'undo' : action === 'redo' ? 'redo' : action;
+        const icon = this.add.image(0, 0, iconKey);
         icon.setDisplaySize(40, 40);
         btn.add([bg, icon]);
         bg.setInteractive(new Phaser.Geom.Rectangle(-40, -30, 80, 60), Phaser.Geom.Rectangle.Contains);
