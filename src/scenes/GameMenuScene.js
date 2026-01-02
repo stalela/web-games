@@ -236,10 +236,20 @@ export class GameMenuScene extends Phaser.Scene {
     }
   }
 
-  create() {
+  async create() {
     // Initialize input manager for this scene
     if (this.app) {
       this.app.inputManager = new InputManager(this);
+
+      // Preload common sounds including the click sound
+      await this.app.audioManager.preloadCommonSounds();
+
+      // Resume audio context on first interaction to satisfy browser security
+      this.input.once('pointerdown', () => {
+        if (Howler.ctx && Howler.ctx.state === 'suspended') {
+          Howler.ctx.resume();
+        }
+      });
     }
 
     const { width, height } = this.game.config;

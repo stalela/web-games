@@ -8,6 +8,7 @@ export class AudioManager {
   constructor() {
     this.howler = null;
     this.sounds = new Map();
+    this.soundLoadStates = new Map(); // Track loading state of sounds
     this.musicTracks = new Map();
     this.currentMusic = null;
     this.masterVolume = 1.0;
@@ -144,6 +145,9 @@ export class AudioManager {
   async loadSound(key, url, options = {}) {
     if (typeof Howl === 'undefined') return null;
 
+    // Mark sound as loading
+    this.soundLoadStates.set(key, 'loading');
+
     return new Promise((resolve, reject) => {
       const sound = new Howl({
         src: Array.isArray(url) ? url : [url],
@@ -154,10 +158,12 @@ export class AudioManager {
         onload: () => {
           console.log(`Loaded sound: ${key}`);
           this.sounds.set(key, sound);
+          this.soundLoadStates.set(key, 'loaded');
           resolve(sound);
         },
         onloaderror: (id, error) => {
           console.warn(`Failed to load sound ${key}:`, error.message || 'File not found');
+          this.soundLoadStates.set(key, 'error');
           reject(error);
         },
       });
@@ -193,21 +199,28 @@ export class AudioManager {
    */
   playSound(key, options = {}) {
     const sound = this.sounds.get(key);
-    if (!sound) {
-      console.warn(`Sound not found: ${key}`);
+    const loadState = this.soundLoadStates.get(key);
+
+    if (!sound || loadState !== 'loaded') {
+      // Silently fail if sound not ready yet - this prevents console spam
       return null;
     }
 
     if (this.isMuted) return null;
 
-    const volume = options.volume !== undefined ?
-      (this.sfxVolume * this.masterVolume * options.volume) :
-      (this.sfxVolume * this.masterVolume);
+    try {
+      const volume = options.volume !== undefined ?
+        (this.sfxVolume * this.masterVolume * options.volume) :
+        (this.sfxVolume * this.masterVolume);
 
-    return sound.play({
-      volume,
-      ...options
-    });
+      return sound.play({
+        volume,
+        ...options
+      });
+    } catch (error) {
+      console.warn('Error playing sound:', error);
+      return null;
+    }
   }
 
   /**
