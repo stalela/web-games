@@ -16,11 +16,8 @@ export class CheckersGame extends Phaser.Scene {
 
   preload() {
     // Load assets for the board
-    this.load.svg('checkers-black', 'assets/game-icons/checkers_black.svg');
-    this.load.svg('checkers-white', 'assets/game-icons/checkers_white.svg');
-    // Placeholder piece assets
-    this.load.circle('red-piece', 0, 0, 30, 0xFF0000); // Red piece
-    this.load.circle('black-piece', 0, 0, 30, 0x000000); // Black piece
+    this.load.svg('checkers-board', 'assets/game-icons/checkers.svg');
+    // Note: Piece textures will be created dynamically in create() method
   }
 
   create() {
@@ -28,6 +25,9 @@ export class CheckersGame extends Phaser.Scene {
 
     // Calculate tile size
     this.gameConfig.tileSize = Math.min(width, height) / this.gameConfig.rows;
+
+    // Create piece textures dynamically
+    this.createPieceTextures();
 
     // Create the checkerboard
     this.createBoard();
@@ -50,6 +50,26 @@ export class CheckersGame extends Phaser.Scene {
         this.scene.stop('CheckersGame');
         this.app.showGameMenu();
     });
+  }
+
+  createPieceTextures() {
+    // Create circular textures for checkers pieces
+    const pieceSize = 60; // Size of the texture
+    const radius = pieceSize / 2 - 5; // Leave some padding
+
+    // Create red piece texture
+    const redGraphics = this.add.graphics();
+    redGraphics.fillStyle(0xFF0000);
+    redGraphics.fillCircle(pieceSize / 2, pieceSize / 2, radius);
+    redGraphics.generateTexture('red-piece', pieceSize, pieceSize);
+    redGraphics.destroy();
+
+    // Create black piece texture
+    const blackGraphics = this.add.graphics();
+    blackGraphics.fillStyle(0x000000);
+    blackGraphics.fillCircle(pieceSize / 2, pieceSize / 2, radius);
+    blackGraphics.generateTexture('black-piece', pieceSize, pieceSize);
+    blackGraphics.destroy();
   }
 
   createBoard() {
