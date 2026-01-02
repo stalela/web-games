@@ -17,13 +17,11 @@ export class CheckersGame extends Phaser.Scene {
     this.state = null;
     this.from = -1;
     this.gameOver = false;
-    this.redo_stack = [];
     this.pieces = [];
     this.tiles = [];
     this.selectedPiece = null;
     this.moveIndicators = [];
-    this.bottomControls = [];
-    this.currentPlayer = 'W';
+    this.currentPlayer = 'W'; 
   }
 
   init(data) {
@@ -34,10 +32,10 @@ export class CheckersGame extends Phaser.Scene {
     this.load.svg('background-wood', 'assets/game-icons/background-wood.svg');
     this.load.svg('checkers-white', 'assets/game-icons/checkers-white.svg');
     this.load.svg('checkers-black', 'assets/game-icons/checkers-black.svg');
-    this.load.svg('w', 'assets/game-icons/w.svg');
-    this.load.svg('wk', 'assets/game-icons/wk.svg');
-    this.load.svg('b', 'assets/game-icons/b.svg');
-    this.load.svg('bk', 'assets/game-icons/bk.svg');
+    this.load.svg('w', 'assets/game-icons/w.svg');   
+    this.load.svg('wk', 'assets/game-icons/wk.svg'); 
+    this.load.svg('b', 'assets/game-icons/b.svg');   
+    this.load.svg('bk', 'assets/game-icons/bk.svg'); 
     this.load.svg('undo', 'assets/game-icons/undo.svg');
     this.load.svg('redo', 'assets/game-icons/redo.svg');
     this.load.svg('turn', 'assets/game-icons/turn.svg');
@@ -79,23 +77,23 @@ export class CheckersGame extends Phaser.Scene {
     const { boardStartX, boardStartY, tileSize, numberOfCases } = this.gameConfig;
     this.tiles = [];
 
-    // Loop through every single square (100 total)
     for (let row = 0; row < numberOfCases; row++) {
       for (let col = 0; col < numberOfCases; col++) {
         const x = boardStartX + col * tileSize + tileSize / 2;
         const y = boardStartY + row * tileSize + tileSize / 2;
 
-        // Alternate colors to create the checkerboard pattern
-        const isBlackTile = (row + col) % 2 === 1;
-        const tileKey = isBlackTile ? 'checkers-black' : 'checkers-white';
-
+        // Visual fix: GCompris board starts with a Dark square at (0,0)
+        const isPlayableTile = (row + col) % 2 === 0;
+        const tileKey = isPlayableTile ? 'checkers-black' : 'checkers-white';
+        
         const tile = this.add.image(x, y, tileKey);
         tile.setDisplaySize(tileSize, tileSize).setDepth(1);
         tile.boardPos = row * numberOfCases + col;
-        tile.isPlayable = isBlackTile;
+        tile.isPlayable = isPlayableTile;
 
-        if (isBlackTile) {
-            tile.setInteractive();
+        // Enable input only on playable squares
+        if (isPlayableTile) {
+            tile.setInteractive(); 
         }
         this.tiles.push(tile);
       }
@@ -103,6 +101,7 @@ export class CheckersGame extends Phaser.Scene {
   }
 
   initLevel() {
+    // Draughts engine: 1-50 indexing. Start: White (W) at 31-50, Black (B) at 1-20
     this.state = new Draughts('W:W31-50:B1-20');
     this.state.resetGame();
     this.from = -1;
@@ -124,14 +123,9 @@ export class CheckersGame extends Phaser.Scene {
   }
 
   createPiece(boardPos, pieceType) {
-    const { boardStartX, boardStartY, tileSize, numberOfCases } = this.gameConfig;
-    const row = Math.floor(boardPos / numberOfCases);
-    const col = boardPos % numberOfCases;
-          const x = boardStartX + col * tileSize + tileSize / 2;
-          const y = boardStartY + row * tileSize + tileSize / 2;
-
-    const piece = this.add.image(x, y, pieceType);
-    piece.setDisplaySize(tileSize - 12, tileSize - 12).setDepth(10);
+    const pos = this.boardPosToPixel(boardPos);
+    const piece = this.add.image(pos.x, pos.y, pieceType);
+    piece.setDisplaySize(this.gameConfig.tileSize - 12, this.gameConfig.tileSize - 12).setDepth(10);
     piece.boardPos = boardPos;
     piece.pieceType = pieceType;
     piece.setInteractive();
@@ -141,38 +135,31 @@ export class CheckersGame extends Phaser.Scene {
 
   createTurnIndicator() {
     const { width } = this.game.config;
-    const panelY = 35;
     this.turnIndicator = this.add.graphics().setDepth(50);
     this.turnIndicator.fillStyle(0x000000, 0.7);
-    this.turnIndicator.fillRoundedRect(width / 2 - 140, panelY - 22, 280, 45, 8);
+    this.turnIndicator.fillRoundedRect(width / 2 - 140, 13, 280, 45, 8);
     this.turnIndicator.lineStyle(2, 0xFFFFFF, 0.8);
-    this.turnIndicator.strokeRoundedRect(width / 2 - 140, panelY - 22, 280, 45, 8);
+    this.turnIndicator.strokeRoundedRect(width / 2 - 140, 13, 280, 45, 8);
 
-    this.turnText = this.add.text(width / 2, panelY, "White's turn", {
+    this.turnText = this.add.text(width / 2, 35, "White's turn", {
       fontSize: '18px', color: '#FFFFFF', fontFamily: 'Arial', fontWeight: 'bold'
     }).setOrigin(0.5).setDepth(51);
   }
 
-  updateTurnIndicator() {
-    this.turnText.setText(this.currentPlayer === 'W' ? "White's turn" : "Black's turn");
-  }
-
   setupInputHandling() {
-    // Handling for clicking a tile (for click-to-move)
     this.input.on('gameobjectdown', (pointer, gameObject) => {
         if (this.gameOver || this.currentPlayer === 'B') return;
 
-        // If we clicked a piece
+        // Click a piece to select it
         if (gameObject.pieceType) {
-            // Check if it's the correct turn
             const isWhitePiece = gameObject.pieceType.startsWith('w');
             if (isWhitePiece && this.currentPlayer === 'W') {
                 this.from = gameObject.boardPos;
                 this.selectedPiece = gameObject;
                 this.showPossibleMoves();
             }
-        }
-        // If we clicked a tile while a piece was selected
+        } 
+        // Click a tile to move selected piece
         else if (gameObject.isPlayable && this.from !== -1) {
             this.handleMoveAttempt(gameObject.boardPos);
         }
@@ -180,8 +167,7 @@ export class CheckersGame extends Phaser.Scene {
 
     this.input.on('dragstart', (pointer, gameObject) => {
       if (this.gameOver || this.currentPlayer === 'B') return;
-      const isWhitePiece = gameObject.pieceType.startsWith('w');
-      if (!isWhitePiece) return;
+      if (!gameObject.pieceType || !gameObject.pieceType.startsWith('w')) return;
 
       this.selectedPiece = gameObject;
       this.from = gameObject.boardPos;
@@ -197,7 +183,6 @@ export class CheckersGame extends Phaser.Scene {
 
     this.input.on('dragend', (pointer, gameObject) => {
       if (this.selectedPiece !== gameObject) return;
-
       const tile = this.getTileAtPosition(pointer.x, pointer.y);
       if (tile && tile.isPlayable) {
           this.handleMoveAttempt(tile.boardPos);
@@ -220,29 +205,14 @@ export class CheckersGame extends Phaser.Scene {
       }
   }
 
-  resetPiecePosition(piece) {
-      const pos = this.boardPosToPixel(this.from);
-      this.tweens.add({
-          targets: piece,
-          x: pos.x, y: pos.y,
-          duration: 200,
-          onComplete: () => piece.setDepth(10)
-      });
-  }
-
-  getTileAtPosition(x, y) {
-    return this.tiles.find(tile => {
-      const bounds = tile.getBounds();
-      return bounds.contains(x, y);
-    });
-  }
-
   showPossibleMoves() {
     this.clearPossibleMoves();
+    if (this.from === -1) return;
+
     const moves = this.state.moves();
     const fromEngine = this.viewPosToEngine(this.from);
-
-    // Engine returns all valid moves; filter for the selected piece
+    
+    // Filter moves for the selected piece
     const validMoves = moves.filter(m => m.from === fromEngine);
 
     validMoves.forEach(move => {
@@ -278,9 +248,7 @@ export class CheckersGame extends Phaser.Scene {
     if (piece) {
       const toPixel = this.boardPosToPixel(to);
       this.tweens.add({
-        targets: piece,
-        x: toPixel.x, y: toPixel.y,
-        duration: 300,
+        targets: piece, x: toPixel.x, y: toPixel.y, duration: 300,
         onComplete: () => {
           piece.boardPos = to;
           this.checkPromotion(piece, to);
@@ -288,6 +256,7 @@ export class CheckersGame extends Phaser.Scene {
         }
       });
 
+      // Handle captures
       if (move.takes && move.takes.length > 0) {
         move.takes.forEach(capPos => {
           const capView = this.engineToViewPos(capPos);
@@ -324,44 +293,32 @@ export class CheckersGame extends Phaser.Scene {
     }
   }
 
-  // --- Helpers ---
-  boardPosToPixel(boardPos) {
-    const { boardStartX, boardStartY, tileSize, numberOfCases } = this.gameConfig;
-    return {
-      x: boardStartX + (boardPos % numberOfCases) * tileSize + tileSize / 2,
-      y: boardStartY + Math.floor(boardPos / numberOfCases) * tileSize + tileSize / 2
-    };
-  }
-
-  checkPromotion(piece, to) {
-    const isWhite = piece.pieceType.startsWith('w');
-    if ((isWhite && to < 10) || (!isWhite && to > 89)) {
-        const newKey = isWhite ? 'wk' : 'bk';
-        piece.pieceType = newKey;
-        piece.setTexture(newKey);
-    }
-  }
-
-  // --- Logic Fix: Correct Coordinate Mapping for Top-Left 0 indexing ---
-
+  // --- Fixed Coordinate Mapping ---
+  // Matches GCompris pattern for 10x10 with (0,0) as playable
   viewPosToEngine(pos) {
     const row = Math.floor(pos / 10);
     const col = pos % 10;
-    // Map visual rows to Engine rows (White is 31-50 at visual Top)
-    const engineRow = row;
-    const engineCol = Math.floor(col / 2);
-    const engineIndex = engineRow * 5 + engineCol + 1;
-    // Flip so white pieces (31-50) are visual top
+    const engineIndex = row * 5 + Math.floor(col / 2) + 1;
+    // Flip so White (engine 31-50) is at visual Top
     return 51 - engineIndex;
   }
 
   engineToViewPos(pos) {
-    const flippedPos = 51 - pos;
-    const row = Math.floor((flippedPos - 1) / 5);
-    const col = ((flippedPos - 1) % 5) * 2 + (row % 2);
+    const flipped = 51 - pos;
+    const row = Math.floor((flipped - 1) / 5);
+    const col = ((flipped - 1) % 5) * 2 + (row % 2);
     return row * 10 + col;
   }
 
+  boardPosToPixel(boardPos) {
+    const { boardStartX, boardStartY, tileSize } = this.gameConfig;
+    return {
+      x: boardStartX + (boardPos % 10) * tileSize + tileSize / 2,
+      y: boardStartY + Math.floor(boardPos / 10) * tileSize + tileSize / 2
+    };
+  }
+
+  // --- Boilerplate UI ---
   simplifiedState(position) {
     const res = [];
     const str = position.substring(1);
@@ -375,6 +332,47 @@ export class CheckersGame extends Phaser.Scene {
     return res;
   }
 
+  resetPiecePosition(piece) {
+      const pos = this.boardPosToPixel(this.from);
+      this.tweens.add({
+          targets: piece, x: pos.x, y: pos.y, duration: 200,
+          onComplete: () => piece.setDepth(10)
+      });
+  }
+
+  getTileAtPosition(x, y) {
+    return this.tiles.find(tile => tile.getBounds().contains(x, y));
+  }
+
+  checkPromotion(piece, to) {
+    const isWhite = piece.pieceType.startsWith('w');
+    if ((isWhite && to < 10) || (!isWhite && to > 89)) {
+        const newKey = isWhite ? 'wk' : 'bk';
+        piece.pieceType = newKey;
+        piece.setTexture(newKey);
+    }
+  }
+
+  createBottomControls(width, height) {
+    const barY = height - 50;
+    const spacing = 95;
+    const actions = ['help', 'home', 'undo', 'reload', 'redo'];
+    const startX = (width - (actions.length * spacing)) / 2 + spacing / 2;
+
+    actions.forEach((action, i) => {
+        const x = startX + i * spacing;
+        const btn = this.add.container(x, barY).setDepth(200);
+        const bg = this.add.graphics();
+        bg.fillStyle(0xFFFFFF, 0.9).fillRoundedRect(-40, -30, 80, 60, 8);
+        bg.lineStyle(2, 0xCCCCCC).strokeRoundedRect(-40, -30, 80, 60, 8);
+        const icon = this.add.image(0, 0, action === 'reload' ? 'reload' : action === 'undo' ? 'undo' : action === 'redo' ? 'redo' : action);
+        icon.setDisplaySize(40, 40);
+        btn.add([bg, icon]);
+        bg.setInteractive(new Phaser.Geom.Rectangle(-40, -30, 80, 60), Phaser.Geom.Rectangle.Contains);
+        bg.on('pointerdown', () => this.handleControlAction(action));
+    });
+  }
+
   handleControlAction(action) {
     if (action === 'home') {
         this.scene.stop('CheckersGame');
@@ -382,31 +380,5 @@ export class CheckersGame extends Phaser.Scene {
     } else if (action === 'reload') {
         this.initLevel();
     }
-  }
-
-  createBottomControls(width, height) {
-    const barY = height - 50;
-    const buttonWidth = 80;
-    const spacing = 95;
-    const actions = ['help', 'home', 'undo', 'reload', 'redo'];
-    const startX = (width - (actions.length * spacing)) / 2 + spacing / 2;
-
-    actions.forEach((action, i) => {
-        const x = startX + i * spacing;
-        const btn = this.add.container(x, barY);
-        const bg = this.add.graphics();
-        bg.fillStyle(0xFFFFFF, 0.9).fillRoundedRect(-40, -30, 80, 60, 8);
-        bg.lineStyle(2, 0xCCCCCC).strokeRoundedRect(-40, -30, 80, 60, 8);
-        const iconKey = action === 'reload' ? 'reload' : action === 'undo' ? 'undo' : action === 'redo' ? 'redo' : action;
-        const icon = this.add.image(0, 0, iconKey);
-        icon.setDisplaySize(40, 40);
-        btn.add([bg, icon]);
-        bg.setInteractive(new Phaser.Geom.Rectangle(-40, -30, 80, 60), Phaser.Geom.Rectangle.Contains);
-        bg.on('pointerdown', () => {
-            if (this.app?.audioManager) this.app.audioManager.playClickSound();
-            this.handleControlAction(action);
-        });
-        btn.setDepth(200);
-    });
   }
 }

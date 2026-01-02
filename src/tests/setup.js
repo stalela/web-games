@@ -2,39 +2,82 @@
  * Jest setup file - Configure testing environment
  */
 
-// Mock Phaser
-const mockContainer = jest.fn().mockImplementation(function(scene, x, y) {
+// Mock Phaser GameObjects
+const mockGameObject = jest.fn().mockImplementation(function(scene, x, y) {
   this.scene = scene;
   this.x = x || 0;
   this.y = y || 0;
+  this.setScale = jest.fn().mockReturnThis();
   this.setDepth = jest.fn().mockReturnThis();
   this.setAlpha = jest.fn().mockReturnThis();
-  this.setScale = jest.fn().mockReturnThis();
   this.setVisible = jest.fn().mockReturnThis();
+  this.setInteractive = jest.fn().mockReturnThis();
+  this.on = jest.fn().mockReturnThis();
+  this.off = jest.fn().mockReturnThis();
   this.destroy = jest.fn();
-  this.add = jest.fn().mockReturnThis();
+  this.getBounds = jest.fn().mockReturnValue({ x: this.x, y: this.y, width: 10, height: 10 }); // Basic bounds for interaction
 });
 
-const mockRectangle = jest.fn().mockImplementation(function(x, y, width, height, fillColor) {
-  this.x = x || 0;
-  this.y = y || 0;
-  this.setFillStyle = jest.fn().mockReturnThis();
-  this.setStrokeStyle = jest.fn().mockReturnThis();
+const mockContainer = jest.fn().mockImplementation(function(scene, x, y) {
+  mockGameObject.call(this, scene, x, y); // Inherit common GameObject properties
+  this.list = [];
+  this.add = jest.fn(child => { this.list.push(child); return this; });
+  this.remove = jest.fn(child => {
+    const index = this.list.indexOf(child);
+    if (index > -1) {
+      this.list.splice(index, 1);
+    }
+    return this;
+  });
   this.setSize = jest.fn().mockReturnThis();
-  this.setVisible = jest.fn().mockReturnThis();
-  this.destroy = jest.fn();
+  this.width = 100;
+  this.height = 100;
+  this.setOrigin = jest.fn().mockReturnThis();
   return this;
 });
 
-const mockText = jest.fn().mockImplementation(function(x, y, text, style) {
-  this.x = x || 0;
-  this.y = y || 0;
+const mockRectangle = jest.fn().mockImplementation(function(scene, x, y, width, height, fillColor) {
+  mockGameObject.call(this, scene, x, y); // Inherit common GameObject properties
+  this.width = width || 0;
+  this.height = height || 0;
+  this.fillColor = fillColor;
+  this.setFillStyle = jest.fn().mockReturnThis();
+  this.setStrokeStyle = jest.fn().mockReturnThis();
+  this.setDisplaySize = jest.fn().mockReturnThis();
+  this.setOrigin = jest.fn().mockReturnThis();
+  this.isPlayable = false; // For CheckersGame
+  this.boardPos = -1; // For CheckersGame
+  // Override getBounds for rectangle specific dimensions
+  this.getBounds = jest.fn().mockReturnValue({ x: this.x - this.width/2, y: this.y - this.height/2, width: this.width, height: this.height });
+  return this;
+});
+
+const mockImage = jest.fn().mockImplementation(function(scene, x, y, key) {
+  mockGameObject.call(this, scene, x, y); // Inherit common GameObject properties
+  this.key = key;
+  this.setDisplaySize = jest.fn().mockReturnThis();
+  this.setOrigin = jest.fn().mockReturnThis();
+  this.pieceType = null; // For CheckersGame
+  this.boardPos = -1; // For CheckersGame
+  this.setTexture = jest.fn().mockReturnThis();
+  return this;
+});
+
+const mockText = jest.fn().mockImplementation(function(scene, x, y, text, style) {
+  mockGameObject.call(this, scene, x, y); // Inherit common GameObject properties
+  this.text = text;
+  this.style = style;
   this.setText = jest.fn().mockReturnThis();
   this.setOrigin = jest.fn().mockReturnThis();
-  this.setInteractive = jest.fn().mockReturnThis();
-  this.on = jest.fn().mockReturnThis();
-  this.setVisible = jest.fn().mockReturnThis();
-  this.destroy = jest.fn();
+  return this;
+});
+
+const mockCircle = jest.fn().mockImplementation(function(scene, x, y, radius, fillColor, alpha) {
+  mockGameObject.call(this, scene, x, y);
+  this.radius = radius;
+  this.fillColor = fillColor;
+  this.alpha = alpha;
+  this.setFillStyle = jest.fn().mockReturnThis();
   return this;
 });
 
@@ -46,38 +89,95 @@ global.Phaser = {
       stop: jest.fn(),
       pause: jest.fn(),
       resume: jest.fn(),
-      getScene: jest.fn()
+      getScene: jest.fn(),
+      remove: jest.fn()
     },
     config: { width: 800, height: 600 },
-    scale: { resize: jest.fn() },
+    scale: { width: 800, height: 600, resize: jest.fn() },
     input: {
       enabled: true,
       addPointer: jest.fn(),
       on: jest.fn(),
-      removeAllListeners: jest.fn()
+      off: jest.fn(),
+      removeAllListeners: jest.fn(),
+      setDraggable: jest.fn()
+    },
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn()
+    },
+    audioManager: { // Mock audioManager here
+      playSound: jest.fn()
     }
   })),
-  Scene: jest.fn().mockImplementation(() => ({
-    add: mockText.mockImplementation((x, y, text, style) => new mockText(x, y, text, style)),
-    cameras: { main: { setBackgroundColor: jest.fn() } },
-    physics: { world: { setBounds: jest.fn() }, pause: jest.fn(), resume: jest.fn() },
-    input: { keyboard: { addKeys: jest.fn() }, on: jest.fn() },
-    load: { on: jest.fn(), image: jest.fn() },
-    time: { delayedCall: jest.fn() },
-    sound: { get: jest.fn(), play: jest.fn() },
-    tweens: { add: jest.fn() },
-    events: { emit: jest.fn() },
-    scale: { width: 800, height: 600 }
-  })),
+  Scene: jest.fn().mockImplementation(function() {
+    this.sys = {
+      game: new global.Phaser.Game(), // Ensure game reference is available
+      queueDepthSort: jest.fn(),
+      displayList: { add: jest.fn(), remove: jest.fn() },
+      updateList: { add: jest.fn(), remove: jest.fn() },
+      scale: { width: 800, height: 600 }, // Mock scale property here
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+        emit: jest.fn()
+      }
+    };
+    this.add = {
+      rectangle: jest.fn((...args) => new mockRectangle(this, ...args)),
+      image: jest.fn((...args) => new mockImage(this, ...args)),
+      text: jest.fn((...args) => new mockText(this, ...args)),
+      container: jest.fn((...args) => new mockContainer(this, ...args)),
+      graphics: jest.fn(() => ({
+        fillStyle: jest.fn().mockReturnThis(),
+        fillRoundedRect: jest.fn().mockReturnThis(),
+        lineStyle: jest.fn().mockReturnThis(),
+        strokeRoundedRect: jest.fn().mockReturnThis(),
+        setDepth: jest.fn().mockReturnThis(),
+        setInteractive: jest.fn().mockReturnThis(),
+        on: jest.fn().mockReturnThis(),
+        off: jest.fn().mockReturnThis()
+      })),
+      circle: jest.fn((...args) => new mockCircle(this, ...args)),
+      existing: jest.fn(gameObject => gameObject), // Important for adding custom GameObjects
+    };
+    this.cameras = { main: { setBackgroundColor: jest.fn(), fade: jest.fn() } };
+    this.physics = { world: { setBounds: jest.fn() }, pause: jest.fn(), resume: jest.fn() };
+    this.input = {
+      keyboard: { addKeys: jest.fn() },
+      on: jest.fn(),
+      off: jest.fn(),
+      setDraggable: jest.fn()
+    };
+    this.load = { on: jest.fn(), image: jest.fn(), svg: jest.fn(), audio: jest.fn() };
+    this.time = { delayedCall: jest.fn() };
+    this.sound = { get: jest.fn(), add: jest.fn(), play: jest.fn() };
+    this.tweens = { add: jest.fn() };
+    this.events = {
+      on: jest.fn(),
+      off: jest.fn(),
+      emit: jest.fn()
+    };
+    this.scale = { width: 800, height: 600 }; // Ensure scale is available directly on the scene
+    this.children = {
+      bringToTop: jest.fn()
+    };
+  }),
   GameObjects: {
     Container: mockContainer,
     Rectangle: mockRectangle,
-    Text: mockText
+    Text: mockText,
+    Image: mockImage,
+    Graphics: jest.fn(),
+    Zone: jest.fn()
   },
   Geom: {
     Rectangle: jest.fn().mockImplementation((x, y, width, height) => ({
       x: x || 0, y: y || 0, width: width || 0, height: height || 0,
-      contains: jest.fn().mockReturnValue(false)
+      contains: jest.fn().mockReturnValue(false),
+      setPosition: jest.fn(),
+      setSize: jest.fn()
     })),
     Point: jest.fn()
   },
@@ -106,7 +206,7 @@ global.Howl = jest.fn().mockImplementation(() => ({
   play: jest.fn(),
   pause: jest.fn(),
   stop: jest.fn(),
-  volume: jest.fn(),
+  volume: jest.fn().mockReturnThis(),
   unload: jest.fn()
 }));
 
@@ -119,15 +219,16 @@ global.Howler = {
 };
 
 // Mock localStorage
-const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
-  key: jest.fn(),
-  length: 0
-};
-global.localStorage = localStorageMock;
+const localStorageMock = (() => {
+  let store = {};
+  return {
+    getItem: jest.fn(key => store[key] || null),
+    setItem: jest.fn((key, value) => { store[key] = value.toString(); }),
+    removeItem: jest.fn(key => { delete store[key]; }),
+    clear: jest.fn(() => { store = {}; })
+  };
+})();
+Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 // Mock indexedDB
 global.indexedDB = {
@@ -208,7 +309,15 @@ global.testUtils = {
   // Clean up after tests
   cleanup: () => {
     jest.clearAllMocks();
-    localStorage.clear();
+    localStorageMock.clear(); // Use the mocked localStorage.clear()
+  },
+  
+  // A helper to create a mock scene for game classes
+  createMockScene: () => {
+    const scene = new Phaser.Scene();
+    // Explicitly add a mock game object to the scene's sys
+    scene.sys.game = new Phaser.Game();
+    return scene;
   }
 };
 
