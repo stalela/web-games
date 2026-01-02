@@ -361,9 +361,14 @@ export class AudioManager {
    * Preload common game sounds
    */
   preloadCommonSounds() {
-    // Skip loading audio files that don't exist to avoid 404 errors
-    // In a production environment, these files would be provided
-    console.log('Audio files not available - audio functionality limited to available sounds only');
+    this.loadSound('click', 'assets/sounds/audioclick.wav');
+  }
+
+  /**
+   * Play the common click sound
+   */
+  playClickSound() {
+    this.playSound('click');
   }
 
   /**
