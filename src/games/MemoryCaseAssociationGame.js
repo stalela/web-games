@@ -90,3 +90,4 @@ export class MemoryCaseAssociationGame extends MemoryGame {
 
         return card;
     }
+}
