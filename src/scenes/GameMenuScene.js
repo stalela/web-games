@@ -65,6 +65,41 @@ export class GameMenuScene extends Phaser.Scene {
     // Game definitions with metadata
     this.allGames = [
       {
+        scene: 'BabyKeyboardGame',
+        name: 'Baby Keyboard',
+        icon: 'baby_keyboard.svg',
+        difficulty: 1,
+        category: 'computer'
+      },
+      {
+        scene: 'BabyMouseGame',
+        name: 'Baby Mouse',
+        icon: 'baby_mouse.svg',
+        difficulty: 1,
+        category: 'computer'
+      },
+      {
+        scene: 'ClickGame',
+        name: 'Click Game',
+        icon: 'clickgame.svg',
+        difficulty: 1,
+        category: 'computer'
+      },
+      {
+        scene: 'EraseGame',
+        name: 'Erase',
+        icon: 'erase.svg',
+        difficulty: 1,
+        category: 'computer'
+      },
+      {
+        scene: 'EraseClickGame',
+        name: 'Erase Click',
+        icon: 'erase_clic.svg',
+        difficulty: 1,
+        category: 'computer'
+      },
+      {
         scene: 'AdjacentNumbers',
         name: 'Adjacent Numbers',
         icon: 'adjacent_numbers.svg',

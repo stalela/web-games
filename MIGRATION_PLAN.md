@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 49 | **Remaining:** 150
-> **Progress:** █████░░░░░ 24.6%
+> **Total Games:** 199 | **Completed:** 54 | **Remaining:** 145
+> **Progress:** █████░░░░░ 27.1%
 
 ---
 
@@ -125,6 +125,11 @@ Copy this checklist for each new game task.
 | ExploreMonumentsGame | Discovery | LalelaGame | ✅ Complete |
 | ExploreWorldMusicGame | Discovery | LalelaGame | ✅ Complete |
 | InstrumentsGame | Discovery | LalelaGame | ✅ Complete |
+| BabyKeyboardGame | Computer | LalelaGame | ✅ Complete |
+| BabyMouseGame | Computer | LalelaGame | ✅ Complete |
+| ClickGame | Computer | LalelaGame | ✅ Complete |
+| EraseGame | Computer | LalelaGame | ✅ Complete |
+| EraseClickGame | Computer | LalelaGame | ✅ Complete |
 
 ---
 
@@ -246,11 +251,11 @@ Copy this checklist for each new game task.
 
 | GCompris Activity | Priority | Status | Assigned |
 |-------------------|----------|--------|----------|
-| `baby_keyboard` | P1 | ⬜ Not Started | - |
-| `baby_mouse` | P1 | ⬜ Not Started | - |
-| `clickgame` | P1 | ⬜ Not Started | - |
-| `erase` | P1 | ⬜ Not Started | - |
-| `erase_clic` | P1 | ⬜ Not Started | - |
+| `baby_keyboard` | P1 | ✅ Complete | - |
+| `baby_mouse` | P1 | ✅ Complete | - |
+| `clickgame` | P1 | ✅ Complete | - |
+| `erase` | P1 | ✅ Complete | - |
+| `erase_clic` | P1 | ✅ Complete | - |
 | `erase_2clic` | P1 | ⬜ Not Started | - |
 | `clickanddraw` | P2 | ⬜ Not Started | - |
 | `drawletters` | P2 | ⬜ Not Started | - |
