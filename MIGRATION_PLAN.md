@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 47 | **Remaining:** 152
-> **Progress:** ████░░░░░░ 23.6%
+> **Total Games:** 199 | **Completed:** 48 | **Remaining:** 151
+> **Progress:** █████░░░░░ 24.1%
 
 ---
 
@@ -123,6 +123,7 @@ Copy this checklist for each new game task.
 | ColorMixPaintGame | Discovery | LalelaGame | ✅ Complete |
 | ColorMixLightGame | Discovery | LalelaGame | ✅ Complete |
 | ExploreMonumentsGame | Discovery | LalelaGame | ✅ Complete |
+| ExploreWorldMusicGame | Discovery | LalelaGame | ✅ Complete |
 
 ---
 
@@ -224,7 +225,7 @@ Copy this checklist for each new game task.
 | `explore_farm_animals` | P1 | ✅ Complete | - |
 | `explore_world_animals` | P1 | ✅ Complete | - |
 | `explore_monuments` | P2 | ✅ Complete | - |
-| `explore_world_music` | P2 | ⬜ Not Started | - |
+| `explore_world_music` | P2 | ✅ Complete | - |
 | `instruments` | P2 | ⬜ Not Started | - |
 | `melody` | P2 | ⬜ Not Started | - |
 | `analog_electricity` | P3 | ⬜ Not Started | - |

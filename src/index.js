@@ -53,6 +53,7 @@ import { ColorMixLightGame } from './games/ColorMixLightGame.js';
 import { ExploreFarmAnimalsGame } from './games/ExploreFarmAnimalsGame.js';
 import { ExploreWorldAnimalsGame } from './games/ExploreWorldAnimalsGame.js';
 import { ExploreMonumentsGame } from './games/ExploreMonumentsGame.js';
+import { ExploreWorldMusicGame } from './games/ExploreWorldMusicGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -174,6 +175,7 @@ class LalelaGamesApp {
       this.game.scene.add('ExploreFarmAnimalsGame', ExploreFarmAnimalsGame);
       this.game.scene.add('ExploreWorldAnimalsGame', ExploreWorldAnimalsGame);
       this.game.scene.add('ExploreMonumentsGame', ExploreMonumentsGame);
+      this.game.scene.add('ExploreWorldMusicGame', ExploreWorldMusicGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();
