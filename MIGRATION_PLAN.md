@@ -73,6 +73,12 @@ Copy this checklist for each new game task.
 - [ ] Register in `src/index.js` (scene registration)
 - [ ] Register in `src/scenes/GameMenuScene.js` (allGames array)
 - [ ] Run `npm test` to verify no regressions
+
+#### Phase 5: Commit & Push
+- [ ] Update this MIGRATION_PLAN.md (increment completed count, move game to completed table)
+- [ ] Stage all changes: `git add -A`
+- [ ] Commit with descriptive message: `git commit -m "Add [GameName] - [brief description]"`
+- [ ] Push to GitHub: `git push origin main`
 ```
 
 ---
