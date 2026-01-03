@@ -202,14 +202,22 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         // Use actual world map SVG
         if (this.textures.exists('world-map')) {
             const bg = this.add.image(width / 2, height / 2, 'world-map');
-            // Scale to cover screen while maintaining aspect ratio
+            // Scale to fit within screen (use min to ensure it fits)
             const scaleX = width / bg.width;
             const scaleY = height / bg.height;
-            const scale = Math.max(scaleX, scaleY);
+            const scale = Math.min(scaleX, scaleY) * 0.85; // 85% to leave margin
             bg.setScale(scale);
             bg.setDepth(-1);
+            
+            // Store map bounds for positioning animals
+            this.mapBounds = {
+                x: bg.x - (bg.width * scale) / 2,
+                y: bg.y - (bg.height * scale) / 2,
+                width: bg.width * scale,
+                height: bg.height * scale
+            };
         } else {
-            // Fallback: programmatic world map
+            // Fallback: programmatic world map - use full screen
             const bg = this.add.graphics();
             bg.fillStyle(0x4682B4, 1);
             bg.fillRect(0, 0, width, height);
@@ -224,6 +232,9 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
             bg.fillRoundedRect(width * 0.78, height * 0.55, width * 0.15, height * 0.20, 15);
             
             bg.setDepth(-1);
+            
+            // Use full screen as map bounds
+            this.mapBounds = { x: 0, y: 0, width, height };
         }
     }
 
@@ -350,15 +361,23 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
             if (a.container) a.container.destroy();
             if (a.star) a.star.destroy();
             if (a.label) a.label.destroy();
+            if (a.marker) {
+                if (a.marker.border) a.marker.border.destroy();
+                a.marker.destroy();
+            }
             a.destroy();
         });
         this.animalSprites = [];
         
         const markerSize = Math.min(width, height) * 0.06;
         
+        // Use map bounds to position animals relative to the map
+        const mapBounds = this.mapBounds || { x: 0, y: 0, width, height };
+        
         this.animals.forEach((animal, index) => {
-            const x = width * animal.x;
-            const y = height * animal.y;
+            // Position relative to the map bounds, not the full screen
+            const x = mapBounds.x + mapBounds.width * animal.x;
+            const y = mapBounds.y + mapBounds.height * animal.y;
             
             // Create circular marker with animal thumbnail
             const photoKey = `${animal.id}-photo`;
