@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 23 | **Remaining:** 176
-> **Progress:** ██░░░░░░░░ 11.5%
+> **Total Games:** 199 | **Completed:** 26 | **Remaining:** 173
+> **Progress:** ██░░░░░░░░ 13.1%
 
 ---
 
@@ -103,6 +103,9 @@ Copy this checklist for each new game task.
 | AlgebraMinusGame | Math | AlgebraGame | ✅ Complete |
 | AlgebraByGame | Math | AlgebraGame | ✅ Complete |
 | AlgebraDivGame | Math | AlgebraGame | ✅ Complete |
+| MoneyGame | Math | MoneyGame | ✅ Complete |
+| MoneyCentsGame | Math | MoneyGame | ✅ Complete |
+| MoneyBackGame | Math | MoneyGame | ✅ Complete |
 | CheckersGame | Strategy | LalelaGame | ✅ Complete |
 | HexagonGame | Logic | LalelaGame | ✅ Complete |
 | MemoryGame | Memory | LalelaGame | ✅ Complete |
@@ -123,9 +126,9 @@ Copy this checklist for each new game task.
 | `algebra_minus` | P1 | ✅ Complete | - |
 | `algebra_by` | P1 | ✅ Complete | - |
 | `algebra_div` | P1 | ✅ Complete | - |
-| `money` | P1 | ⬜ Not Started | - |
-| `money_back` | P1 | ⬜ Not Started | - |
-| `money_cents` | P1 | ⬜ Not Started | - |
+| `money` | P1 | ✅ Complete | - |
+| `money_back` | P1 | ✅ Complete | - |
+| `money_cents` | P1 | ✅ Complete | - |
 | `fractions_create` | P2 | ⬜ Not Started | - |
 | `fractions_find` | P2 | ⬜ Not Started | - |
 | `calcudoku` | P2 | ⬜ Not Started | - |

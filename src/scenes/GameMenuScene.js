@@ -210,6 +210,27 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'algebra_div.svg',
         difficulty: 4,
         category: 'math'
+      },
+      {
+        scene: 'MoneyGame',
+        name: 'Money',
+        icon: 'money.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'MoneyCentsGame',
+        name: 'Money with Cents',
+        icon: 'money_cents.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MoneyBackGame',
+        name: 'Give Change',
+        icon: 'money_back.svg',
+        difficulty: 3,
+        category: 'math'
       }
     ];
 
