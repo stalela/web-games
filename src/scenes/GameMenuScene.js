@@ -205,6 +205,20 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'discovery'
       },
       {
+        scene: 'ExploreFarmAnimalsGame',
+        name: 'Explore Farm Animals',
+        icon: 'explore_farm_animals.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'ExploreWorldAnimalsGame',
+        name: 'Explore World Animals',
+        icon: 'explore_world_animals.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
         scene: 'LearnDigitsGame',
         name: 'Learn Digits',
         icon: 'learn_digits.svg',
