@@ -25,6 +25,10 @@ import { ColorMixGame } from './games/ColorMixGame.js';
 import { GeographyMapGame } from './games/GeographyMapGame.js';
 import { SoundButtonGame } from './games/SoundButtonGame.js';
 import { LearnDigitsGame } from './games/LearnDigitsGame.js';
+import { AlgebraPlusGame } from './games/AlgebraPlusGame.js';
+import { AlgebraMinusGame } from './games/AlgebraMinusGame.js';
+import { AlgebraByGame } from './games/AlgebraByGame.js';
+import { AlgebraDivGame } from './games/AlgebraDivGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -118,6 +122,10 @@ class LalelaGamesApp {
       this.game.scene.add('LearnDigitsGame', LearnDigitsGame);
       this.game.scene.add('HexagonGame', HexagonGame);
       this.game.scene.add('CheckersGame', CheckersGame);
+      this.game.scene.add('AlgebraPlusGame', AlgebraPlusGame);
+      this.game.scene.add('AlgebraMinusGame', AlgebraMinusGame);
+      this.game.scene.add('AlgebraByGame', AlgebraByGame);
+      this.game.scene.add('AlgebraDivGame', AlgebraDivGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

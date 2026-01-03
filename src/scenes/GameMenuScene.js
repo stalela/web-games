@@ -182,6 +182,34 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'learn_digits.svg',
         difficulty: 1,
         category: 'math'
+      },
+      {
+        scene: 'AlgebraPlusGame',
+        name: 'Addition Practice',
+        icon: 'algebra_plus.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'AlgebraMinusGame',
+        name: 'Subtraction Practice',
+        icon: 'algebra_minus.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'AlgebraByGame',
+        name: 'Multiplication Practice',
+        icon: 'algebra_by.svg',
+        difficulty: 4,
+        category: 'math'
+      },
+      {
+        scene: 'AlgebraDivGame',
+        name: 'Division Practice',
+        icon: 'algebra_div.svg',
+        difficulty: 4,
+        category: 'math'
       }
     ];
 
