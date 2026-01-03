@@ -177,6 +177,20 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'discovery'
       },
       {
+        scene: 'ColorsGame',
+        name: 'Colors',
+        icon: 'colors.svg',
+        difficulty: 1,
+        category: 'discovery'
+      },
+      {
+        scene: 'AdvancedColorsGame',
+        name: 'Advanced Colors',
+        icon: 'advanced_colors.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
         scene: 'LearnDigitsGame',
         name: 'Learn Digits',
         icon: 'learn_digits.svg',
