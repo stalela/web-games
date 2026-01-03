@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 69 | **Remaining:** 130
-> **Progress:** ███████░░░ 34.6%
+> **Total Games:** 199 | **Completed:** 79 | **Remaining:** 120
+> **Progress:** ████████░░ 39.6%
 
 ---
 
@@ -140,6 +140,16 @@ Copy this checklist for each new game task.
 | MazeInvisibleGame | Strategy | MazeGame | ✅ Complete |
 | MazeRelativeGame | Strategy | MazeGame | ✅ Complete |
 | TrafficGame | Strategy | LalelaGame | ✅ Complete |
+| HangmanGame | Reading | LalelaGame | ✅ Complete |
+| FractionsCreateGame | Math | LalelaGame | ✅ Complete |
+| FractionsFindGame | Math | LalelaGame | ✅ Complete |
+| CalcudokuGame | Math | LalelaGame | ✅ Complete |
+| SudokuGame | Math | LalelaGame | ✅ Complete |
+| MagicHatPlusGame | Math | LalelaGame | ✅ Complete |
+| MagicHatMinusGame | Math | LalelaGame | ✅ Complete |
+| ClockGame | Math | LalelaGame | ✅ Complete |
+| CalendarGame | Math | LalelaGame | ✅ Complete |
+| FindTheDayGame | Math | LalelaGame | ✅ Complete |
 
 ---
 
@@ -154,12 +164,12 @@ Copy this checklist for each new game task.
 | `money` | P1 | ✅ Complete | - |
 | `money_back` | P1 | ✅ Complete | - |
 | `money_cents` | P1 | ✅ Complete | - |
-| `fractions_create` | P2 | ⬜ Not Started | - |
-| `fractions_find` | P2 | ⬜ Not Started | - |
-| `calcudoku` | P2 | ⬜ Not Started | - |
-| `sudoku` | P2 | ⬜ Not Started | - |
-| `magic-hat-plus` | P2 | ⬜ Not Started | - |
-| `magic-hat-minus` | P2 | ⬜ Not Started | - |
+| `fractions_create` | P2 | ✅ Complete | - |
+| `fractions_find` | P2 | ✅ Complete | - |
+| `calcudoku` | P2 | ✅ Complete | - |
+| `sudoku` | P2 | ✅ Complete | - |
+| `magic-hat-plus` | P2 | ✅ Complete | - |
+| `magic-hat-minus` | P2 | ✅ Complete | - |
 | `balancebox` | P3 | ⬜ Not Started | - |
 | `graduated_line_read` | P3 | ⬜ Not Started | - |
 | `graduated_line_use` | P3 | ⬜ Not Started | - |
@@ -174,9 +184,9 @@ Copy this checklist for each new game task.
 | `gnumch-primes` | P3 | ⬜ Not Started | - |
 | `guess24` | P3 | ⬜ Not Started | - |
 | `guessnumber` | P3 | ⬜ Not Started | - |
-| `clockgame` | P2 | ⬜ Not Started | - |
-| `calendar` | P2 | ⬜ Not Started | - |
-| `find_the_day` | P2 | ⬜ Not Started | - |
+| `clockgame` | P2 | ✅ Complete | - |
+| `calendar` | P2 | ✅ Complete | - |
+| `find_the_day` | P2 | ✅ Complete | - |
 
 ---
 
@@ -192,7 +202,7 @@ Copy this checklist for each new game task.
 | `readingh` | P1 | ✅ Complete | - |
 | `readingv` | P1 | ✅ Complete | - |
 | `wordsgame` | P1 | ✅ Complete | - |
-| `hangman` | P2 | ⬜ Not Started | - |
+| `hangman` | P2 | ✅ Complete | - |
 | `gletters` | P2 | ⬜ Not Started | - |
 | `imagename` | P2 | ⬜ Not Started | - |
 | `lang` | P2 | ⬜ Not Started | - |

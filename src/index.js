@@ -85,6 +85,16 @@ import { MazeGame } from './games/MazeGame.js';
 import { MazeInvisibleGame } from './games/MazeInvisibleGame.js';
 import { MazeRelativeGame } from './games/MazeRelativeGame.js';
 import { TrafficGame } from './games/TrafficGame.js';
+import { HangmanGame } from './games/HangmanGame.js';
+import { FractionsCreateGame } from './games/FractionsCreateGame.js';
+import { FractionsFindGame } from './games/FractionsFindGame.js';
+import { CalcudokuGame } from './games/CalcudokuGame.js';
+import { SudokuGame } from './games/SudokuGame.js';
+import { MagicHatPlusGame } from './games/MagicHatPlusGame.js';
+import { MagicHatMinusGame } from './games/MagicHatMinusGame.js';
+import { ClockGame } from './games/ClockGame.js';
+import { CalendarGame } from './games/CalendarGame.js';
+import { FindTheDayGame } from './games/FindTheDayGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -238,6 +248,16 @@ class LalelaGamesApp {
       this.game.scene.add('MazeInvisibleGame', MazeInvisibleGame);
       this.game.scene.add('MazeRelativeGame', MazeRelativeGame);
       this.game.scene.add('TrafficGame', TrafficGame);
+      this.game.scene.add('HangmanGame', HangmanGame);
+      this.game.scene.add('FractionsCreateGame', FractionsCreateGame);
+      this.game.scene.add('FractionsFindGame', FractionsFindGame);
+      this.game.scene.add('CalcudokuGame', CalcudokuGame);
+      this.game.scene.add('SudokuGame', SudokuGame);
+      this.game.scene.add('MagicHatPlusGame', MagicHatPlusGame);
+      this.game.scene.add('MagicHatMinusGame', MagicHatMinusGame);
+      this.game.scene.add('ClockGame', ClockGame);
+      this.game.scene.add('CalendarGame', CalendarGame);
+      this.game.scene.add('FindTheDayGame', FindTheDayGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

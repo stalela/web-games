@@ -602,6 +602,76 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'traffic.svg',
         difficulty: 3,
         category: 'strategy'
+      },
+      {
+        scene: 'HangmanGame',
+        name: 'Hangman',
+        icon: 'hangman.svg',
+        difficulty: 2,
+        category: 'reading'
+      },
+      {
+        scene: 'FractionsCreateGame',
+        name: 'Create Fractions',
+        icon: 'fractions_create.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'FractionsFindGame',
+        name: 'Find Fractions',
+        icon: 'fractions_find.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'CalcudokuGame',
+        name: 'Calcudoku',
+        icon: 'calcudoku.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'SudokuGame',
+        name: 'Sudoku',
+        icon: 'sudoku.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'MagicHatPlusGame',
+        name: 'Magic Hat (+)',
+        icon: 'magic-hat-plus.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'MagicHatMinusGame',
+        name: 'Magic Hat (-)',
+        icon: 'magic-hat-minus.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'ClockGame',
+        name: 'Clock',
+        icon: 'clockgame.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'CalendarGame',
+        name: 'Calendar',
+        icon: 'calendar.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'FindTheDayGame',
+        name: 'Find the Day',
+        icon: 'find_the_day.svg',
+        difficulty: 2,
+        category: 'math'
       }
     ];
 
