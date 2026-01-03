@@ -39,6 +39,7 @@ import { LetterInWordGame } from './games/LetterInWordGame.js';
 import { MissingLetterGame } from './games/MissingLetterGame.js';
 import { ReadingHGame } from './games/ReadingHGame.js';
 import { ReadingVGame } from './games/ReadingVGame.js';
+import { WordsGame } from './games/WordsGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -146,6 +147,7 @@ class LalelaGamesApp {
       this.game.scene.add('MissingLetterGame', MissingLetterGame);
       this.game.scene.add('ReadingHGame', ReadingHGame);
       this.game.scene.add('ReadingVGame', ReadingVGame);
+      this.game.scene.add('WordsGame', WordsGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

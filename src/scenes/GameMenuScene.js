@@ -280,6 +280,13 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'readingv.svg',
         difficulty: 2,
         category: 'reading'
+      },
+      {
+        scene: 'WordsGame',
+        name: 'Falling Words',
+        icon: 'wordsgame.svg',
+        difficulty: 3,
+        category: 'reading'
       }
     ];
 
