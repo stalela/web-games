@@ -243,6 +243,15 @@ export class ExploreMonumentsGame extends LalelaGame {
         this.startQuiz();
     }
 
+    updateInstructions() {
+        if (this.questions && this.questions[this.currentQuestion]) {
+            const target = this.questions[this.currentQuestion];
+            this.instructionText.setText(`Find: ${target.name}`);
+        } else {
+            this.instructionText.setText(this.levelTitle);
+        }
+    }
+
     createMonuments() {
         const { width, height } = this.scale;
         
@@ -316,6 +325,8 @@ export class ExploreMonumentsGame extends LalelaGame {
     }
 
     checkAnswer(selectedMonument) {
+        if (!this.questions || !this.questions[this.currentQuestion]) return;
+        
         const target = this.questions[this.currentQuestion];
         
         if (selectedMonument.id === target.id) {
