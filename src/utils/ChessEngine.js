@@ -192,6 +192,16 @@ export function p4_fen2state(fen, state) {
     state.prepared = false;
     state.beginning = fen;
     
+    // Populate pieces array from board
+    state.pieces = [[], []];
+    for (let i = 20; i < 100; i++) {
+        const piece = board[i];
+        if (piece && piece !== P4_EDGE) {
+            const colour = piece & 1;
+            state.pieces[colour].push([piece, i]);
+        }
+    }
+    
     return state;
 }
 
