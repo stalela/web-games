@@ -202,19 +202,26 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         // Use actual world map SVG
         if (this.textures.exists('world-map')) {
             const bg = this.add.image(width / 2, height / 2, 'world-map');
-            // Scale to fit within screen (use min to ensure it fits)
-            const scaleX = width / bg.width;
-            const scaleY = height / bg.height;
-            const scale = Math.min(scaleX, scaleY) * 0.85; // 85% to leave margin
+            
+            // GCompris logic: Play area is a 1000x1000 square centered in a 3000x3000 background
+            // We calculate the play area size to fit within the screen (leaving space for UI)
+            const availableHeight = height - 100; // Subtract space for top/bottom bars
+            const playAreaSize = Math.min(width, availableHeight);
+            
+            // The background image (3000px) should be 3 times the play area size
+            // But since the SVG is 3000x3000 and play area is 1000x1000, the ratio is 3.
+            // So we scale the background such that its displayed width is 3 * playAreaSize
+            const scale = (3 * playAreaSize) / bg.width;
+            
             bg.setScale(scale);
             bg.setDepth(-1);
             
-            // Store map bounds for positioning animals
+            // Store map bounds for positioning animals (this is the Play Area)
             this.mapBounds = {
-                x: bg.x - (bg.width * scale) / 2,
-                y: bg.y - (bg.height * scale) / 2,
-                width: bg.width * scale,
-                height: bg.height * scale
+                x: (width - playAreaSize) / 2,
+                y: (height - playAreaSize) / 2,
+                width: playAreaSize,
+                height: playAreaSize
             };
         } else {
             // Fallback: programmatic world map - use full screen

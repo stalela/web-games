@@ -164,18 +164,32 @@ export class ExploreFarmAnimalsGame extends LalelaGame {
         // Use actual farm background SVG
         if (this.textures.exists('farm-background')) {
             const bg = this.add.image(width / 2, height / 2, 'farm-background');
-            // Scale to cover screen while maintaining aspect ratio
-            const scaleX = width / bg.width;
-            const scaleY = height / bg.height;
-            const scale = Math.max(scaleX, scaleY);
+            
+            // GCompris logic: Play area is a 1000x1000 square centered in a 3000x3000 background
+            const availableHeight = height - 100; // Subtract space for top/bottom bars
+            const playAreaSize = Math.min(width, availableHeight);
+            
+            // Scale background to be 3x the play area size
+            const scale = (3 * playAreaSize) / bg.width;
+            
             bg.setScale(scale);
             bg.setDepth(-1);
+            
+            // Store map bounds for positioning animals
+            this.mapBounds = {
+                x: (width - playAreaSize) / 2,
+                y: (height - playAreaSize) / 2,
+                width: playAreaSize,
+                height: playAreaSize
+            };
         } else {
             // Fallback: programmatic farm background
             const bg = this.add.graphics();
             bg.fillGradientStyle(0x87CEEB, 0x87CEEB, 0x90EE90, 0x228B22, 1);
             bg.fillRect(0, 0, width, height);
             bg.setDepth(-1);
+            
+            this.mapBounds = { x: 0, y: 0, width, height };
         }
     }
 
@@ -312,11 +326,17 @@ export class ExploreFarmAnimalsGame extends LalelaGame {
         });
         this.animalSprites = [];
         
+        // Use map bounds if available, otherwise full screen
+        const mapBounds = this.mapBounds || { x: 0, y: 0, width, height };
+        
         this.animals.forEach((animal, index) => {
-            const x = width * animal.x;
-            const y = height * animal.y;
-            const targetWidth = width * animal.width;
-            const targetHeight = height * animal.height;
+            // Position relative to map bounds
+            const x = mapBounds.x + mapBounds.width * animal.x;
+            const y = mapBounds.y + mapBounds.height * animal.y;
+            
+            // Target size relative to map bounds
+            const targetWidth = mapBounds.width * animal.width;
+            const targetHeight = mapBounds.height * animal.height;
             
             // Create animal sprite using SVG
             const textureKey = `${animal.id}-icon`;
