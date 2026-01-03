@@ -1,0 +1,1573 @@
+[
+  {
+    "instruction": "Continents",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "continents/back.svg"
+      },
+      {
+        "toolTipText": "Oceania",
+        "x": "0.8694",
+        "y": "0.6471",
+        "image": "continents/oceania.svg",
+        "audio": "oceania"
+      },
+      {
+        "toolTipText": "Europe",
+        "x": "0.4851",
+        "y": "0.1488",
+        "image": "continents/europa.svg",
+        "audio": "europe"
+      },
+      {
+        "toolTipText": "Asia",
+        "x": "0.6814",
+        "y": "0.2886",
+        "image": "continents/asia.svg",
+        "audio": "asia"
+      },
+      {
+        "toolTipText": "Antarctica",
+        "x": "0.4647",
+        "y": "0.887",
+        "image": "continents/antarctica.svg",
+        "audio": "antarctica"
+      },
+      {
+        "toolTipText": "America",
+        "x": "0.219",
+        "y": "0.4216",
+        "image": "continents/america.svg",
+        "audio": "america"
+      },
+      {
+        "toolTipText": "Africa",
+        "x": "0.4782",
+        "y": "0.4832",
+        "image": "continents/africa.svg",
+        "audio": "africa"
+      }
+    ]
+  },
+  {
+    "instruction": "North America",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "northamerica/north_america.svg"
+      },
+      {
+        "toolTipText": "United States of America",
+        "x": "0.3422",
+        "y": "0.5581",
+        "image": "northamerica/usa.svg",
+        "audio": "usa"
+      },
+      {
+        "toolTipText": "Mexico",
+        "x": "0.4825",
+        "y": "0.8641",
+        "image": "northamerica/mexico.svg",
+        "audio": "mexico"
+      },
+      {
+        "toolTipText": "Greenland",
+        "x": "0.8257",
+        "y": "0.1815",
+        "image": "northamerica/greenland.svg",
+        "audio": "greenland"
+      },
+      {
+        "toolTipText": "Canada",
+        "x": "0.515",
+        "y": "0.3138",
+        "image": "northamerica/canada.svg",
+        "audio": "canada"
+      }
+    ]
+  },
+  {
+    "instruction": "Central America",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "centralamerica/central_america.svg"
+      },
+      {
+        "toolTipText": "Puerto Rico",
+        "x": "0.8305",
+        "y": "0.4622",
+        "image": "centralamerica/puerto_rico.svg",
+        "audio": "puerto_rico"
+      },
+      {
+        "toolTipText": "Panama",
+        "x": "0.5227",
+        "y": "0.929",
+        "image": "centralamerica/panama.svg",
+        "audio": "panama"
+      },
+      {
+        "toolTipText": "Nicaragua",
+        "x": "0.4018",
+        "y": "0.717",
+        "image": "centralamerica/nicaragua.svg",
+        "audio": "nicaragua"
+      },
+      {
+        "toolTipText": "Mexico",
+        "x": "0.1863",
+        "y": "0.3187",
+        "image": "centralamerica/mexico.svg",
+        "audio": "mexico"
+      },
+      {
+        "toolTipText": "Jamaica",
+        "x": "0.5874",
+        "y": "0.4677",
+        "image": "centralamerica/jamaica.svg",
+        "audio": "jamaica"
+      },
+      {
+        "toolTipText": "Honduras",
+        "x": "0.3825",
+        "y": "0.6279",
+        "image": "centralamerica/honduras.svg",
+        "audio": "honduras"
+      },
+      {
+        "toolTipText": "Haiti",
+        "x": "0.6835",
+        "y": "0.4227",
+        "image": "centralamerica/haiti.svg",
+        "audio": "haiti"
+      },
+      {
+        "toolTipText": "Guatemala",
+        "x": "0.2919",
+        "y": "0.579",
+        "image": "centralamerica/guatemala.svg",
+        "audio": "guatemala"
+      },
+      {
+        "toolTipText": "El Salvador",
+        "x": "0.322",
+        "y": "0.673",
+        "image": "centralamerica/el_salvador.svg",
+        "audio": "salvador"
+      },
+      {
+        "toolTipText": "Dominican Republic",
+        "x": "0.7494",
+        "y": "0.4366",
+        "image": "centralamerica/dominican_republic.svg",
+        "audio": "dominican_republic"
+      },
+      {
+        "toolTipText": "Cuba",
+        "x": "0.5363",
+        "y": "0.306",
+        "image": "centralamerica/cuba.svg",
+        "audio": "cuba"
+      },
+      {
+        "toolTipText": "Costa Rica",
+        "x": "0.4286",
+        "y": "0.871",
+        "image": "centralamerica/costa_rica.svg",
+        "audio": "costa_rica"
+      },
+      {
+        "toolTipText": "Belize",
+        "x": "0.3311",
+        "y": "0.5121",
+        "image": "centralamerica/belize.svg",
+        "audio": "belize"
+      },
+      {
+        "toolTipText": "Bahamas",
+        "x": "0.6195",
+        "y": "0.1912",
+        "image": "centralamerica/bahamas.svg",
+        "audio": "bahamas"
+      }
+    ]
+  },
+  {
+    "instruction": "South America",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "southamerica/south_america.svg"
+      },
+      {
+        "toolTipText": "Venezuela",
+        "x": "0.4436",
+        "y": "0.1261",
+        "image": "southamerica/venezuela.svg",
+        "audio": "venezuela"
+      },
+      {
+        "toolTipText": "Uruguay",
+        "x": "0.6247",
+        "y": "0.6696",
+        "image": "southamerica/uruguay.svg",
+        "audio": "uruguay"
+      },
+      {
+        "toolTipText": "Suriname",
+        "x": "0.6207",
+        "y": "0.1612",
+        "image": "southamerica/suriname.svg",
+        "audio": "suriname"
+      },
+      {
+        "toolTipText": "Peru",
+        "x": "0.3027",
+        "y": "0.3442",
+        "image": "southamerica/peru.svg",
+        "audio": "peru"
+      },
+      {
+        "toolTipText": "Paraguay",
+        "x": "0.5801",
+        "y": "0.5427",
+        "image": "southamerica/paraguay.svg",
+        "audio": "paraguay"
+      },
+      {
+        "toolTipText": "Panama",
+        "x": "0.2173",
+        "y": "0.0985",
+        "image": "southamerica/panama.svg",
+        "audio": "panama"
+      },
+      {
+        "toolTipText": "Guyana",
+        "x": "0.5719",
+        "y": "0.1478",
+        "image": "southamerica/guyana.svg",
+        "audio": "guyana"
+      },
+      {
+        "toolTipText": "French Guiana",
+        "x": "0.6691",
+        "y": "0.1607",
+        "image": "southamerica/french_guiana.svg",
+        "audio": "french_guiana"
+      },
+      {
+        "toolTipText": "Ecuador",
+        "x": "0.1614",
+        "y": "0.2405",
+        "image": "southamerica/ecuador.svg",
+        "audio": "ecuador"
+      },
+      {
+        "toolTipText": "Colombia",
+        "x": "0.3372",
+        "y": "0.1587",
+        "image": "southamerica/colombia.svg",
+        "audio": "colombia"
+      },
+      {
+        "toolTipText": "Chile",
+        "x": "0.3412",
+        "y": "0.728",
+        "image": "southamerica/chile.svg",
+        "audio": "chile"
+      },
+      {
+        "toolTipText": "Brazil",
+        "x": "0.6478",
+        "y": "0.4146",
+        "image": "southamerica/brazil.svg",
+        "audio": "brazil"
+      },
+      {
+        "toolTipText": "Bolivia",
+        "x": "0.4943",
+        "y": "0.4433",
+        "image": "southamerica/bolivia.svg",
+        "audio": "bolivia"
+      },
+      {
+        "toolTipText": "Argentina",
+        "x": "0.4935",
+        "y": "0.752",
+        "image": "southamerica/argentina.svg",
+        "audio": "argentina"
+      }
+    ]
+  },
+  {
+    "instruction": "Western Europe",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "europe/europe.svg"
+      },
+      {
+        "toolTipText": "United Kingdom",
+        "x": "0.3055",
+        "y": "0.4317",
+        "image": "europe/united_kingdom.svg",
+        "audio": "united_kingdom"
+      },
+      {
+        "toolTipText": "Switzerland",
+        "x": "0.4653",
+        "y": "0.6595",
+        "image": "europe/switzerland.svg",
+        "audio": "switz"
+      },
+      {
+        "toolTipText": "Sweden",
+        "x": "0.5974",
+        "y": "0.253",
+        "image": "europe/sweden.svg",
+        "audio": "sweden"
+      },
+      {
+        "toolTipText": "Spain",
+        "x": "0.3159",
+        "y": "0.842",
+        "image": "europe/spain.svg",
+        "audio": "spain"
+      },
+      {
+        "toolTipText": "Portugal",
+        "x": "0.2404",
+        "y": "0.8505",
+        "image": "europe/portugal.svg",
+        "audio": "portugal"
+      },
+      {
+        "toolTipText": "Norway",
+        "x": "0.6006",
+        "y": "0.1899",
+        "image": "europe/norway.svg",
+        "audio": "norway"
+      },
+      {
+        "toolTipText": "The Netherlands",
+        "x": "0.4241",
+        "y": "0.5172",
+        "image": "europe/netherlands.svg",
+        "audio": "netherland"
+      },
+      {
+        "toolTipText": "Luxembourg",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.4358",
+        "y": "0.5802",
+        "image": "europe/luxembourg.svg",
+        "audio": "luxembourg"
+      },
+      {
+        "toolTipText": "Italy",
+        "x": "0.5261",
+        "y": "0.7894",
+        "image": "europe/italy.svg",
+        "audio": "italy"
+      },
+      {
+        "toolTipText": "Ireland",
+        "x": "0.2354",
+        "y": "0.4847",
+        "image": "europe/ireland.svg",
+        "audio": "ireland"
+      },
+      {
+        "toolTipText": "Iceland",
+        "x": "0.0841",
+        "y": "0.1797",
+        "image": "europe/iceland.svg",
+        "audio": "iceland"
+      },
+      {
+        "toolTipText": "Germany",
+        "x": "0.4964",
+        "y": "0.5442",
+        "image": "europe/germany.svg",
+        "audio": "germany"
+      },
+      {
+        "toolTipText": "France",
+        "x": "0.3838",
+        "y": "0.6743",
+        "image": "europe/france.svg",
+        "audio": "france"
+      },
+      {
+        "toolTipText": "Finland",
+        "x": "0.7154",
+        "y": "0.1804",
+        "image": "europe/finland.svg",
+        "audio": "finland"
+      },
+      {
+        "toolTipText": "Denmark",
+        "x": "0.5131",
+        "y": "0.4117",
+        "image": "europe/denmark.svg",
+        "audio": "denmark"
+      },
+      {
+        "toolTipText": "Belgium",
+        "x": "0.4125",
+        "y": "0.5618",
+        "image": "europe/belgium.svg",
+        "audio": "belgium"
+      },
+      {
+        "toolTipText": "Austria",
+        "x": "0.537",
+        "y": "0.6358",
+        "image": "europe/austria.svg",
+        "audio": "austria"
+      }
+    ]
+  },
+  {
+    "instruction": "Eastern Europe",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "europe/europe.svg"
+      },
+      {
+        "toolTipText": "Cyprus",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.8147",
+        "y": "0.9745",
+        "image": "europe/cyprus.svg",
+        "audio": "cyprus"
+      },
+      {
+        "toolTipText": "Greece",
+        "x": "0.6854",
+        "y": "0.8831",
+        "image": "europe/greece.svg",
+        "audio": "greece"
+      },
+      {
+        "toolTipText": "Ukraine",
+        "x": "0.7861",
+        "y": "0.6181",
+        "image": "europe/ukraine.svg",
+        "audio": "ukraine"
+      },
+      {
+        "toolTipText": "Turkey",
+        "x": "0.8437",
+        "y": "0.8666",
+        "image": "europe/turkey.svg",
+        "audio": "turkey"
+      },
+      {
+        "type": "SHAPE_BACKGROUND",
+        "toolTipText": "Slovenia",
+        "x": "0.5595",
+        "y": "0.6768",
+        "image": "europe/slovenia.svg",
+        "audio": "slovenia"
+      },
+      {
+        "toolTipText": "Slovak Republic",
+        "x": "0.6261",
+        "y": "0.6099",
+        "image": "europe/slovakia.svg",
+        "audio": "slovakia"
+      },
+      {
+        "toolTipText": "Montenegro",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.6218",
+        "y": "0.7677",
+        "image": "europe/montenegro.svg",
+        "audio": "montenegro"
+      },
+      {
+        "toolTipText": "Serbia",
+        "x": "0.643",
+        "y": "0.7332",
+        "image": "europe/serbia.svg",
+        "audio": "serbia"
+      },
+      {
+        "toolTipText": "Russia",
+        "x": "0.8336",
+        "y": "0.4277",
+        "image": "europe/russia.svg",
+        "audio": "russia"
+      },
+      {
+        "toolTipText": "Romania",
+        "x": "0.6999",
+        "y": "0.6816",
+        "image": "europe/romania.svg",
+        "audio": "romania"
+      },
+      {
+        "toolTipText": "Poland",
+        "x": "0.6179",
+        "y": "0.5241",
+        "image": "europe/poland.svg",
+        "audio": "poland"
+      },
+      {
+        "toolTipText": "Moldova",
+        "x": "0.7475",
+        "y": "0.6552",
+        "image": "europe/moldova.svg",
+        "audio": "moldova"
+      },
+      {
+        "toolTipText": "North Macedonia",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.6545",
+        "y": "0.7968",
+        "image": "europe/north_macedonia.svg",
+        "audio": "macedonia"
+      },
+      {
+        "toolTipText": "Lithuania",
+        "x": "0.684",
+        "y": "0.4389",
+        "image": "europe/lithuania.svg",
+        "audio": "lithuania"
+      },
+      {
+        "toolTipText": "Latvia",
+        "x": "0.6948",
+        "y": "0.3937",
+        "image": "europe/latvia.svg",
+        "audio": "latvia"
+      },
+      {
+        "toolTipText": "Hungary",
+        "x": "0.6231",
+        "y": "0.6502",
+        "image": "europe/hungary.svg",
+        "audio": "hungary"
+      },
+      {
+        "toolTipText": "Estonia",
+        "x": "0.7003",
+        "y": "0.3483",
+        "image": "europe/estonia.svg",
+        "audio": "estonia"
+      },
+      {
+        "toolTipText": "Czechia",
+        "x": "0.5667",
+        "y": "0.5801",
+        "image": "europe/czechia.svg",
+        "audio": "czechia"
+      },
+      {
+        "toolTipText": "Croatia",
+        "x": "0.5807",
+        "y": "0.7208",
+        "image": "europe/croatia.svg",
+        "audio": "croatia"
+      },
+      {
+        "toolTipText": "Bulgaria",
+        "x": "0.7068",
+        "y": "0.7668",
+        "image": "europe/bulgaria.svg",
+        "audio": "bulgaria"
+      },
+      {
+        "toolTipText": "Bosnia Herzegovina",
+        "x": "0.5975",
+        "y": "0.7357",
+        "image": "europe/bosnia_herzegovina.svg",
+        "audio": "bosnia_herzegovina"
+      },
+      {
+        "toolTipText": "Belarus",
+        "x": "0.7415",
+        "y": "0.4772",
+        "image": "europe/belarus.svg",
+        "audio": "belarus"
+      },
+      {
+        "toolTipText": "Albania",
+        "x": "0.6325",
+        "y": "0.8088",
+        "image": "europe/albania.svg",
+        "audio": "albania"
+      }
+    ]
+  },
+  {
+    "instruction": "Northern Africa",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "northafrica/north_africa.svg"
+      },
+      {
+        "toolTipText": "Western Sahara",
+        "x": "0.1381",
+        "y": "0.3136",
+        "image": "northafrica/western_sahara.svg",
+        "audio": "western_sahara"
+      },
+      {
+        "toolTipText": "Uganda",
+        "x": "0.7414",
+        "y": "0.8495",
+        "image": "northafrica/uganda.svg",
+        "audio": "uganda"
+      },
+      {
+        "toolTipText": "Tunisia",
+        "x": "0.4374",
+        "y": "0.0896",
+        "image": "northafrica/tunisia.svg",
+        "audio": "tunisia"
+      },
+      {
+        "toolTipText": "Togo",
+        "x": "0.3216",
+        "y": "0.6799",
+        "image": "northafrica/togo.svg",
+        "audio": "togo"
+      },
+      {
+        "toolTipText": "Sudan",
+        "x": "0.7139",
+        "y": "0.5194",
+        "image": "northafrica/sudan.svg",
+        "audio": "sudan"
+      },
+      {
+        "toolTipText": "South Sudan",
+        "x": "0.7071",
+        "y": "0.6974",
+        "image": "northafrica/south_sudan.svg",
+        "audio": "south_sudan"
+      },
+      {
+        "toolTipText": "Somalia",
+        "x": "0.9272",
+        "y": "0.7609",
+        "image": "northafrica/somalia.svg",
+        "audio": "somalia"
+      },
+      {
+        "toolTipText": "Sierra Leone",
+        "x": "0.1528",
+        "y": "0.6832",
+        "image": "northafrica/sierra_leone.svg",
+        "audio": "sierra_leone"
+      },
+      {
+        "toolTipText": "Senegal",
+        "x": "0.1171",
+        "y": "0.5416",
+        "image": "northafrica/senegal.svg",
+        "audio": "senegal"
+      },
+      {
+        "toolTipText": "Rwanda",
+        "x": "0.7093",
+        "y": "0.9269",
+        "image": "northafrica/rwanda.svg",
+        "audio": "rwanda"
+      },
+      {
+        "toolTipText": "Niger",
+        "x": "0.418",
+        "y": "0.4685",
+        "image": "northafrica/niger.svg",
+        "audio": "niger"
+      },
+      {
+        "toolTipText": "Nigeria",
+        "x": "0.4259",
+        "y": "0.6687",
+        "image": "northafrica/nigeria.svg",
+        "audio": "nigeria"
+      },
+      {
+        "toolTipText": "Morocco",
+        "x": "0.2151",
+        "y": "0.1367",
+        "image": "northafrica/morocco.svg",
+        "audio": "moroco"
+      },
+      {
+        "toolTipText": "Mauritania",
+        "x": "0.1641",
+        "y": "0.3887",
+        "image": "northafrica/mauritania.svg",
+        "audio": "mauritania"
+      },
+      {
+        "toolTipText": "Mali",
+        "x": "0.2565",
+        "y": "0.4694",
+        "image": "northafrica/mali.svg",
+        "audio": "mali"
+      },
+      {
+        "toolTipText": "Libya",
+        "x": "0.5405",
+        "y": "0.2641",
+        "image": "northafrica/libya.svg",
+        "audio": "libya"
+      },
+      {
+        "toolTipText": "Liberia",
+        "x": "0.184",
+        "y": "0.7304",
+        "image": "northafrica/liberia.svg",
+        "audio": "liberia"
+      },
+      {
+        "toolTipText": "Kenya",
+        "x": "0.8165",
+        "y": "0.8732",
+        "image": "northafrica/kenya.svg",
+        "audio": "kenya"
+      },
+      {
+        "toolTipText": "Ivory Coast",
+        "x": "0.2361",
+        "y": "0.7044",
+        "image": "northafrica/ivory_coast.svg",
+        "audio": "ivory_coast"
+      },
+      {
+        "toolTipText": "Guinea",
+        "x": "0.1584",
+        "y": "0.6483",
+        "image": "northafrica/guinea.svg",
+        "audio": "guinea"
+      },
+      {
+        "toolTipText": "Guinea Bissau",
+        "x": "0.1073",
+        "y": "0.6046",
+        "image": "northafrica/guinea_bissau.svg",
+        "audio": "guinea_bissau"
+      },
+      {
+        "toolTipText": "Ghana",
+        "x": "0.2965",
+        "y": "0.6948",
+        "image": "northafrica/ghana.svg",
+        "audio": "ghana"
+      },
+      {
+        "toolTipText": "Gambia",
+        "x": "0.1055",
+        "y": "0.5664",
+        "image": "northafrica/gambia.svg",
+        "audio": "gambia"
+      },
+      {
+        "toolTipText": "Gabon",
+        "x": "0.4651",
+        "y": "0.9007",
+        "image": "northafrica/gabon.svg",
+        "audio": "gabon"
+      },
+      {
+        "toolTipText": "Eritrea",
+        "x": "0.8416",
+        "y": "0.5254",
+        "image": "northafrica/eritrea.svg",
+        "audio": "eritrea"
+      },
+      {
+        "toolTipText": "Ethiopia",
+        "x": "0.8512",
+        "y": "0.6667",
+        "image": "northafrica/ethiopia.svg",
+        "audio": "ethiopia"
+      },
+      {
+        "toolTipText": "Equatorial Guinea",
+        "x": "0.4423",
+        "y": "0.8263",
+        "image": "northafrica/equatorial_guinea.svg",
+        "audio": "equatorial_guinea"
+      },
+      {
+        "toolTipText": "Egypt",
+        "x": "0.7216",
+        "y": "0.2529",
+        "image": "northafrica/egypt.svg",
+        "audio": "egypt"
+      },
+      {
+        "toolTipText": "Djibouti",
+        "x": "0.8792",
+        "y": "0.6045",
+        "image": "northafrica/djibouti.svg",
+        "audio": "djibouti"
+      },
+      {
+        "toolTipText": "Chad",
+        "x": "0.5603",
+        "y": "0.5198",
+        "image": "northafrica/chad.svg",
+        "audio": "chad"
+      },
+      {
+        "toolTipText": "Central African Republic",
+        "x": "0.5897",
+        "y": "0.7253",
+        "image": "northafrica/central_african_republic.svg",
+        "audio": "central_african_republic"
+      },
+      {
+        "toolTipText": "Cameroon",
+        "x": "0.4754",
+        "y": "0.7086",
+        "image": "northafrica/cameroon.svg",
+        "audio": "cameroon"
+      },
+      {
+        "toolTipText": "Burkina Faso",
+        "x": "0.2893",
+        "y": "0.5939",
+        "image": "northafrica/burkina_faso.svg",
+        "audio": "burkina_faso"
+      },
+      {
+        "toolTipText": "Benin",
+        "x": "0.341",
+        "y": "0.6634",
+        "image": "northafrica/benin.svg",
+        "audio": "benin"
+      },
+      {
+        "toolTipText": "Algeria",
+        "x": "0.3322",
+        "y": "0.2242",
+        "image": "northafrica/algeria.svg",
+        "audio": "algeria"
+      }
+    ]
+  },
+  {
+    "instruction": "Southern Africa",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "southernafrica/all_south_africa.svg"
+      },
+      {
+        "toolTipText": "Zimbabwe",
+        "x": "0.5155",
+        "y": "0.6094",
+        "image": "southernafrica/zimbabwe.svg",
+        "audio": "zimbabwe"
+      },
+      {
+        "toolTipText": "Zambia",
+        "x": "0.4865",
+        "y": "0.4657",
+        "image": "southernafrica/zambia.svg",
+        "audio": "zambia"
+      },
+      {
+        "toolTipText": "Uganda",
+        "x": "0.5861",
+        "y": "0.1135",
+        "image": "southernafrica/uganda.svg",
+        "audio": "uganda"
+      },
+      {
+        "toolTipText": "Tanzania",
+        "x": "0.6448",
+        "y": "0.3009",
+        "image": "southernafrica/tanzania.svg",
+        "audio": "tanzania"
+      },
+      {
+        "toolTipText": "Eswatini",
+        "x": "0.5677",
+        "y": "0.7919",
+        "image": "southernafrica/eswatini.svg",
+        "audio": "eswatini"
+      },
+      {
+        "toolTipText": "South Africa",
+        "x": "0.4159",
+        "y": "0.8392",
+        "image": "southernafrica/south_africa.svg",
+        "audio": "south_africa"
+      },
+      {
+        "toolTipText": "Rwanda",
+        "x": "0.5323",
+        "y": "0.1933",
+        "image": "southernafrica/rwanda.svg",
+        "audio": "rwanda"
+      },
+      {
+        "toolTipText": "Republic of the Congo",
+        "x": "0.1968",
+        "y": "0.1629",
+        "image": "southernafrica/republic_of_congo.svg",
+        "audio": "republic_of_congo"
+      },
+      {
+        "toolTipText": "Namibia",
+        "x": "0.2777",
+        "y": "0.7049",
+        "image": "southernafrica/namibia.svg",
+        "audio": "namibia"
+      },
+      {
+        "toolTipText": "Mozambique",
+        "x": "0.6592",
+        "y": "0.6005",
+        "image": "southernafrica/mozambique.svg",
+        "audio": "mozambique"
+      },
+      {
+        "toolTipText": "Malawi",
+        "x": "0.6311",
+        "y": "0.4693",
+        "image": "southernafrica/malawi.svg",
+        "audio": "malawi"
+      },
+      {
+        "toolTipText": "Madagascar",
+        "x": "0.9128",
+        "y": "0.6047",
+        "image": "southernafrica/madagascar.svg",
+        "audio": "madagascar"
+      },
+      {
+        "toolTipText": "Lesotho",
+        "x": "0.4955",
+        "y": "0.8669",
+        "image": "southernafrica/lesotho.svg",
+        "audio": "lesotho"
+      },
+      {
+        "toolTipText": "Kenya",
+        "x": "0.7119",
+        "y": "0.1369",
+        "image": "southernafrica/kenya.svg",
+        "audio": "kenya"
+      },
+      {
+        "toolTipText": "Gabon",
+        "x": "0.1233",
+        "y": "0.1664",
+        "image": "southernafrica/gabon.svg",
+        "audio": "gabon"
+      },
+      {
+        "toolTipText": "Equatorial Guinea",
+        "x": "0.0851",
+        "y": "0.0894",
+        "image": "southernafrica/equatorial_guinea.svg",
+        "audio": "equatorial_guinea"
+      },
+      {
+        "toolTipText": "Democratic Republic of the Congo",
+        "x": "0.3505",
+        "y": "0.2466",
+        "image": "southernafrica/democratic_republic_of_congo.svg",
+        "audio": "democratic_republic_of_congo"
+      },
+      {
+        "toolTipText": "Burundi",
+        "x": "0.5333",
+        "y": "0.2289",
+        "image": "southernafrica/burundi.svg",
+        "audio": "burundi"
+      },
+      {
+        "toolTipText": "Botswana",
+        "x": "0.416",
+        "y": "0.6894",
+        "image": "southernafrica/botswana.svg",
+        "audio": "botswana"
+      },
+      {
+        "toolTipText": "Angola",
+        "x": "0.2644",
+        "y": "0.4194",
+        "image": "southernafrica/angola.svg",
+        "audio": "angola"
+      }
+    ]
+  },
+  {
+    "instruction": "Western Asia",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "asiawestern/western_asia.svg"
+      },
+      {
+        "toolTipText": "Turkey",
+        "x": "0.2779",
+        "y": "0.1567",
+        "image": "asiawestern/turkey.svg",
+        "audio": "turkey"
+      },
+      {
+        "toolTipText": "Cyprus",
+        "x": "0.2315",
+        "y": "0.2767",
+        "image": "asiawestern/cyprus.svg",
+        "audio": "cyprus"
+      },
+      {
+        "toolTipText": "Asia|Georgia",
+        "x": "0.4847",
+        "y": "0.0519",
+        "image": "asiawestern/georgia.svg",
+        "audio": "georgia"
+      },
+      {
+        "toolTipText": "Azerbaijan",
+        "x": "0.5932",
+        "y": "0.1199",
+        "image": "asiawestern/azerbaijan.svg",
+        "audio": "azerbaijan"
+      },
+      {
+        "toolTipText": "Armenia",
+        "x": "0.5279",
+        "y": "0.1218",
+        "image": "asiawestern/armenia.svg",
+        "audio": "armenia"
+      },
+      {
+        "toolTipText": "Iran",
+        "x": "0.7493",
+        "y": "0.3604",
+        "image": "asiawestern/iran.svg",
+        "audio": "iran"
+      },
+      {
+        "toolTipText": "Iraq",
+        "x": "0.4932",
+        "y": "0.3362",
+        "image": "asiawestern/iraq.svg",
+        "audio": "iraq"
+      },
+      {
+        "toolTipText": "Syria",
+        "x": "0.3756",
+        "y": "0.2863",
+        "image": "asiawestern/syria.svg",
+        "audio": "syria"
+      },
+      {
+        "toolTipText": "Jordan",
+        "x": "0.326",
+        "y": "0.3963",
+        "image": "asiawestern/jordan.svg",
+        "audio": "jordan"
+      },
+      {
+        "toolTipText": "Israel",
+        "x": "0.2737",
+        "y": "0.3909",
+        "image": "asiawestern/israel.svg",
+        "audio": "israel"
+      },
+      {
+        "toolTipText": "Palestine",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.2688",
+        "y": "0.3779",
+        "image": "asiawestern/palestine.svg",
+        "audio": "palestine"
+      },
+      {
+        "toolTipText": "Lebanon",
+        "x": "0.2934",
+        "y": "0.3153",
+        "image": "asiawestern/lebanon.svg",
+        "audio": "lebanon"
+      },
+      {
+        "toolTipText": "Saudi Arabia",
+        "x": "0.5308",
+        "y": "0.6161",
+        "image": "asiawestern/saudi_arabia.svg",
+        "audio": "saudi_arabia"
+      },
+      {
+        "toolTipText": "Kuwait",
+        "x": "0.5911",
+        "y": "0.4574",
+        "image": "asiawestern/kuwait.svg",
+        "audio": "kuwait"
+      },
+      {
+        "toolTipText": "Qatar",
+        "x": "0.6857",
+        "y": "0.5811",
+        "image": "asiawestern/qatar.svg",
+        "audio": "qatar"
+      },
+      {
+        "toolTipText": "United Arab Emirates",
+        "x": "0.7572",
+        "y": "0.6132",
+        "image": "asiawestern/united_arab_emirates.svg",
+        "audio": "united_arab_emirates"
+      },
+      {
+        "toolTipText": "Oman",
+        "x": "0.8066",
+        "y": "0.7014",
+        "image": "asiawestern/oman.svg",
+        "audio": "oman"
+      },
+      {
+        "toolTipText": "Yemen",
+        "x": "0.6178",
+        "y": "0.8838",
+        "image": "asiawestern/yemen.svg",
+        "audio": "yemen"
+      },
+      {
+        "toolTipText": "Egypt",
+        "x": "0.164",
+        "y": "0.5354",
+        "image": "asiawestern/egypt.svg",
+        "audio": "egypt"
+      },
+      {
+        "toolTipText": "Bahrain",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.669",
+        "y": "0.5571",
+        "image": "asiawestern/bahrain.svg",
+        "audio": "bahrain"
+      }
+    ]
+  },
+  {
+    "instruction": "Central Asia",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "asiacentral/central_asia.svg"
+      },
+      {
+        "toolTipText": "Kazakhstan",
+        "x": "0.5018",
+        "y": "0.3945",
+        "image": "asiacentral/kazakhstan.svg",
+        "audio": "kazakhstan"
+      },
+      {
+        "toolTipText": "Kyrgyzstan",
+        "x": "0.6885",
+        "y": "0.6963",
+        "image": "asiacentral/kyrgyzstan.svg",
+        "audio": "kyrgyzstan"
+      },
+      {
+        "toolTipText": "Tajikistan",
+        "x": "0.6044",
+        "y": "0.8015",
+        "image": "asiacentral/tajikistan.svg",
+        "audio": "tajikistan"
+      },
+      {
+        "toolTipText": "Turkmenistan",
+        "x": "0.3239",
+        "y": "0.7962",
+        "image": "asiacentral/turkmenistan.svg",
+        "audio": "turkmenistan"
+      },
+      {
+        "toolTipText": "Uzbekistan",
+        "x": "0.4438",
+        "y": "0.6901",
+        "image": "asiacentral/uzbekistan.svg",
+        "audio": "uzbekistan"
+      }
+    ]
+  },
+  {
+    "instruction": "South Asia",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "asiasouth/south_asia.svg"
+      },
+      {
+        "toolTipText": "India",
+        "x": "0.6032",
+        "y": "0.4832",
+        "image": "asiasouth/india.svg",
+        "audio": "india"
+      },
+      {
+        "toolTipText": "Sri Lanka",
+        "x": "0.5512",
+        "y": "0.8412",
+        "image": "asiasouth/sri_lanka.svg",
+        "audio": "sri_lanka"
+      },
+      {
+        "toolTipText": "Pakistan",
+        "x": "0.2369",
+        "y": "0.232",
+        "image": "asiasouth/pakistan.svg",
+        "audio": "pakistan"
+      },
+      {
+        "toolTipText": "Afghanistan",
+        "x": "0.2038",
+        "y": "0.137",
+        "image": "asiasouth/afghanistan.svg",
+        "audio": "afghanistan"
+      },
+      {
+        "toolTipText": "Nepal",
+        "x": "0.6391",
+        "y": "0.2876",
+        "image": "asiasouth/nepal.svg",
+        "audio": "nepal"
+      },
+      {
+        "toolTipText": "Bangladesh",
+        "x": "0.8041",
+        "y": "0.4143",
+        "image": "asiasouth/bangladesh.svg",
+        "audio": "bangladesh"
+      },
+      {
+        "toolTipText": "Bhutan",
+        "x": "0.8064",
+        "y": "0.3113",
+        "image": "asiasouth/bhutan.svg",
+        "audio": "bhutan"
+      },
+      {
+        "toolTipText": "Maldives",
+        "x": "0.356",
+        "y": "0.9539",
+        "image": "asiasouth/maldives.svg",
+        "audio": "maldives"
+      }
+    ]
+  },
+  {
+    "instruction": "Southeast Asia",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "asiasoutheast/southeast_asia.svg"
+      },
+      {
+        "toolTipText": "Singapore",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.2497",
+        "y": "0.6795",
+        "image": "asiasoutheast/singapore.svg",
+        "audio": "singapore"
+      },
+      {
+        "toolTipText": "Indonesia",
+        "x": "0.5307",
+        "y": "0.7724",
+        "image": "asiasoutheast/indonesia.svg",
+        "audio": "indonesia"
+      },
+      {
+        "toolTipText": "Myanmar",
+        "x": "0.1082",
+        "y": "0.2438",
+        "image": "asiasoutheast/myanmar.svg",
+        "audio": "myanmar"
+      },
+      {
+        "toolTipText": "Thailand",
+        "x": "0.2037",
+        "y": "0.3945",
+        "image": "asiasoutheast/thailand.svg",
+        "audio": "thailand"
+      },
+      {
+        "toolTipText": "Laos",
+        "x": "0.2505",
+        "y": "0.2681",
+        "image": "asiasoutheast/laos.svg",
+        "audio": "laos"
+      },
+      {
+        "toolTipText": "Vietnam",
+        "x": "0.2881",
+        "y": "0.3228",
+        "image": "asiasoutheast/vietnam.svg",
+        "audio": "vietnam"
+      },
+      {
+        "toolTipText": "Cambodia",
+        "x": "0.2718",
+        "y": "0.4058",
+        "image": "asiasoutheast/cambodia.svg",
+        "audio": "cambodia"
+      },
+      {
+        "toolTipText": "Malaysia",
+        "x": "0.3604",
+        "y": "0.6116",
+        "image": "asiasoutheast/malaysia.svg",
+        "audio": "malaysia"
+      },
+      {
+        "toolTipText": "Brunei",
+        "x": "0.4637",
+        "y": "0.6012",
+        "image": "asiasoutheast/brunei.svg",
+        "audio": "brunei"
+      },
+      {
+        "toolTipText": "East Timor",
+        "x": "0.68",
+        "y": "0.9263",
+        "image": "asiasoutheast/east_timor.svg",
+        "audio": "east_timor"
+      },
+      {
+        "toolTipText": "Philippines",
+        "x": "0.6034",
+        "y": "0.3961",
+        "image": "asiasoutheast/philippines.svg",
+        "audio": "philippines"
+      }
+    ]
+  },
+  {
+    "instruction": "East Asia",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "asiaeast/east_asia.svg"
+      },
+      {
+        "toolTipText": "Japan",
+        "x": "0.8317",
+        "y": "0.5323",
+        "image": "asiaeast/japan.svg",
+        "audio": "japan"
+      },
+      {
+        "toolTipText": "China",
+        "x": "0.4211",
+        "y": "0.5046",
+        "image": "asiaeast/china.svg",
+        "audio": "china"
+      },
+      {
+        "toolTipText": "Mongolia",
+        "x": "0.4163",
+        "y": "0.2109",
+        "image": "asiaeast/mongolia.svg",
+        "audio": "mongolia"
+      },
+      {
+        "toolTipText": "North Korea",
+        "x": "0.7345",
+        "y": "0.3854",
+        "image": "asiaeast/north_korea.svg",
+        "audio": "north_korea"
+      },
+      {
+        "toolTipText": "South Korea",
+        "x": "0.7473",
+        "y": "0.5047",
+        "image": "asiaeast/south_korea.svg",
+        "audio": "south_korea"
+      },
+      {
+        "toolTipText": "Taiwan",
+        "x": "0.635",
+        "y": "0.8353",
+        "image": "asiaeast/taiwan.svg",
+        "audio": "taiwan"
+      }
+    ]
+  },
+  {
+    "instruction": "Oceania",
+    "items": [
+      {
+        "type": "SHAPE_BACKGROUND_IMAGE",
+        "image": "oceania/oceania.svg"
+      },
+      {
+        "toolTipText": "Pitcairn Islands",
+        "x": "0.959",
+        "y": "0.6008",
+        "image": "oceania/pitcairn_islands.svg",
+        "audio": "pitcairn_islands"
+      },
+      {
+        "toolTipText": "French Polynesia",
+        "x": "0.8278",
+        "y": "0.529",
+        "image": "oceania/french_polynesia.svg",
+        "audio": "french_polynesia"
+      },
+      {
+        "toolTipText": "Papua New Guinea",
+        "x": "0.3067",
+        "y": "0.4013",
+        "image": "oceania/papua_new_guinea.svg",
+        "audio": "papua_new_guinea"
+      },
+      {
+        "toolTipText": "Palau",
+        "x": "0.186",
+        "y": "0.2731",
+        "image": "oceania/palau.svg",
+        "audio": "palau"
+      },
+      {
+        "toolTipText": "Mariana Islands",
+        "x": "0.2826",
+        "y": "0.1488",
+        "image": "oceania/mariana_islands.svg",
+        "audio": "mariana_islands"
+      },
+      {
+        "toolTipText": "Micronesia",
+        "x": "0.3207",
+        "y": "0.2725",
+        "image": "oceania/micronesia.svg",
+        "audio": "micronesia"
+      },
+      {
+        "toolTipText": "Nauru",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.4508",
+        "y": "0.3376",
+        "image": "oceania/nauru.svg",
+        "audio": "nauru"
+      },
+      {
+        "toolTipText": "Vanuatu",
+        "x": "0.4616",
+        "y": "0.5123",
+        "image": "oceania/vanuatu.svg",
+        "audio": "vanuatu"
+      },
+      {
+        "toolTipText": "Tuvalu",
+        "x": "0.5365",
+        "y": "0.42",
+        "image": "oceania/tuvalu.svg",
+        "audio": "tuvalu"
+      },
+      {
+        "toolTipText": "Tonga",
+        "x": "0.5798",
+        "y": "0.5471",
+        "image": "oceania/tonga.svg",
+        "audio": "tonga"
+      },
+      {
+        "toolTipText": "New Caledonia",
+        "x": "0.4469",
+        "y": "0.5549",
+        "image": "oceania/new_caledonia.svg",
+        "audio": "new_caledonia"
+      },
+      {
+        "toolTipText": "Marshall Islands",
+        "x": "0.4474",
+        "y": "0.2282",
+        "image": "oceania/marshall_islands.svg",
+        "audio": "marshall_islands"
+      },
+      {
+        "toolTipText": "Kiribati",
+        "x": "0.6275",
+        "y": "0.3684",
+        "image": "oceania/kiribati.svg",
+        "audio": "kiribati"
+      },
+      {
+        "toolTipText": "Fiji",
+        "x": "0.5386",
+        "y": "0.5179",
+        "image": "oceania/fiji.svg",
+        "audio": "fiji"
+      },
+      {
+        "toolTipText": "Solomon Islands",
+        "x": "0.4189",
+        "y": "0.4286",
+        "image": "oceania/solomon_islands.svg",
+        "audio": "solomon_islands"
+      },
+      {
+        "toolTipText": "New Zealand",
+        "x": "0.5416",
+        "y": "0.7056",
+        "image": "oceania/new_zealand.svg",
+        "audio": "new_zealand"
+      },
+      {
+        "toolTipText": "Cook Islands",
+        "x": "0.6955",
+        "y": "0.4998",
+        "image": "oceania/cook_islands.svg",
+        "audio": "cook_islands"
+      },
+      {
+        "toolTipText": "Samoan Islands",
+        "x": "0.6266",
+        "y": "0.4696",
+        "image": "oceania/samoan_islands.svg",
+        "audio": "samoan_islands"
+      },
+      {
+        "toolTipText": "Australia",
+        "x": "0.248",
+        "y": "0.6444",
+        "image": "oceania/australia.svg",
+        "audio": "australia"
+      },
+      {
+        "toolTipText": "United States Minor Outlying Islands",
+        "x": "0.578",
+        "y": "0.177",
+        "image": "oceania/us_minor.svg",
+        "audio": "us_minor"
+      },
+      {
+        "toolTipText": "Hawaii",
+        "x": "0.6568",
+        "y": "0.0715",
+        "image": "oceania/hawaii.svg",
+        "audio": "hawaii"
+      },
+      {
+        "toolTipText": "Wallis and Futuna",
+        "type": "SHAPE_BACKGROUND",
+        "x": "0.5745",
+        "y": "0.4802",
+        "image": "oceania/wallis_and_futuna.svg",
+        "audio": "wallis_and_futuna"
+      }
+    ]
+  }
+]
