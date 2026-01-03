@@ -48,6 +48,8 @@ import { ChessGame } from './games/ChessGame.js';
 import { ChessTwoPlayerGame } from './games/ChessTwoPlayerGame.js';
 import { ColorsGame } from './games/ColorsGame.js';
 import { AdvancedColorsGame } from './games/AdvancedColorsGame.js';
+import { ColorMixPaintGame } from './games/ColorMixPaintGame.js';
+import { ColorMixLightGame } from './games/ColorMixLightGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -164,6 +166,8 @@ class LalelaGamesApp {
       this.game.scene.add('ChessTwoPlayerGame', ChessTwoPlayerGame);
       this.game.scene.add('ColorsGame', ColorsGame);
       this.game.scene.add('AdvancedColorsGame', AdvancedColorsGame);
+      this.game.scene.add('ColorMixPaintGame', ColorMixPaintGame);
+      this.game.scene.add('ColorMixLightGame', ColorMixLightGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

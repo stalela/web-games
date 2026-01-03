@@ -191,6 +191,20 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'discovery'
       },
       {
+        scene: 'ColorMixPaintGame',
+        name: 'Mix Paint Colors',
+        icon: 'color_mix.svg',
+        difficulty: 4,
+        category: 'discovery'
+      },
+      {
+        scene: 'ColorMixLightGame',
+        name: 'Mix Light Colors',
+        icon: 'color_mix_light.svg',
+        difficulty: 4,
+        category: 'discovery'
+      },
+      {
         scene: 'LearnDigitsGame',
         name: 'Learn Digits',
         icon: 'learn_digits.svg',
