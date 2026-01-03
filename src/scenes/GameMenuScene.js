@@ -252,6 +252,34 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'alphabet-sequence.svg',
         difficulty: 2,
         category: 'reading'
+      },
+      {
+        scene: 'LetterInWordGame',
+        name: 'Letter in Word',
+        icon: 'letter-in-word.svg',
+        difficulty: 2,
+        category: 'reading'
+      },
+      {
+        scene: 'MissingLetterGame',
+        name: 'Missing Letter',
+        icon: 'missing-letter.svg',
+        difficulty: 3,
+        category: 'reading'
+      },
+      {
+        scene: 'ReadingHGame',
+        name: 'Horizontal Reading',
+        icon: 'readingh.svg',
+        difficulty: 2,
+        category: 'reading'
+      },
+      {
+        scene: 'ReadingVGame',
+        name: 'Vertical Reading',
+        icon: 'readingv.svg',
+        difficulty: 2,
+        category: 'reading'
       }
     ];
 

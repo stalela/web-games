@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 29 | **Remaining:** 170
-> **Progress:** ███░░░░░░░ 14.6%
+> **Total Games:** 199 | **Completed:** 33 | **Remaining:** 166
+> **Progress:** ████░░░░░░ 16.6%
 
 ---
 
@@ -165,10 +165,10 @@ Copy this checklist for each new game task.
 | `alphabet-sequence` | P1 | ✅ Complete | - |
 | `click_on_letter` | P1 | ✅ Complete | - |
 | `click_on_letter_up` | P1 | ✅ Complete | - |
-| `letter-in-word` | P1 | ⬜ Not Started | - |
-| `missing-letter` | P1 | ⬜ Not Started | - |
-| `readingh` | P1 | ⬜ Not Started | - |
-| `readingv` | P1 | ⬜ Not Started | - |
+| `letter-in-word` | P1 | ✅ Complete | - |
+| `missing-letter` | P1 | ✅ Complete | - |
+| `readingh` | P1 | ✅ Complete | - |
+| `readingv` | P1 | ✅ Complete | - |
 | `wordsgame` | P1 | ⬜ Not Started | - |
 | `hangman` | P2 | ⬜ Not Started | - |
 | `gletters` | P2 | ⬜ Not Started | - |
