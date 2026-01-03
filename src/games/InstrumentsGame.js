@@ -88,6 +88,52 @@ export class InstrumentsGame extends LalelaGame {
         this.createNavigationDock();
     }
 
+    createNavigationDock() {
+        const { width, height } = this.scale;
+        const buttonSize = 40;
+        const padding = 20;
+        
+        let x = width - padding - buttonSize/2;
+        let y = height - padding - buttonSize/2;
+        
+        // Exit
+        this.createNavButton(x, y, 0xff5252, '✕', () => {
+            this.scene.start('GameMenu');
+        });
+        x -= buttonSize + padding;
+        
+        // Restart
+        this.createNavButton(x, y, 0x26c6da, '↻', () => {
+            this.restartLevel();
+        });
+    }
+    
+    createNavButton(x, y, color, icon, callback, textColor = '#ffffff') {
+        const button = this.add.circle(x, y, 20, color)
+            .setInteractive({ useHandCursor: true })
+            .setDepth(10);
+        
+        this.add.circle(x, y + 2, 20, 0x000000, 0.3).setDepth(9);
+        
+        const text = this.add.text(x, y, icon, {
+            fontFamily: 'Arial',
+            fontSize: '18px',
+            color: textColor
+        }).setOrigin(0.5).setDepth(11);
+
+        button.on('pointerover', () => {
+            button.setScale(1.1);
+            text.setScale(1.1);
+        });
+        button.on('pointerout', () => {
+            button.setScale(1);
+            text.setScale(1);
+        });
+        button.on('pointerdown', callback);
+        
+        return { button, text };
+    }
+
     setupGameLogic() {
         this.levels = [
             // Level 1
