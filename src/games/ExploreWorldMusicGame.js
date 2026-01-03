@@ -14,7 +14,7 @@ export class ExploreWorldMusicGame extends LalelaGame {
     preload() {
         super.preload();
         // Reuse world map from explore-monuments
-        this.load.svg('world-map', 'assets/explore-monuments/wonders/world-map.svg', { width: 1024, height: 600 });
+        this.load.svg('world-map', 'assets/explore-monuments/wonders/world-map.svg');
         
         // Load suitcase icon
         this.load.svg('music-suitcase', 'assets/explore-world-music/suitcase.svg', { width: 64, height: 64 });
@@ -46,20 +46,24 @@ export class ExploreWorldMusicGame extends LalelaGame {
         // World Map
         const map = this.add.image(width / 2, height / 2, 'world-map');
         
-        // Scale map to fit while maintaining aspect ratio
-        const scaleX = width / map.width;
-        const scaleY = height / map.height;
-        const scale = Math.min(scaleX, scaleY);
+        // Logic from ExploreMonumentsGame to handle the map scaling
+        // The map SVG has a large padding around the content, so we need to zoom in
+        const availableHeight = height - 100;
+        const playAreaSize = Math.min(width, availableHeight);
+        
+        // Scale background to be 3x the play area size
+        const scale = (3 * playAreaSize) / map.width;
         
         map.setScale(scale);
         map.setDepth(-1);
         
         // Store map bounds for positioning markers
+        // Markers are relative to the play area (central part of the map)
         this.mapBounds = {
-            x: (width - map.width * scale) / 2,
-            y: (height - map.height * scale) / 2,
-            width: map.width * scale,
-            height: map.height * scale
+            x: (width - playAreaSize) / 2,
+            y: (height - playAreaSize) / 2,
+            width: playAreaSize,
+            height: playAreaSize
         };
     }
 
