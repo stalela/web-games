@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 26 | **Remaining:** 173
-> **Progress:** ██░░░░░░░░ 13.1%
+> **Total Games:** 199 | **Completed:** 29 | **Remaining:** 170
+> **Progress:** ███░░░░░░░ 14.6%
 
 ---
 
@@ -106,6 +106,9 @@ Copy this checklist for each new game task.
 | MoneyGame | Math | MoneyGame | ✅ Complete |
 | MoneyCentsGame | Math | MoneyGame | ✅ Complete |
 | MoneyBackGame | Math | MoneyGame | ✅ Complete |
+| ClickOnLetterGame | Reading | ClickOnLetterGame | ✅ Complete |
+| ClickOnLetterUpGame | Reading | ClickOnLetterGame | ✅ Complete |
+| AlphabetSequenceGame | Reading | LalelaGame | ✅ Complete |
 | CheckersGame | Strategy | LalelaGame | ✅ Complete |
 | HexagonGame | Logic | LalelaGame | ✅ Complete |
 | MemoryGame | Memory | LalelaGame | ✅ Complete |
@@ -159,9 +162,9 @@ Copy this checklist for each new game task.
 
 | GCompris Activity | Priority | Status | Assigned |
 |-------------------|----------|--------|----------|
-| `alphabet-sequence` | P1 | ⬜ Not Started | - |
-| `click_on_letter` | P1 | ⬜ Not Started | - |
-| `click_on_letter_up` | P1 | ⬜ Not Started | - |
+| `alphabet-sequence` | P1 | ✅ Complete | - |
+| `click_on_letter` | P1 | ✅ Complete | - |
+| `click_on_letter_up` | P1 | ✅ Complete | - |
 | `letter-in-word` | P1 | ⬜ Not Started | - |
 | `missing-letter` | P1 | ⬜ Not Started | - |
 | `readingh` | P1 | ⬜ Not Started | - |

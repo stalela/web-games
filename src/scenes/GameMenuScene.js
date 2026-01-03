@@ -231,6 +231,27 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'money_back.svg',
         difficulty: 3,
         category: 'math'
+      },
+      {
+        scene: 'ClickOnLetterGame',
+        name: 'Click on a Lowercase Letter',
+        icon: 'click_on_letter.svg',
+        difficulty: 2,
+        category: 'reading'
+      },
+      {
+        scene: 'ClickOnLetterUpGame',
+        name: 'Click on an Uppercase Letter',
+        icon: 'click_on_letter_up.svg',
+        difficulty: 2,
+        category: 'reading'
+      },
+      {
+        scene: 'AlphabetSequenceGame',
+        name: 'Alphabet Sequence',
+        icon: 'alphabet-sequence.svg',
+        difficulty: 2,
+        category: 'reading'
       }
     ];
 

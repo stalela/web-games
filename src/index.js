@@ -32,6 +32,9 @@ import { AlgebraDivGame } from './games/AlgebraDivGame.js';
 import { MoneyGame } from './games/MoneyGame.js';
 import { MoneyCentsGame } from './games/MoneyCentsGame.js';
 import { MoneyBackGame } from './games/MoneyBackGame.js';
+import { ClickOnLetterGame } from './games/ClickOnLetterGame.js';
+import { ClickOnLetterUpGame } from './games/ClickOnLetterUpGame.js';
+import { AlphabetSequenceGame } from './games/AlphabetSequenceGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -132,6 +135,9 @@ class LalelaGamesApp {
       this.game.scene.add('MoneyGame', MoneyGame);
       this.game.scene.add('MoneyCentsGame', MoneyCentsGame);
       this.game.scene.add('MoneyBackGame', MoneyBackGame);
+      this.game.scene.add('ClickOnLetterGame', ClickOnLetterGame);
+      this.game.scene.add('ClickOnLetterUpGame', ClickOnLetterUpGame);
+      this.game.scene.add('AlphabetSequenceGame', AlphabetSequenceGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();
