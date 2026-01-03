@@ -54,13 +54,12 @@ export class GeographyMapGame extends LalelaGame {
     }
   }
 
-  create() {
-    super.create();
-    
-    this.createBackground();
-    this.createUI();
+  /**
+   * LalelaGame calls createBackground() then createGameObjects() then createUI().
+   * Keep all map sprites in createGameObjects so UI stays on top.
+   */
+  createGameObjects() {
     this.createMap();
-    this.setupGameLogic();
   }
 
   createBackground() {
