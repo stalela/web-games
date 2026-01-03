@@ -532,6 +532,76 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'chess.svg',
         difficulty: 3,
         category: 'strategy'
+      },
+      {
+        scene: 'MemoryMathAddGame',
+        name: 'Addition Memory',
+        icon: 'memory-math-add.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathAddMinusGame',
+        name: 'Add/Sub Memory',
+        icon: 'memory-math-add-minus.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'HanoiGame',
+        name: 'Towers of Hanoi',
+        icon: 'hanoi.svg',
+        difficulty: 3,
+        category: 'strategy'
+      },
+      {
+        scene: 'HanoiRealGame',
+        name: 'Towers of Hanoi (Real)',
+        icon: 'hanoi_real.svg',
+        difficulty: 3,
+        category: 'strategy'
+      },
+      {
+        scene: 'FifteenGame',
+        name: 'Fifteen Puzzle',
+        icon: 'fifteen.svg',
+        difficulty: 3,
+        category: 'strategy'
+      },
+      {
+        scene: 'LightsOffGame',
+        name: 'Lights Off',
+        icon: 'lightsoff.svg',
+        difficulty: 3,
+        category: 'strategy'
+      },
+      {
+        scene: 'MazeGame',
+        name: 'Maze',
+        icon: 'maze.svg',
+        difficulty: 2,
+        category: 'strategy'
+      },
+      {
+        scene: 'MazeInvisibleGame',
+        name: 'Invisible Maze',
+        icon: 'mazeinvisible.svg',
+        difficulty: 4,
+        category: 'strategy'
+      },
+      {
+        scene: 'MazeRelativeGame',
+        name: 'Relative Maze',
+        icon: 'mazerelative.svg',
+        difficulty: 4,
+        category: 'strategy'
+      },
+      {
+        scene: 'TrafficGame',
+        name: 'Traffic',
+        icon: 'traffic.svg',
+        difficulty: 3,
+        category: 'strategy'
       }
     ];
 

@@ -75,6 +75,16 @@ import { ExploreWorldAnimalsGame } from './games/ExploreWorldAnimalsGame.js';
 import { ExploreMonumentsGame } from './games/ExploreMonumentsGame.js';
 import { ExploreWorldMusicGame } from './games/ExploreWorldMusicGame.js';
 import { InstrumentsGame } from './games/InstrumentsGame.js';
+import { MemoryMathAddGame } from './games/MemoryMathAddGame.js';
+import { MemoryMathAddMinusGame } from './games/MemoryMathAddMinusGame.js';
+import { HanoiGame } from './games/HanoiGame.js';
+import { HanoiRealGame } from './games/HanoiRealGame.js';
+import { FifteenGame } from './games/FifteenGame.js';
+import { LightsOffGame } from './games/LightsOffGame.js';
+import { MazeGame } from './games/MazeGame.js';
+import { MazeInvisibleGame } from './games/MazeInvisibleGame.js';
+import { MazeRelativeGame } from './games/MazeRelativeGame.js';
+import { TrafficGame } from './games/TrafficGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -218,6 +228,16 @@ class LalelaGamesApp {
       this.game.scene.add('ExploreMonumentsGame', ExploreMonumentsGame);
       this.game.scene.add('ExploreWorldMusicGame', ExploreWorldMusicGame);
       this.game.scene.add('InstrumentsGame', InstrumentsGame);
+      this.game.scene.add('MemoryMathAddGame', MemoryMathAddGame);
+      this.game.scene.add('MemoryMathAddMinusGame', MemoryMathAddMinusGame);
+      this.game.scene.add('HanoiGame', HanoiGame);
+      this.game.scene.add('HanoiRealGame', HanoiRealGame);
+      this.game.scene.add('FifteenGame', FifteenGame);
+      this.game.scene.add('LightsOffGame', LightsOffGame);
+      this.game.scene.add('MazeGame', MazeGame);
+      this.game.scene.add('MazeInvisibleGame', MazeInvisibleGame);
+      this.game.scene.add('MazeRelativeGame', MazeRelativeGame);
+      this.game.scene.add('TrafficGame', TrafficGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

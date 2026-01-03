@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 59 | **Remaining:** 140
-> **Progress:** ██████░░░░ 29.6%
+> **Total Games:** 199 | **Completed:** 69 | **Remaining:** 130
+> **Progress:** ███████░░░ 34.6%
 
 ---
 
@@ -85,7 +85,7 @@ Copy this checklist for each new game task.
 
 ## 📦 Migration Backlog by Category
 
-### ✅ Completed Games (19)
+### ✅ Completed Games
 
 | Game | Category | Base Class | Status |
 |------|----------|------------|--------|
@@ -130,6 +130,16 @@ Copy this checklist for each new game task.
 | ClickGame | Computer | LalelaGame | ✅ Complete |
 | EraseGame | Computer | LalelaGame | ✅ Complete |
 | EraseClickGame | Computer | LalelaGame | ✅ Complete |
+| MemoryMathAddGame | Memory | MemoryGame | ✅ Complete |
+| MemoryMathAddMinusGame | Memory | MemoryGame | ✅ Complete |
+| HanoiGame | Strategy | LalelaGame | ✅ Complete |
+| HanoiRealGame | Strategy | HanoiGame | ✅ Complete |
+| FifteenGame | Strategy | LalelaGame | ✅ Complete |
+| LightsOffGame | Strategy | LalelaGame | ✅ Complete |
+| MazeGame | Strategy | LalelaGame | ✅ Complete |
+| MazeInvisibleGame | Strategy | MazeGame | ✅ Complete |
+| MazeRelativeGame | Strategy | MazeGame | ✅ Complete |
+| TrafficGame | Strategy | LalelaGame | ✅ Complete |
 
 ---
 
@@ -204,14 +214,14 @@ Copy this checklist for each new game task.
 | `chess_2players` | P1 | ✅ Complete | - |
 | `tic_tac_toe` | P1 | ✅ Complete | - |
 | `tic_tac_toe_2players` | P1 | ✅ Complete | - |
-| `hanoi` | P2 | ⬜ Not Started | - |
-| `hanoi_real` | P2 | ⬜ Not Started | - |
-| `fifteen` | P2 | ⬜ Not Started | - |
-| `lightsoff` | P2 | ⬜ Not Started | - |
-| `maze` | P2 | ⬜ Not Started | - |
-| `mazeinvisible` | P2 | ⬜ Not Started | - |
-| `mazerelative` | P2 | ⬜ Not Started | - |
-| `traffic` | P2 | ⬜ Not Started | - |
+| `hanoi` | P2 | ✅ Complete | - |
+| `hanoi_real` | P2 | ✅ Complete | - |
+| `fifteen` | P2 | ✅ Complete | - |
+| `lightsoff` | P2 | ✅ Complete | - |
+| `maze` | P2 | ✅ Complete | - |
+| `mazeinvisible` | P2 | ✅ Complete | - |
+| `mazerelative` | P2 | ✅ Complete | - |
+| `traffic` | P2 | ✅ Complete | - |
 | `bargame` | P3 | ⬜ Not Started | - |
 | `bargame_2players` | P3 | ⬜ Not Started | - |
 | `graph-coloring` | P3 | ⬜ Not Started | - |
@@ -291,8 +301,8 @@ Copy this checklist for each new game task.
 | `memory-case-association` | P2 | ✅ Complete | - |
 | `memory-case-association-tux` | P2 | ✅ Complete | - |
 | `memory-enumerate` | P2 | ✅ Complete | - |
-| `memory-math-add` | P2 | ⬜ Not Started | - |
-| `memory-math-add-minus` | P2 | ⬜ Not Started | - |
+| `memory-math-add` | P2 | ✅ Complete | - |
+| `memory-math-add-minus` | P2 | ✅ Complete | - |
 | `memory-math-add-minus-mult-div` | P3 | ⬜ Not Started | - |
 | `memory-math-add-tux` | P3 | ⬜ Not Started | - |
 | `memory-math-div` | P3 | ⬜ Not Started | - |
