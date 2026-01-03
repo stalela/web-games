@@ -100,6 +100,76 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'computer'
       },
       {
+        scene: 'BabyShapesGame',
+        name: 'Baby Shapes',
+        icon: 'babyshapes.svg',
+        difficulty: 1,
+        category: 'puzzle'
+      },
+      {
+        scene: 'BabyTangramGame',
+        name: 'Baby Tangram',
+        icon: 'baby_tangram.svg',
+        difficulty: 1,
+        category: 'puzzle'
+      },
+      {
+        scene: 'TangramGame',
+        name: 'Tangram',
+        icon: 'tangram.svg',
+        difficulty: 2,
+        category: 'puzzle'
+      },
+      {
+        scene: 'DetailsGame',
+        name: 'Details',
+        icon: 'details.svg',
+        difficulty: 2,
+        category: 'puzzle'
+      },
+      {
+        scene: 'LandSafeGame',
+        name: 'Land Safe',
+        icon: 'land_safe.svg',
+        difficulty: 3,
+        category: 'discovery'
+      },
+      {
+        scene: 'MelodyGame',
+        name: 'Melody',
+        icon: 'melody.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'FamilyGame',
+        name: 'Family',
+        icon: 'family.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'CanalLockGame',
+        name: 'Canal Lock',
+        icon: 'canal_lock.svg',
+        difficulty: 3,
+        category: 'discovery'
+      },
+      {
+        scene: 'WaterCycleGame',
+        name: 'Water Cycle',
+        icon: 'watercycle.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'SolarSystemGame',
+        name: 'Solar System',
+        icon: 'solar_system.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
         scene: 'AdjacentNumbers',
         name: 'Adjacent Numbers',
         icon: 'adjacent_numbers.svg',

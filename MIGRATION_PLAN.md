@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 54 | **Remaining:** 145
-> **Progress:** █████░░░░░ 27.1%
+> **Total Games:** 199 | **Completed:** 59 | **Remaining:** 140
+> **Progress:** ██████░░░░ 29.6%
 
 ---
 
@@ -233,16 +233,16 @@ Copy this checklist for each new game task.
 | `explore_monuments` | P2 | ✅ Complete | - |
 | `explore_world_music` | P2 | ✅ Complete | - |
 | `instruments` | P2 | ✅ Complete | - |
-| `melody` | P2 | ⬜ Not Started | - |
+| `melody` | P2 | ✅ Complete | - |
 | `analog_electricity` | P3 | ⬜ Not Started | - |
 | `digital_electricity` | P3 | ⬜ Not Started | - |
-| `canal_lock` | P3 | ⬜ Not Started | - |
-| `watercycle` | P3 | ⬜ Not Started | - |
-| `solar_system` | P3 | ⬜ Not Started | - |
+| `canal_lock` | P3 | ✅ Complete | - |
+| `watercycle` | P3 | ✅ Complete | - |
+| `solar_system` | P3 | ✅ Complete | - |
 | `renewable_energy` | P3 | ⬜ Not Started | - |
 | `gravity` | P3 | ⬜ Not Started | - |
 | `chronos` | P3 | ⬜ Not Started | - |
-| `family` | P2 | ⬜ Not Started | - |
+| `family` | P2 | ✅ Complete | - |
 | `family_find_relative` | P2 | ⬜ Not Started | - |
 
 ---
