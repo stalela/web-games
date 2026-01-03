@@ -287,6 +287,34 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'wordsgame.svg',
         difficulty: 3,
         category: 'reading'
+      },
+      {
+        scene: 'TicTacToeGame',
+        name: 'Tic Tac Toe',
+        icon: 'tic_tac_toe.svg',
+        difficulty: 1,
+        category: 'strategy'
+      },
+      {
+        scene: 'TicTacToeTwoPlayerGame',
+        name: 'Tic Tac Toe (2P)',
+        icon: 'tic_tac_toe.svg',
+        difficulty: 1,
+        category: 'strategy'
+      },
+      {
+        scene: 'Align4Game',
+        name: 'Connect Four',
+        icon: 'align4.svg',
+        difficulty: 2,
+        category: 'strategy'
+      },
+      {
+        scene: 'Align4TwoPlayerGame',
+        name: 'Connect Four (2P)',
+        icon: 'align4.svg',
+        difficulty: 2,
+        category: 'strategy'
       }
     ];
 

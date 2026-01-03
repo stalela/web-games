@@ -40,6 +40,10 @@ import { MissingLetterGame } from './games/MissingLetterGame.js';
 import { ReadingHGame } from './games/ReadingHGame.js';
 import { ReadingVGame } from './games/ReadingVGame.js';
 import { WordsGame } from './games/WordsGame.js';
+import { TicTacToeGame } from './games/TicTacToeGame.js';
+import { TicTacToeTwoPlayerGame } from './games/TicTacToeTwoPlayerGame.js';
+import { Align4Game } from './games/Align4Game.js';
+import { Align4TwoPlayerGame } from './games/Align4TwoPlayerGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -148,6 +152,10 @@ class LalelaGamesApp {
       this.game.scene.add('ReadingHGame', ReadingHGame);
       this.game.scene.add('ReadingVGame', ReadingVGame);
       this.game.scene.add('WordsGame', WordsGame);
+      this.game.scene.add('TicTacToeGame', TicTacToeGame);
+      this.game.scene.add('TicTacToeTwoPlayerGame', TicTacToeTwoPlayerGame);
+      this.game.scene.add('Align4Game', Align4Game);
+      this.game.scene.add('Align4TwoPlayerGame', Align4TwoPlayerGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

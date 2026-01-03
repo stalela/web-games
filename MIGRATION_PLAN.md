@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 34 | **Remaining:** 165
-> **Progress:** ████░░░░░░ 17.1%
+> **Total Games:** 199 | **Completed:** 38 | **Remaining:** 161
+> **Progress:** ████░░░░░░ 19.1%
 
 ---
 
@@ -186,12 +186,12 @@ Copy this checklist for each new game task.
 
 | GCompris Activity | Priority | Status | Assigned |
 |-------------------|----------|--------|----------|
-| `align4` | P1 | ⬜ Not Started | - |
-| `align4_2players` | P1 | ⬜ Not Started | - |
+| `align4` | P1 | ✅ Complete | - |
+| `align4_2players` | P1 | ✅ Complete | - |
 | `chess` | P1 | ⬜ Not Started | - |
 | `chess_2players` | P1 | ⬜ Not Started | - |
-| `tic_tac_toe` | P1 | ⬜ Not Started | - |
-| `tic_tac_toe_2players` | P1 | ⬜ Not Started | - |
+| `tic_tac_toe` | P1 | ✅ Complete | - |
+| `tic_tac_toe_2players` | P1 | ✅ Complete | - |
 | `hanoi` | P2 | ⬜ Not Started | - |
 | `hanoi_real` | P2 | ⬜ Not Started | - |
 | `fifteen` | P2 | ⬜ Not Started | - |
