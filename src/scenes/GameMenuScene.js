@@ -315,6 +315,20 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'align4.svg',
         difficulty: 2,
         category: 'strategy'
+      },
+      {
+        scene: 'ChessGame',
+        name: 'Chess',
+        icon: 'chess.svg',
+        difficulty: 3,
+        category: 'strategy'
+      },
+      {
+        scene: 'ChessTwoPlayerGame',
+        name: 'Chess (2P)',
+        icon: 'chess.svg',
+        difficulty: 3,
+        category: 'strategy'
       }
     ];
 

@@ -44,6 +44,8 @@ import { TicTacToeGame } from './games/TicTacToeGame.js';
 import { TicTacToeTwoPlayerGame } from './games/TicTacToeTwoPlayerGame.js';
 import { Align4Game } from './games/Align4Game.js';
 import { Align4TwoPlayerGame } from './games/Align4TwoPlayerGame.js';
+import { ChessGame } from './games/ChessGame.js';
+import { ChessTwoPlayerGame } from './games/ChessTwoPlayerGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -156,6 +158,8 @@ class LalelaGamesApp {
       this.game.scene.add('TicTacToeTwoPlayerGame', TicTacToeTwoPlayerGame);
       this.game.scene.add('Align4Game', Align4Game);
       this.game.scene.add('Align4TwoPlayerGame', Align4TwoPlayerGame);
+      this.game.scene.add('ChessGame', ChessGame);
+      this.game.scene.add('ChessTwoPlayerGame', ChessTwoPlayerGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();
