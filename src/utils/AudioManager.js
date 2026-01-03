@@ -376,6 +376,9 @@ export class AudioManager {
   async preloadCommonSounds() {
     try {
       await this.loadSound('click', 'assets/sounds/audioclick.wav');
+      await this.loadSound('success', 'assets/sounds/completetask.wav');
+      await this.loadSound('fail', 'assets/sounds/crash.wav');
+      await this.loadSound('level-complete', 'assets/sounds/win.wav');
     } catch (error) {
       console.warn("Could not preload common sounds:", error);
     }

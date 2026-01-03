@@ -331,12 +331,12 @@ export class ExploreMonumentsGame extends LalelaGame {
         
         if (selectedMonument.id === target.id) {
             // Correct
-            this.sound.play('success');
+            if (this.audioManager) this.audioManager.playSound('success');
             this.showMonumentInfo(target);
             this.currentQuestion++;
         } else {
             // Incorrect
-            this.sound.play('fail');
+            if (this.audioManager) this.audioManager.playSound('fail');
             const sprite = this.monumentSprites.find(m => m.marker.getData('monument').id === selectedMonument.id);
             if (sprite) {
                 sprite.marker.setTint(0xff0000);
@@ -437,10 +437,18 @@ export class ExploreMonumentsGame extends LalelaGame {
         });
         modal.add(nextBtn);
         
-        this.sound.play('level-complete');
+        if (this.audioManager) this.audioManager.playSound('level-complete');
     }
 
     restartLevel() {
-        this.scene.restart({ level: this.level });
+        this.scene.restart({ 
+            level: this.level,
+            assetManager: this.assetManager,
+            uiManager: this.uiManager,
+            gameManager: this.gameManager,
+            audioManager: this.audioManager,
+            dataManager: this.dataManager,
+            inputManager: this.inputManager
+        });
     }
 }
