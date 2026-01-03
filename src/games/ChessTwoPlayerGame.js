@@ -8,7 +8,7 @@ import { ChessGame } from './ChessGame.js';
 
 export class ChessTwoPlayerGame extends ChessGame {
     constructor() {
-        super();
+        super({ key: 'ChessTwoPlayerGame' });
         this.twoPlayer = true;
     }
 

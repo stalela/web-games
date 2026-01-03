@@ -15,8 +15,8 @@ import { LalelaGame } from '../utils/LalelaGame.js';
 import * as ChessEngine from '../utils/ChessEngine.js';
 
 export class ChessGame extends LalelaGame {
-    constructor() {
-        super({ key: 'ChessGame' });
+    constructor(config) {
+        super(config || { key: 'ChessGame' });
         this.twoPlayer = false;
     }
 
