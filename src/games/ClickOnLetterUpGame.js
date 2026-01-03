@@ -10,8 +10,7 @@ import { ClickOnLetterGame } from './ClickOnLetterGame.js';
 
 export class ClickOnLetterUpGame extends ClickOnLetterGame {
     constructor() {
-        super();
-        this.scene.key = 'ClickOnLetterUpGame';
+        super({ key: 'ClickOnLetterUpGame' });
     }
     
     init(data) {

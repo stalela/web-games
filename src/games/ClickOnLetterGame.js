@@ -14,8 +14,8 @@
 import { LalelaGame } from '../utils/LalelaGame.js';
 
 export class ClickOnLetterGame extends LalelaGame {
-    constructor() {
-        super({ key: 'ClickOnLetterGame' });
+    constructor(config = { key: 'ClickOnLetterGame' }) {
+        super(config);
         
         // Mode: 'lowercase' or 'uppercase'
         this.mode = 'lowercase';
