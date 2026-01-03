@@ -27,10 +27,17 @@ export class ChessGame extends LalelaGame {
     }
 
     create() {
-        super.create();
+        // Don't call super.create() - we handle our own lifecycle
+        // Just initialize what we need from the base class
+        this.gameState = 'ready';
+        
+        // Initialize performance optimizations if available
+        if (typeof this.initializePerformanceOptimizations === 'function') {
+            this.initializePerformanceOptimizations();
+        }
         
         // Game state
-        this.gameState = null;
+        this.chessState = null;
         this.selectedSquare = -1;
         this.validMoves = [];
         this.gameOver = false;
@@ -50,67 +57,183 @@ export class ChessGame extends LalelaGame {
     createBackground() {
         const { width, height } = this.scale;
         
-        // Dark gradient background
+        // Wood texture background (brown gradient)
         const bg = this.add.graphics();
-        bg.fillGradientStyle(0x1a1a2e, 0x1a1a2e, 0x16213e, 0x16213e, 1);
+        bg.fillGradientStyle(0x5d4037, 0x6d4c41, 0x4e342e, 0x3e2723, 1);
         bg.fillRect(0, 0, width, height);
         bg.setDepth(-1);
+        
+        // Add subtle wood grain lines
+        bg.lineStyle(1, 0x4a3728, 0.3);
+        for (let i = 0; i < height; i += 20) {
+            bg.lineBetween(0, i + Math.random() * 10, width, i + Math.random() * 10);
+        }
     }
 
     createUI() {
         const { width, height } = this.scale;
         
-        // Title
-        this.add.text(width / 2, 30, this.twoPlayer ? 'Chess - Two Players' : 'Chess', {
-            fontFamily: 'Arial Black',
-            fontSize: '28px',
-            color: '#ffffff',
-            stroke: '#000000',
-            strokeThickness: 4
-        }).setOrigin(0.5).setDepth(10);
+        // Turn indicator (styled box at top)
+        const turnBoxWidth = 160;
+        const turnBoxHeight = 40;
+        this.turnBox = this.add.graphics();
+        this.turnBox.fillStyle(0x3d5a5a, 1);
+        this.turnBox.fillRoundedRect(
+            width / 2 - turnBoxWidth / 2, 
+            15, 
+            turnBoxWidth, 
+            turnBoxHeight, 
+            10
+        );
+        this.turnBox.lineStyle(2, 0x2d4a4a, 1);
+        this.turnBox.strokeRoundedRect(
+            width / 2 - turnBoxWidth / 2, 
+            15, 
+            turnBoxWidth, 
+            turnBoxHeight, 
+            10
+        );
+        this.turnBox.setDepth(10);
 
-        // Level indicator (for single player)
-        if (!this.twoPlayer) {
-            this.levelText = this.add.text(width / 2, 60, `Level ${this.level}`, {
-                fontFamily: 'Arial',
-                fontSize: '18px',
-                color: '#aaaaaa'
-            }).setOrigin(0.5).setDepth(10);
-        }
-
-        // Turn indicator
-        this.turnText = this.add.text(width / 2, height - 60, "White's turn", {
-            fontFamily: 'Arial',
-            fontSize: '20px',
-            color: '#ffffff'
-        }).setOrigin(0.5).setDepth(10);
-
-        // Message text (for check/checkmate)
-        this.messageText = this.add.text(width / 2, height - 35, '', {
+        // Turn text
+        this.turnText = this.add.text(width / 2, 35, "White's turn", {
             fontFamily: 'Arial',
             fontSize: '18px',
+            color: '#ffffff'
+        }).setOrigin(0.5).setDepth(11);
+
+        // Message text (for check/checkmate) - below turn indicator
+        this.messageText = this.add.text(width / 2, 70, '', {
+            fontFamily: 'Arial',
+            fontSize: '16px',
             color: '#ffcc00'
         }).setOrigin(0.5).setDepth(10);
 
-        // Create navigation
+        // Create GCompris-style navigation bar
         this.createNavigationDock();
     }
 
     createNavigationDock() {
         const { width, height } = this.scale;
-        const buttonSize = 40;
-        const padding = 15;
-        const startX = padding + buttonSize / 2;
-        const y = height - buttonSize / 2 - padding;
+        const buttonSize = 60;
+        const padding = 10;
+        const y = height - buttonSize / 2 - 15;
         
-        // Exit button
-        this.createNavButton(startX, y, '✕', () => {
+        // Calculate positions for centered navigation
+        const totalWidth = buttonSize * 6 + padding * 5 + 40; // 6 buttons + level text
+        let x = (width - totalWidth) / 2 + buttonSize / 2;
+        
+        // Menu button (gold/yellow - hamburger menu)
+        this.createGComprisButton(x, y, 0xc9a227, '☰', () => {
+            // Toggle menu
+        });
+        x += buttonSize + padding;
+        
+        // Help button (green)
+        this.createGComprisButton(x, y, 0x4caf50, '?', () => {
+            // Show help
+        });
+        x += buttonSize + padding;
+        
+        // Home button (cyan)
+        this.createGComprisButton(x, y, 0x26c6da, '⌂', () => {
             this.scene.start('GameMenu');
         });
-
-        // Restart button
-        this.createNavButton(startX + buttonSize + padding, y, '↺', () => {
+        x += buttonSize + padding;
+        
+        // Previous level (orange)
+        this.createGComprisButton(x, y, 0xf57c00, '❮', () => {
+            if (this.level > 1) {
+                this.level--;
+                this.restartGame();
+            }
+        });
+        x += buttonSize + padding;
+        
+        // Level indicator
+        this.levelText = this.add.text(x, y, String(this.level), {
+            fontFamily: 'Arial Black',
+            fontSize: '28px',
+            color: '#ffffff',
+            stroke: '#000000',
+            strokeThickness: 3
+        }).setOrigin(0.5).setDepth(10);
+        x += 40;
+        
+        // Next level (white/light)
+        this.createGComprisButton(x, y, 0xeeeeee, '❯', () => {
+            if (this.level < this.maxLevel) {
+                this.level++;
+                this.restartGame();
+            }
+        }, '#333333');
+        x += buttonSize + padding;
+        
+        // Reload/Restart button (cyan)
+        this.createGComprisButton(x, y, 0x26c6da, '↻', () => {
             this.restartGame();
+        });
+        
+        // Two player toggle button (right side of board)
+        const toggleX = this.boardX + this.boardSize + 50;
+        const toggleY = this.boardY + this.boardSize / 2;
+        this.createTwoPlayerToggle(toggleX, toggleY);
+    }
+    
+    createGComprisButton(x, y, color, icon, callback, textColor = '#ffffff') {
+        const button = this.add.circle(x, y, 28, color)
+            .setInteractive({ useHandCursor: true })
+            .setDepth(10);
+        
+        // Add shadow/border effect
+        const shadow = this.add.circle(x, y + 2, 28, 0x000000, 0.3)
+            .setDepth(9);
+        
+        const text = this.add.text(x, y, icon, {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: textColor
+        }).setOrigin(0.5).setDepth(11);
+
+        button.on('pointerover', () => {
+            button.setScale(1.1);
+            text.setScale(1.1);
+        });
+        button.on('pointerout', () => {
+            button.setScale(1);
+            text.setScale(1);
+        });
+        button.on('pointerdown', callback);
+        
+        return { button, text, shadow };
+    }
+    
+    createTwoPlayerToggle(x, y) {
+        // Two player toggle box
+        const boxWidth = 50;
+        const boxHeight = 60;
+        
+        const box = this.add.graphics();
+        box.fillStyle(0xf5f5f5, 1);
+        box.fillRoundedRect(x - boxWidth/2, y - boxHeight/2, boxWidth, boxHeight, 8);
+        box.lineStyle(2, 0xcccccc, 1);
+        box.strokeRoundedRect(x - boxWidth/2, y - boxHeight/2, boxWidth, boxHeight, 8);
+        box.setDepth(10);
+        
+        // Player icons
+        const icon = this.add.text(x, y, '👤👤', {
+            fontFamily: 'Arial',
+            fontSize: '20px'
+        }).setOrigin(0.5).setDepth(11);
+        
+        // Make it interactive
+        const hitArea = this.add.rectangle(x, y, boxWidth, boxHeight, 0x000000, 0)
+            .setInteractive({ useHandCursor: true })
+            .setDepth(12);
+        
+        hitArea.on('pointerdown', () => {
+            // Switch to two player mode
+            this.scene.start('ChessTwoPlayerGame');
         });
     }
 
@@ -197,8 +320,8 @@ export class ChessGame extends LalelaGame {
         }
 
         // Add rank/file labels
-        const labelStyle = { fontFamily: 'Arial', fontSize: '12px', color: '#888888' };
-        const files = 'abcdefgh';
+        const labelStyle = { fontFamily: 'Arial', fontSize: '14px', color: '#3e2723', fontStyle: 'bold' };
+        const files = 'ABCDEFGH';
         
         for (let i = 0; i < 8; i++) {
             // Files (a-h)
@@ -218,7 +341,7 @@ export class ChessGame extends LalelaGame {
     }
 
     startNewGame() {
-        this.gameState = ChessEngine.p4_new_game();
+        this.chessState = ChessEngine.p4_new_game();
         this.gameOver = false;
         this.selectedSquare = -1;
         this.validMoves = [];
@@ -230,19 +353,32 @@ export class ChessGame extends LalelaGame {
     }
 
     restartGame() {
-        // Clear existing pieces
-        this.pieces.forEach(p => p.destroy());
+        // Clear existing pieces and their shadows
+        this.pieces.forEach(p => {
+            const shadow = p.getData('shadow');
+            if (shadow) shadow.destroy();
+            p.destroy();
+        });
         this.pieces = [];
+        
+        // Update level text if it exists
+        if (this.levelText) {
+            this.levelText.setText(String(this.level));
+        }
         
         this.startNewGame();
     }
 
     renderPieces() {
-        // Clear existing pieces
-        this.pieces.forEach(p => p.destroy());
+        // Clear existing pieces and their shadows
+        this.pieces.forEach(p => {
+            const shadow = p.getData('shadow');
+            if (shadow) shadow.destroy();
+            p.destroy();
+        });
         this.pieces = [];
 
-        const board = this.gameState.board;
+        const board = this.chessState.board;
         
         for (let enginePos = 21; enginePos < 99; enginePos++) {
             const piece = board[enginePos];
@@ -263,6 +399,7 @@ export class ChessGame extends LalelaGame {
         const x = col * this.squareSize + this.squareSize / 2;
         const y = row * this.squareSize + this.squareSize / 2;
 
+        // Use filled chess symbols for better visibility
         const pieceSymbols = {
             'wp': '♙', 'wr': '♖', 'wn': '♘', 'wb': '♗', 'wq': '♕', 'wk': '♔',
             'bp': '♟', 'br': '♜', 'bn': '♞', 'bb': '♝', 'bq': '♛', 'bk': '♚'
@@ -271,16 +408,25 @@ export class ChessGame extends LalelaGame {
         const symbol = pieceSymbols[pieceType];
         const isWhite = pieceType[0] === 'w';
         
+        // Create shadow for depth effect
+        const shadow = this.add.text(x + 2, y + 2, symbol, {
+            fontFamily: 'Arial',
+            fontSize: `${this.squareSize * 0.7}px`,
+            color: '#000000'
+        }).setOrigin(0.5).setAlpha(0.3);
+        this.boardContainer.add(shadow);
+        
         const piece = this.add.text(x, y, symbol, {
             fontFamily: 'Arial',
-            fontSize: `${this.squareSize * 0.75}px`,
-            color: isWhite ? '#ffffff' : '#000000',
-            stroke: isWhite ? '#000000' : '#ffffff',
+            fontSize: `${this.squareSize * 0.7}px`,
+            color: isWhite ? '#f5f5f5' : '#37474f',
+            stroke: isWhite ? '#424242' : '#263238',
             strokeThickness: 2
         }).setOrigin(0.5);
 
         piece.setData('viewPos', viewPos);
         piece.setData('type', pieceType);
+        piece.setData('shadow', shadow);
         
         this.boardContainer.add(piece);
         this.pieces.push(piece);
@@ -292,7 +438,7 @@ export class ChessGame extends LalelaGame {
         if (this.gameOver || this.isThinking) return;
         
         // In single player, only allow moves when it's the player's turn
-        if (!this.twoPlayer && this.gameState.to_play !== this.playerColor) return;
+        if (!this.twoPlayer && this.chessState.to_play !== this.playerColor) return;
 
         if (this.selectedSquare === -1) {
             // No piece selected - try to select one
@@ -314,19 +460,19 @@ export class ChessGame extends LalelaGame {
 
     trySelectPiece(viewPos) {
         const enginePos = ChessEngine.viewPosToEngine(viewPos);
-        const piece = this.gameState.board[enginePos];
+        const piece = this.chessState.board[enginePos];
         
         if (!piece || piece === ChessEngine.P4_EDGE) return;
         
         const pieceColor = piece & 1;
-        if (pieceColor !== this.gameState.to_play) return;
+        if (pieceColor !== this.chessState.to_play) return;
 
         // Get valid moves for this piece
-        ChessEngine.p4_prepare(this.gameState);
+        ChessEngine.p4_prepare(this.chessState);
         const allMoves = ChessEngine.p4_parse(
-            this.gameState,
-            this.gameState.to_play,
-            this.gameState.enpassant,
+            this.chessState,
+            this.chessState.to_play,
+            this.chessState.enpassant,
             0
         );
 
@@ -335,9 +481,9 @@ export class ChessGame extends LalelaGame {
         for (const move of allMoves) {
             if (move[1] === enginePos) {
                 // Test if move leaves king in check
-                const testMove = ChessEngine.p4_make_move(this.gameState, move[1], move[2], ChessEngine.P4_QUEEN);
-                const inCheck = ChessEngine.p4_check_check(this.gameState, pieceColor);
-                ChessEngine.p4_unmake_move(this.gameState, testMove);
+                const testMove = ChessEngine.p4_make_move(this.chessState, move[1], move[2], ChessEngine.P4_QUEEN);
+                const inCheck = ChessEngine.p4_check_check(this.chessState, pieceColor);
+                ChessEngine.p4_unmake_move(this.chessState, testMove);
                 
                 if (!inCheck) {
                     this.validMoves.push(ChessEngine.engineToViewPos(move[2]));
@@ -375,7 +521,7 @@ export class ChessGame extends LalelaGame {
         const toEngine = ChessEngine.viewPosToEngine(toViewPos);
         
         // Check for pawn promotion
-        const piece = this.gameState.board[fromEngine];
+        const piece = this.chessState.board[fromEngine];
         const pieceType = piece & 14;
         const pieceColor = piece & 1;
         const targetRow = pieceColor ? 2 : 9;
@@ -387,7 +533,7 @@ export class ChessGame extends LalelaGame {
             promotion = ChessEngine.P4_QUEEN;
         }
 
-        const result = ChessEngine.p4_move(this.gameState, fromEngine, toEngine, promotion);
+        const result = ChessEngine.p4_move(this.chessState, fromEngine, toEngine, promotion);
         
         if (result.ok) {
             this.clearHighlights();
@@ -401,7 +547,7 @@ export class ChessGame extends LalelaGame {
                 this.checkGameEnd(result.flags);
                 
                 // Computer's turn
-                if (!this.gameOver && !this.twoPlayer && this.gameState.to_play !== this.playerColor) {
+                if (!this.gameOver && !this.twoPlayer && this.chessState.to_play !== this.playerColor) {
                     this.computerMove();
                 }
             });
@@ -484,14 +630,14 @@ export class ChessGame extends LalelaGame {
                 move = this.getRandomMove();
             } else {
                 // Use engine
-                move = ChessEngine.p4_findmove(this.gameState, depth);
+                move = ChessEngine.p4_findmove(this.chessState, depth);
             }
 
             if (move && move[0] && move[1]) {
                 const fromViewPos = ChessEngine.engineToViewPos(move[0]);
                 const toViewPos = ChessEngine.engineToViewPos(move[1]);
                 
-                const result = ChessEngine.p4_move(this.gameState, move[0], move[1], ChessEngine.P4_QUEEN);
+                const result = ChessEngine.p4_move(this.chessState, move[0], move[1], ChessEngine.P4_QUEEN);
                 
                 if (result.ok) {
                     this.animateMove(fromViewPos, toViewPos, result.flags, () => {
@@ -523,19 +669,19 @@ export class ChessGame extends LalelaGame {
     }
 
     getRandomMove() {
-        ChessEngine.p4_prepare(this.gameState);
+        ChessEngine.p4_prepare(this.chessState);
         const moves = ChessEngine.p4_parse(
-            this.gameState,
-            this.gameState.to_play,
-            this.gameState.enpassant,
+            this.chessState,
+            this.chessState.to_play,
+            this.chessState.enpassant,
             0
         );
 
         // Filter out moves that leave king in check
         const validMoves = moves.filter(move => {
-            const testMove = ChessEngine.p4_make_move(this.gameState, move[1], move[2], ChessEngine.P4_QUEEN);
-            const inCheck = ChessEngine.p4_check_check(this.gameState, this.gameState.to_play);
-            ChessEngine.p4_unmake_move(this.gameState, testMove);
+            const testMove = ChessEngine.p4_make_move(this.chessState, move[1], move[2], ChessEngine.P4_QUEEN);
+            const inCheck = ChessEngine.p4_check_check(this.chessState, this.chessState.to_play);
+            ChessEngine.p4_unmake_move(this.chessState, testMove);
             return !inCheck;
         });
 
@@ -546,11 +692,11 @@ export class ChessGame extends LalelaGame {
     }
 
     updateTurnIndicator() {
-        const isWhiteTurn = this.gameState.to_play === 0;
+        const isWhiteTurn = this.chessState.to_play === 0;
         this.turnText.setText(isWhiteTurn ? "White's turn" : "Black's turn");
         
         // Check for check
-        if (ChessEngine.p4_check_check(this.gameState, this.gameState.to_play)) {
+        if (ChessEngine.p4_check_check(this.chessState, this.chessState.to_play)) {
             this.messageText.setText('Check!');
             this.messageText.setColor('#ff4444');
         } else {
@@ -564,7 +710,7 @@ export class ChessGame extends LalelaGame {
             
             if (flags & ChessEngine.P4_MOVE_FLAG_CHECK) {
                 // Checkmate
-                const winner = this.gameState.to_play === 0 ? 'Black' : 'White';
+                const winner = this.chessState.to_play === 0 ? 'Black' : 'White';
                 this.messageText.setText(`Checkmate! ${winner} wins!`);
                 this.messageText.setColor('#00ff00');
                 
