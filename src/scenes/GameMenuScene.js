@@ -170,6 +170,41 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'discovery'
       },
       {
+        scene: 'Erase2ClicGame',
+        name: 'Erase (Double Click)',
+        icon: 'erase_2clic.svg',
+        difficulty: 2,
+        category: 'computer'
+      },
+      {
+        scene: 'FamilyFindRelativeGame',
+        name: 'Find Relative',
+        icon: 'family_find_relative.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'MemoryCaseAssociationGame',
+        name: 'Case Association',
+        icon: 'memory-case-association.svg',
+        difficulty: 2,
+        category: 'memory'
+      },
+      {
+        scene: 'MemoryCaseAssociationTuxGame',
+        name: 'Case Association (Tux)',
+        icon: 'memory-case-association-tux.svg',
+        difficulty: 2,
+        category: 'memory'
+      },
+      {
+        scene: 'MemoryEnumerateGame',
+        name: 'Memory Enumeration',
+        icon: 'memory-enumerate.svg',
+        difficulty: 2,
+        category: 'memory'
+      },
+      {
         scene: 'AdjacentNumbers',
         name: 'Adjacent Numbers',
         icon: 'adjacent_numbers.svg',

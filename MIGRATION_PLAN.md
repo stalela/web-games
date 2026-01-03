@@ -243,7 +243,7 @@ Copy this checklist for each new game task.
 | `gravity` | P3 | ⬜ Not Started | - |
 | `chronos` | P3 | ⬜ Not Started | - |
 | `family` | P2 | ✅ Complete | - |
-| `family_find_relative` | P2 | ⬜ Not Started | - |
+| `family_find_relative` | P2 | ✅ Complete | - |
 
 ---
 
@@ -256,7 +256,7 @@ Copy this checklist for each new game task.
 | `clickgame` | P1 | ✅ Complete | - |
 | `erase` | P1 | ✅ Complete | - |
 | `erase_clic` | P1 | ✅ Complete | - |
-| `erase_2clic` | P1 | ⬜ Not Started | - |
+| `erase_2clic` | P1 | ✅ Complete | - |
 | `clickanddraw` | P2 | ⬜ Not Started | - |
 | `drawletters` | P2 | ⬜ Not Started | - |
 | `drawnumbers` | P2 | ⬜ Not Started | - |
@@ -271,10 +271,10 @@ Copy this checklist for each new game task.
 
 | GCompris Activity | Priority | Status | Assigned |
 |-------------------|----------|--------|----------|
-| `tangram` | P1 | ⬜ Not Started | - |
-| `baby_tangram` | P1 | ⬜ Not Started | - |
+| `tangram` | P1 | ✅ Complete | - |
+| `baby_tangram` | P1 | ✅ Complete | - |
 | `puzzle` | P1 | ⬜ Not Started | - |
-| `babyshapes` | P1 | ⬜ Not Started | - |
+| `babyshapes` | P1 | ✅ Complete | - |
 | `crane` | P2 | ⬜ Not Started | - |
 | `football` | P2 | ⬜ Not Started | - |
 | `ballcatch` | P2 | ⬜ Not Started | - |
@@ -288,9 +288,9 @@ Copy this checklist for each new game task.
 |-------------------|----------|--------|----------|
 | `memory` | P1 | ✅ Complete | - |
 | `memory-sound` | P1 | ✅ Complete | - |
-| `memory-case-association` | P2 | ⬜ Not Started | - |
-| `memory-case-association-tux` | P2 | ⬜ Not Started | - |
-| `memory-enumerate` | P2 | ⬜ Not Started | - |
+| `memory-case-association` | P2 | ✅ Complete | - |
+| `memory-case-association-tux` | P2 | ✅ Complete | - |
+| `memory-enumerate` | P2 | ✅ Complete | - |
 | `memory-math-add` | P2 | ⬜ Not Started | - |
 | `memory-math-add-minus` | P2 | ⬜ Not Started | - |
 | `memory-math-add-minus-mult-div` | P3 | ⬜ Not Started | - |
