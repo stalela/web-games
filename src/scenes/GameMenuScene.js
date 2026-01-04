@@ -646,6 +646,41 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'reading'
       },
       {
+        scene: 'BrailleAlphabetsGame',
+        name: 'Discover Braille',
+        icon: 'braille_alphabets.svg',
+        difficulty: 1,
+        category: 'discovery'
+      },
+      {
+        scene: 'BrailleFunGame',
+        name: 'Braille Fun',
+        icon: 'braille_fun.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'LouisBrailleGame',
+        name: 'Louis Braille',
+        icon: 'louis_braille.svg',
+        difficulty: 3,
+        category: 'discovery'
+      },
+      {
+        scene: 'DrawNumbersGame',
+        name: 'Draw Numbers',
+        icon: 'drawnumbers.svg',
+        difficulty: 1,
+        category: 'math'
+      },
+      {
+        scene: 'LeftRightGame',
+        name: 'Left and Right',
+        icon: 'leftright.svg',
+        difficulty: 1,
+        category: 'discovery'
+      },
+      {
         scene: 'FractionsCreateGame',
         name: 'Create Fractions',
         icon: 'fractions_create.svg',

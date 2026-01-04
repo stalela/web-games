@@ -115,6 +115,11 @@ import { LeftRightClickGame } from './games/LeftRightClickGame.js';
 import { FollowLineGame } from './games/FollowLineGame.js';
 import { DrawLettersGame } from './games/DrawLettersGame.js';
 import { GlettersGame } from './games/GlettersGame.js';
+import { BrailleAlphabetsGame } from './games/BrailleAlphabetsGame.js';
+import { BrailleFunGame } from './games/BrailleFunGame.js';
+import { LouisBrailleGame } from './games/LouisBrailleGame.js';
+import { DrawNumbersGame } from './games/DrawNumbersGame.js';
+import { LeftRightGame } from './games/LeftRightGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -298,6 +303,11 @@ class LalelaGamesApp {
       this.game.scene.add('FollowLineGame', FollowLineGame);
       this.game.scene.add('DrawLettersGame', DrawLettersGame);
       this.game.scene.add('GlettersGame', GlettersGame);
+      this.game.scene.add('BrailleAlphabetsGame', BrailleAlphabetsGame);
+      this.game.scene.add('BrailleFunGame', BrailleFunGame);
+      this.game.scene.add('LouisBrailleGame', LouisBrailleGame);
+      this.game.scene.add('DrawNumbersGame', DrawNumbersGame);
+      this.game.scene.add('LeftRightGame', LeftRightGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();
@@ -562,6 +572,51 @@ class LalelaGamesApp {
     } else if (gameScene === 'CheckersGame') {
       this.game.scene.start('CheckersGame', {
         app: this
+      });
+    } else if (gameScene === 'BrailleAlphabetsGame') {
+      this.game.scene.start('BrailleAlphabetsGame', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'BrailleFunGame') {
+      this.game.scene.start('BrailleFunGame', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'LouisBrailleGame') {
+      this.game.scene.start('LouisBrailleGame', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'DrawNumbersGame') {
+      this.game.scene.start('DrawNumbersGame', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'LeftRightGame') {
+      this.game.scene.start('LeftRightGame', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
       });
     } else {
       // For other games, show placeholder
