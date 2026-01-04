@@ -1,8 +1,8 @@
 import { LalelaGame } from '../utils/LalelaGame.js';
 
 export class BarGame extends LalelaGame {
-    constructor() {
-        super({ key: 'BarGame' });
+    constructor(config) {
+        super(config || { key: 'BarGame' });
         this.levelsProperties = [
             {
                 minNumberOfBalls: 1,

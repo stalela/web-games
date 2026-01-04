@@ -2,8 +2,7 @@ import { BarGame } from './BarGame.js';
 
 export class BarGame2Players extends BarGame {
     constructor() {
-        super();
-        this.key = 'BarGame2Players';
+        super({ key: 'BarGame2Players' });
         this.gameMode = 2; // 2 players
     }
 
