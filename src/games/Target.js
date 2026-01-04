@@ -52,9 +52,9 @@ export class Target extends LalelaGame {
         this.target = this.add.container(this.cameras.main.centerX, 200);
         
         // Target Rings
-        this.add.circle(0, 0, 60, 0xffffff).setStrokeStyle(2, 0x000000).addToContainer(this.target); // 10 pts
-        this.add.circle(0, 0, 40, 0xff0000).addToContainer(this.target); // 20 pts
-        this.add.circle(0, 0, 20, 0xffff00).addToContainer(this.target); // 50 pts
+        this.target.add(this.add.circle(0, 0, 60, 0xffffff).setStrokeStyle(2, 0x000000)); // 10 pts
+        this.target.add(this.add.circle(0, 0, 40, 0xff0000)); // 20 pts
+        this.target.add(this.add.circle(0, 0, 20, 0xffff00)); // 50 pts
         
         this.target.setSize(120, 120);
         this.target.setInteractive();
@@ -94,10 +94,7 @@ export class Target extends LalelaGame {
             this.updateUI();
             this.audioManager.play('success');
             
-            // Visual marker
-            let marker = this.add.circle(pointer.x, pointer.y, 5, 0x000000);
-            // Make marker move with target? No, dart sticks to it.
-            // To stick, add to container, but need to adjust coordinates
+            // Visual marker - stick to target
             this.target.add(this.add.circle(pointer.x - this.target.x, pointer.y - this.target.y, 5, 0x000000));
         }
 
