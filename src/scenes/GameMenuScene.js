@@ -100,6 +100,27 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'computer'
       },
       {
+        scene: 'ClickAndDrawGame',
+        name: 'Click and Draw',
+        icon: 'clickanddraw.svg',
+        difficulty: 1,
+        category: 'computer'
+      },
+      {
+        scene: 'LeftRightClickGame',
+        name: 'Mouse Click Training',
+        icon: 'left_right_click.svg',
+        difficulty: 1,
+        category: 'computer'
+      },
+      {
+        scene: 'FollowLineGame',
+        name: 'Control the Hose-pipe',
+        icon: 'followline.svg',
+        difficulty: 1,
+        category: 'computer'
+      },
+      {
         scene: 'BabyShapesGame',
         name: 'Baby Shapes',
         icon: 'babyshapes.svg',
@@ -489,6 +510,20 @@ export class GameMenuScene extends Phaser.Scene {
         name: 'Falling Words',
         icon: 'wordsgame.svg',
         difficulty: 3,
+        category: 'reading'
+      },
+      {
+        scene: 'ImageNameGame',
+        name: 'Name the Image',
+        icon: 'imagename.svg',
+        difficulty: 3,
+        category: 'reading'
+      },
+      {
+        scene: 'DrawLettersGame',
+        name: 'Draw Letters',
+        icon: 'drawletters.svg',
+        difficulty: 1,
         category: 'reading'
       },
       {

@@ -109,6 +109,11 @@ import { GnumchMultiplesGame } from './games/GnumchMultiplesGame.js';
 import { GnumchPrimesGame } from './games/GnumchPrimesGame.js';
 import { Guess24Game } from './games/Guess24Game.js';
 import { GuessNumberGame } from './games/GuessNumberGame.js';
+import { ImageNameGame } from './games/ImageNameGame.js';
+import { ClickAndDrawGame } from './games/ClickAndDrawGame.js';
+import { LeftRightClickGame } from './games/LeftRightClickGame.js';
+import { FollowLineGame } from './games/FollowLineGame.js';
+import { DrawLettersGame } from './games/DrawLettersGame.js';
 import { GlettersGame } from './games/GlettersGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
@@ -287,6 +292,11 @@ class LalelaGamesApp {
       this.game.scene.add('GnumchPrimesGame', GnumchPrimesGame);
       this.game.scene.add('Guess24Game', Guess24Game);
       this.game.scene.add('GuessNumberGame', GuessNumberGame);
+      this.game.scene.add('ImageNameGame', ImageNameGame);
+      this.game.scene.add('ClickAndDrawGame', ClickAndDrawGame);
+      this.game.scene.add('LeftRightClickGame', LeftRightClickGame);
+      this.game.scene.add('FollowLineGame', FollowLineGame);
+      this.game.scene.add('DrawLettersGame', DrawLettersGame);
       this.game.scene.add('GlettersGame', GlettersGame);
 
       // Setup audio manager
