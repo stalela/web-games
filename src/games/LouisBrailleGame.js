@@ -166,7 +166,11 @@ export class LouisBrailleGame extends LalelaGame {
 
         // 3. Central Image
         this.storyImage = this.add.image(width / 2, boxY + boxHeight / 2 + 150, 'louis-louis');
-        this.storyImage.setMaxPreferredHeight(250);
+        // Scale after texture is available; Phaser images already have dimensions post-load
+        const maxDim = 250;
+        const dim = Math.max(this.storyImage.width, this.storyImage.height);
+        const scale = dim > 0 ? Math.min(1, maxDim / dim) : 1;
+        this.storyImage.setScale(scale);
         this.storyContainer.add(this.storyImage);
 
         // 4. Year Box
