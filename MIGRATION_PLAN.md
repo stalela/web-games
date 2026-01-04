@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 4, 2026
-> **Total Games:** 199 | **Completed:** 144 | **Remaining:** 55
-> **Progress:** ██████████████ 72.4%
+> **Total Games:** 199 | **Completed:** 149 | **Remaining:** 50
+> **Progress:** ██████████████ 74.8%
 
 ---
 
@@ -189,6 +189,11 @@ Copy this checklist for each new game task.
 | DigitalElectricityGame | Sciences | LalelaGame | ✅ Complete |
 | RenewableEnergyGame | Sciences | LalelaGame | ✅ Complete |
 | BabyWordprocessorGame | Computer | LalelaGame | ✅ Complete |
+| BinaryBulbGame | Math | LalelaGame | ✅ Complete |
+| CategorizationGame | Discovery | LalelaGame | ✅ Complete |
+| ChessPartyEndGame | Strategy | ChessGame | ✅ Complete |
+| DrawingWheelsGame | Discovery | LalelaGame | ✅ Complete |
+| GeoCountryGame | Geography | DragDropGame | ✅ Complete |
 
 ---
 

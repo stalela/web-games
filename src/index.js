@@ -164,6 +164,11 @@ import { AnalogElectricityGame } from './games/AnalogElectricityGame.js';
 import { DigitalElectricityGame } from './games/DigitalElectricityGame.js';
 import { RenewableEnergyGame } from './games/RenewableEnergyGame.js';
 import { BabyWordprocessorGame } from './games/BabyWordprocessorGame.js';
+import { BinaryBulbGame } from './games/BinaryBulbGame.js';
+import { CategorizationGame } from './games/CategorizationGame.js';
+import { ChessPartyEndGame } from './games/ChessPartyEndGame.js';
+import { DrawingWheelsGame } from './games/DrawingWheelsGame.js';
+import { GeoCountryGame } from './games/GeoCountryGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -394,6 +399,11 @@ class LalelaGamesApp {
       this.game.scene.add('DigitalElectricityGame', DigitalElectricityGame);
       this.game.scene.add('RenewableEnergyGame', RenewableEnergyGame);
       this.game.scene.add('BabyWordprocessorGame', BabyWordprocessorGame);
+      this.game.scene.add('BinaryBulbGame', BinaryBulbGame);
+      this.game.scene.add('CategorizationGame', CategorizationGame);
+      this.game.scene.add('ChessPartyEndGame', ChessPartyEndGame);
+      this.game.scene.add('DrawingWheelsGame', DrawingWheelsGame);
+      this.game.scene.add('GeoCountryGame', GeoCountryGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

@@ -1017,6 +1017,41 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'computer'
       },
       {
+        scene: 'BinaryBulbGame',
+        name: 'Binary Bulb',
+        icon: 'binary_bulb.svg',
+        difficulty: 4,
+        category: 'math'
+      },
+      {
+        scene: 'CategorizationGame',
+        name: 'Categorization',
+        icon: 'categorization.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'ChessPartyEndGame',
+        name: 'Chess End Game',
+        icon: 'chess_partyend.svg',
+        difficulty: 4,
+        category: 'strategy'
+      },
+      {
+        scene: 'DrawingWheelsGame',
+        name: 'Drawing Wheels',
+        icon: 'drawing_wheels.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'GeoCountryGame',
+        name: 'Geography: France',
+        icon: 'geography.svg',
+        difficulty: 3,
+        category: 'discovery'
+      },
+      {
         scene: 'Mosaic',
         name: 'Mosaic',
         icon: 'mosaic.svg',
