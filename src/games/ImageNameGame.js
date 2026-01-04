@@ -46,6 +46,9 @@ export class ImageNameGame extends DragDropGame {
 
   preload() {
     super.preload();
+    // Load background
+    this.load.svg('imagename-background', 'assets/imagename/background.svg');
+
     // Load all images used in levels
     const images = [
       'postpoint', 'sailingboat', 'lamp', 'postcard', 'fishingboat', 'light',
@@ -66,12 +69,24 @@ export class ImageNameGame extends DragDropGame {
 
   createBackground() {
     const { width, height } = this.cameras.main;
-    this.add.rectangle(width / 2, height / 2, width, height, 0xFFFFFF).setDepth(-1);
+    const bg = this.add.image(width / 2, height / 2, 'imagename-background');
+    // Scale background to cover screen while maintaining aspect ratio
+    const scaleX = width / bg.width;
+    const scaleY = height / bg.height;
+    const scale = Math.max(scaleX, scaleY);
+    bg.setScale(scale).setDepth(-1);
   }
 
   createUI() {
     super.createUI();
     
+    const { width, height } = this.cameras.main;
+    const sidebarWidth = width * 0.15;
+
+    // Sidebar background (lighter wood or semi-transparent)
+    const sidebar = this.add.rectangle(sidebarWidth / 2, height / 2, sidebarWidth, height, 0x8B4513, 0.6);
+    sidebar.setDepth(0);
+
     // Hide default controls
     if (this.uiElements && this.uiElements.controls) {
       Object.values(this.uiElements.controls).forEach(control => {
@@ -85,48 +100,59 @@ export class ImageNameGame extends DragDropGame {
   setupGameLogic() {
     const levelData = this.levels[this.level % this.levels.length];
     const { width, height } = this.cameras.main;
+    const sidebarWidth = width * 0.15;
+    const mainAreaWidth = width - sidebarWidth;
+    const mainAreaX = sidebarWidth;
 
     // Clear previous
     this.dropZones.forEach(z => z.destroy());
     this.draggableTiles.forEach(t => t.destroy());
     if (this.textLabels) this.textLabels.forEach(t => t.destroy());
     this.textLabels = [];
+    if (this.targetDots) this.targetDots.forEach(d => d.destroy());
+    this.targetDots = [];
 
     // Create Drop Zones (Targets)
+    // In this game, the drop zone is the area above the name.
+    // We'll visualize it with a dot, but the actual zone can be larger.
     const zonesConfig = levelData.items.map(item => ({
-      x: item.x * width,
+      x: mainAreaX + (item.x * mainAreaWidth),
       y: item.y * height,
-      width: 100,
-      height: 100,
+      width: 120,
+      height: 120,
       expectedValue: item.image,
-      color: 0xEEEEEE, // Light gray placeholder
+      color: 0xFFFFFF,
+      alpha: 0.01, // Invisible hit area
       strokeColor: 0xCCCCCC
     }));
 
     this.createDropZones(zonesConfig);
 
-    // Add text labels below drop zones
+    // Add visual dots and text labels
     levelData.items.forEach((item, index) => {
       const zone = this.dropZones[index];
-      const text = this.add.text(zone.x, zone.y + 70, item.text, {
+      
+      // Orange dot
+      const dot = this.add.circle(zone.x, zone.y, 8, 0xF08A00);
+      this.targetDots.push(dot);
+
+      // Text label with background
+      const textBg = this.add.rectangle(zone.x, zone.y + 60, 150, 40, 0x333333, 0.8).setOrigin(0.5);
+      const text = this.add.text(zone.x, zone.y + 60, item.text, {
         fontFamily: 'Arial',
         fontSize: '24px',
-        color: '#000000',
+        color: '#FFFFFF',
         align: 'center'
       }).setOrigin(0.5);
-      this.textLabels.push(text);
+      
+      this.textLabels.push(textBg, text);
     });
 
-    // Create Draggable Tiles (Images)
-    // Shuffle them and place them in a sidebar or random positions?
-    // GCompris puts them in a sidebar.
-    // We'll put them on the left side or bottom.
-    // Let's put them on the left side (x=100)
-    
+    // Create Draggable Tiles (Images) in Sidebar
     const shuffledItems = this.shuffleArray([...levelData.items]);
     const tilesConfig = shuffledItems.map((item, index) => ({
-      x: 80,
-      y: 100 + (index * 90),
+      x: sidebarWidth / 2,
+      y: 100 + (index * (height - 150) / shuffledItems.length),
       value: item.image,
       imageKey: `imagename-${item.image}`,
       size: 80,
@@ -137,8 +163,10 @@ export class ImageNameGame extends DragDropGame {
     
     // Override tile rendering to show image
     this.draggableTiles.forEach(tile => {
-        // Remove default text
-        if (tile.textObject) tile.textObject.setVisible(false);
+        // Remove default text and background
+        if (tile.text) tile.text.setVisible(false);
+        if (tile.background) tile.background.setVisible(false);
+        if (tile.shadow) tile.shadow.setVisible(false);
         
         // Add image
         const img = this.add.image(0, 0, tile.config.imageKey);
