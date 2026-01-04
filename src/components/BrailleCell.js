@@ -80,6 +80,11 @@ export class BrailleCell extends Phaser.GameObjects.Container {
     });
   }
 
+  // Alias to match existing game code
+  setBraille(char) {
+    this.setChar(char);
+  }
+
   reset() {
     this.activeDots.clear();
     this.dots.forEach(d => d.sprite.setVisible(false));

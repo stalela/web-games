@@ -212,11 +212,17 @@ export class AudioManager {
       const volume = options.volume !== undefined ?
         (this.sfxVolume * this.masterVolume * options.volume) :
         (this.sfxVolume * this.masterVolume);
+      const sprite = options.sprite;
+      const id = sprite ? sound.play(sprite) : sound.play();
 
-      return sound.play({
-        volume,
-        ...options
-      });
+      // Apply per-play overrides safely
+      if (id !== null && id !== undefined) {
+        sound.volume(volume, id);
+        if (options.rate !== undefined) sound.rate(options.rate, id);
+        if (options.seek !== undefined) sound.seek(options.seek, id);
+      }
+
+      return id;
     } catch (error) {
       console.warn('Error playing sound:', error);
       return null;
@@ -377,6 +383,7 @@ export class AudioManager {
     try {
       await this.loadSound('click', 'assets/sounds/audioclick.wav');
       await this.loadSound('success', 'assets/sounds/completetask.wav');
+      await this.loadSound('error', 'assets/sounds/crash.wav');
       await this.loadSound('fail', 'assets/sounds/crash.wav');
       await this.loadSound('level-complete', 'assets/sounds/win.wav');
     } catch (error) {
