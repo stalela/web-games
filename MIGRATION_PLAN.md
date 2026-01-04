@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 4, 2026
-> **Total Games:** 199 | **Completed:** 107 | **Remaining:** 92
-> **Progress:** ██████████ 53.7%
+> **Total Games:** 199 | **Completed:** 124 | **Remaining:** 75
+> **Progress:** ████████████ 62.3%
 
 ---
 
@@ -173,6 +173,22 @@ Copy this checklist for each new game task.
 | BarGame2Players | Strategy | LalelaGame | ✅ Complete |
 | AlgorithmGame | Strategy | LalelaGame | ✅ Complete |
 | FriezeGame | Strategy | LalelaGame | ✅ Complete |
+| PaintingsGame | Fun | DragDropGame | ✅ Complete |
+| MemoryMathAddMinusMultDivGame | Math | MemoryGame | ✅ Complete |
+| MemoryMathAddTuxGame | Math | MemoryGame | ✅ Complete |
+| MemoryMathDivGame | Math | MemoryGame | ✅ Complete |
+| MemoryMathMinusGame | Math | MemoryGame | ✅ Complete |
+| MemoryMathMultGame | Math | MemoryGame | ✅ Complete |
+| MemoryMathMultDivGame | Math | MemoryGame | ✅ Complete |
+| GraphColoringGame | Strategy | LalelaGame | ✅ Complete |
+| GrammarAnalysisGame | Reading | LalelaGame | ✅ Complete |
+| GrammarClassesGame | Reading | LalelaGame | ✅ Complete |
+| GravityGame | Sciences | LalelaGame | ✅ Complete |
+| ChronosGame | Sciences | DragDropGame | ✅ Complete |
+| AnalogElectricityGame | Sciences | LalelaGame | ✅ Complete |
+| DigitalElectricityGame | Sciences | LalelaGame | ✅ Complete |
+| RenewableEnergyGame | Sciences | LalelaGame | ✅ Complete |
+| BabyWordprocessorGame | Computer | LalelaGame | ✅ Complete |
 
 ---
 
@@ -232,8 +248,8 @@ Copy this checklist for each new game task.
 | `braille_alphabets` | P3 | ✅ Complete | - |
 | `braille_fun` | P3 | ✅ Complete | - |
 | `louis-braille` | P3 | ✅ Complete | - |
-| `grammar_analysis` | P3 | ⬜ Not Started | - |
-| `grammar_classes` | P3 | ⬜ Not Started | - |
+| `grammar_analysis` | P3 | ✅ Complete | - |
+| `grammar_classes` | P3 | ✅ Complete | - |
 
 ---
 
@@ -257,7 +273,7 @@ Copy this checklist for each new game task.
 | `traffic` | P2 | ✅ Complete | - |
 | `bargame` | P3 | ✅ Complete | - |
 | `bargame_2players` | P3 | ✅ Complete | - |
-| `graph-coloring` | P3 | ⬜ Not Started | - |
+| `graph-coloring` | P3 | ✅ Complete | - |
 | `algorithm` | P3 | ✅ Complete | - |
 | `frieze` | P3 | ✅ Complete | - |
 
@@ -277,14 +293,14 @@ Copy this checklist for each new game task.
 | `explore_world_music` | P2 | ✅ Complete | - |
 | `instruments` | P2 | ✅ Complete | - |
 | `melody` | P2 | ✅ Complete | - |
-| `analog_electricity` | P3 | ⬜ Not Started | - |
-| `digital_electricity` | P3 | ⬜ Not Started | - |
+| `analog_electricity` | P3 | ✅ Complete | - |
+| `digital_electricity` | P3 | ✅ Complete | - |
 | `canal_lock` | P3 | ✅ Complete | - |
 | `watercycle` | P3 | ✅ Complete | - |
 | `solar_system` | P3 | ✅ Complete | - |
-| `renewable_energy` | P3 | ⬜ Not Started | - |
-| `gravity` | P3 | ⬜ Not Started | - |
-| `chronos` | P3 | ⬜ Not Started | - |
+| `renewable_energy` | P3 | ✅ Complete | - |
+| `gravity` | P3 | ✅ Complete | - |
+| `chronos` | P3 | ✅ Complete | - |
 | `family` | P2 | ✅ Complete | - |
 | `family_find_relative` | P2 | ✅ Complete | - |
 
@@ -306,7 +322,7 @@ Copy this checklist for each new game task.
 | `followline` | P2 | ✅ Complete | - |
 | `left_right_click` | P2 | ✅ Complete | - |
 | `leftright` | P2 | ✅ Complete | - |
-| `baby_wordprocessor` | P3 | ⬜ Not Started | - |
+| `baby_wordprocessor` | P3 | ✅ Complete | - |
 
 ---
 
@@ -316,7 +332,7 @@ Copy this checklist for each new game task.
 |-------------------|----------|--------|----------|
 | `tangram` | P1 | ✅ Complete | - |
 | `baby_tangram` | P1 | ✅ Complete | - |
-| `puzzle` | P1 | ⬜ Not Started | - |
+| `paintings` | P1 | ✅ Complete | - |
 | `babyshapes` | P1 | ✅ Complete | - |
 | `crane` | P2 | ✅ Complete | - |
 | `football` | P2 | ✅ Complete | - |
@@ -337,12 +353,12 @@ Copy this checklist for each new game task.
 | `memory-enumerate` | P2 | ✅ Complete | - |
 | `memory-math-add` | P2 | ✅ Complete | - |
 | `memory-math-add-minus` | P2 | ✅ Complete | - |
-| `memory-math-add-minus-mult-div` | P3 | ⬜ Not Started | - |
-| `memory-math-add-tux` | P3 | ⬜ Not Started | - |
-| `memory-math-div` | P3 | ⬜ Not Started | - |
-| `memory-math-minus` | P3 | ⬜ Not Started | - |
-| `memory-math-mult` | P3 | ⬜ Not Started | - |
-| `memory-math-mult-div` | P3 | ⬜ Not Started | - |
+| `memory-math-add-minus-mult-div` | P3 | ✅ Complete | - |
+| `memory-math-add-tux` | P3 | ✅ Complete | - |
+| `memory-math-div` | P3 | ✅ Complete | - |
+| `memory-math-minus` | P3 | ✅ Complete | - |
+| `memory-math-mult` | P3 | ✅ Complete | - |
+| `memory-math-mult-div` | P3 | ✅ Complete | - |
 
 ---
 

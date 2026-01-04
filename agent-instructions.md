@@ -13,6 +13,7 @@ The source code for the original GCompris games is located in:
 3.  **Assets**:
     *   Look in the `resource/` subdirectory of the activity folder.
     *   Look for `.svg` or image files in the activity root.
+    *   **Background images**: Check for `background.svg` or similar in `resource/` — these are often required for the game's visual fidelity.
     *   *Note*: Some common assets might be in shared GCompris folders, but focus on the activity-specific ones first.
 
 ## Implementation Steps

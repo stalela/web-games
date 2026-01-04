@@ -149,6 +149,13 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'puzzle'
       },
       {
+        scene: 'PaintingsGame',
+        name: 'Paintings',
+        icon: 'paintings.svg',
+        difficulty: 1,
+        category: 'puzzle'
+      },
+      {
         scene: 'LandSafeGame',
         name: 'Land Safe',
         icon: 'land_safe.svg',
@@ -903,6 +910,111 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'frieze.svg',
         difficulty: 2,
         category: 'strategy'
+      },
+      {
+        scene: 'MemoryMathAddMinusMultDivGame',
+        name: 'Memory All Ops',
+        icon: 'memory-math-add-minus-mult-div.svg',
+        difficulty: 4,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathAddTuxGame',
+        name: 'Addition Memory (Tux)',
+        icon: 'memory-math-add-tux.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathDivGame',
+        name: 'Division Memory',
+        icon: 'memory-math-div.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathMinusGame',
+        name: 'Subtraction Memory',
+        icon: 'memory-math-minus.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathMultGame',
+        name: 'Multiplication Memory',
+        icon: 'memory-math-mult.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathMultDivGame',
+        name: 'Mult/Div Memory',
+        icon: 'memory-math-mult-div.svg',
+        difficulty: 4,
+        category: 'math'
+      },
+      {
+        scene: 'GraphColoringGame',
+        name: 'Graph Coloring',
+        icon: 'graph-coloring.svg',
+        difficulty: 2,
+        category: 'strategy'
+      },
+      {
+        scene: 'GrammarAnalysisGame',
+        name: 'Grammar Analysis',
+        icon: 'grammar_analysis.svg',
+        difficulty: 3,
+        category: 'reading'
+      },
+      {
+        scene: 'GrammarClassesGame',
+        name: 'Grammar Classes',
+        icon: 'grammar_classes.svg',
+        difficulty: 3,
+        category: 'reading'
+      },
+      {
+        scene: 'GravityGame',
+        name: 'Gravity',
+        icon: 'gravity.svg',
+        difficulty: 3,
+        category: 'sciences'
+      },
+      {
+        scene: 'ChronosGame',
+        name: 'Chronos',
+        icon: 'chronos.svg',
+        difficulty: 1,
+        category: 'sciences'
+      },
+      {
+        scene: 'AnalogElectricityGame',
+        name: 'Analog Electricity',
+        icon: 'analog_electricity.svg',
+        difficulty: 6,
+        category: 'sciences'
+      },
+      {
+        scene: 'DigitalElectricityGame',
+        name: 'Digital Electricity',
+        icon: 'digital_electricity.svg',
+        difficulty: 6,
+        category: 'sciences'
+      },
+      {
+        scene: 'RenewableEnergyGame',
+        name: 'Renewable Energy',
+        icon: 'renewable_energy.svg',
+        difficulty: 4,
+        category: 'sciences'
+      },
+      {
+        scene: 'BabyWordprocessorGame',
+        name: 'Baby Wordprocessor',
+        icon: 'baby_wordprocessor.svg',
+        difficulty: 2,
+        category: 'computer'
       }
     ];
 
