@@ -14,7 +14,7 @@ export class LouisBrailleGame extends LalelaGame {
         
         // Load assets based on louis_braille_data.js
         // Note: We map .webp to .svg if that's what we have in the assets folder
-        this.load.svg('louis-louis', 'assets/louis-braille/louis.svg'); // Was webp in data
+        this.load.image('louis-louis', 'assets/louis-braille/louis.webp'); 
         this.load.svg('louis-stitching_awl', 'assets/louis-braille/stitching_awl.svg');
         this.load.svg('louis-blind', 'assets/louis-braille/blind.svg');
         this.load.svg('louis-paris', 'assets/louis-braille/paris.svg');

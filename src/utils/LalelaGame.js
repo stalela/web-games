@@ -94,6 +94,116 @@ export class LalelaGame extends Phaser.Scene {
   }
 
   /**
+   * Get safe area for UI placement
+   * @returns {Phaser.Geom.Rectangle} Safe area rectangle
+   */
+  getSafeArea() {
+    const { width, height } = this.cameras.main;
+    // Simple implementation: 90% of screen centered
+    const marginX = width * 0.05;
+    const marginY = height * 0.05;
+    return new Phaser.Geom.Rectangle(
+      marginX,
+      marginY,
+      width - marginX * 2,
+      height - marginY * 2
+    );
+  }
+
+  /**
+   * Create bottom navigation dock (GCompris style)
+   * @param {number} width - Screen width
+   * @param {number} height - Screen height
+   */
+  createNavigationDock(width, height) {
+    const dockY = height - 80;
+    const buttonSize = 90;
+    const spacing = 130;
+
+    // Dock background
+    const dockBg = this.add.graphics();
+    dockBg.fillStyle(0xFFFFFF, 0.95);
+    dockBg.fillRoundedRect(width / 2 - (width - 60) / 2, dockY - 60, width - 60, 120, 60);
+    dockBg.setScrollFactor(0).setDepth(100);
+
+    // Dock shadow
+    const dockShadow = this.add.graphics();
+    dockShadow.fillStyle(0x000000, 0.3);
+    dockShadow.fillRoundedRect(width / 2 - (width - 60) / 2 + 4, dockY - 56, width - 60, 120, 60);
+    dockShadow.setScrollFactor(0).setDepth(99);
+
+    // Dock border
+    const dockBorder = this.add.graphics();
+    dockBorder.lineStyle(5, 0x0062FF, 1);
+    dockBorder.strokeRoundedRect(width / 2 - (width - 60) / 2, dockY - 60, width - 60, 120, 60);
+    dockBorder.setScrollFactor(0).setDepth(100);
+
+    const controls = [
+      { icon: 'help', action: 'help', color: 0x00B378, label: 'Help' },
+      { icon: 'home', action: 'home', color: 0x0062FF, label: 'Home' },
+      { icon: 'settings', action: 'levels', color: 0xFACA2A, label: 'Levels' },
+      { icon: 'exit', action: 'menu', color: 0xAB47BC, label: 'Menu' }
+    ];
+
+    const totalWidth = (controls.length - 1) * spacing + buttonSize;
+    const startX = (width - totalWidth) / 2 + buttonSize / 2;
+
+    controls.forEach((control, index) => {
+      const x = startX + index * spacing;
+
+      // Button background
+      const buttonShadow = this.add.circle(x + 4, dockY + 4, buttonSize / 2, 0x000000, 0.4);
+      buttonShadow.setScrollFactor(0).setDepth(101);
+      
+      const button = this.add.circle(x, dockY, buttonSize / 2, control.color);
+      button.setStrokeStyle(5, 0xFFFFFF);
+      button.setInteractive({ useHandCursor: true });
+      button.setScrollFactor(0).setDepth(102);
+
+      // Icon
+      // Note: Icons should be loaded in preload() of the game or base class
+      // We assume they are loaded as 'help', 'home', 'settings', 'exit'
+      // If they are loaded with .svg extension in key, we need to handle that.
+      // In LouisBrailleGame we loaded them as 'help', 'home' etc.
+      const icon = this.add.image(x, dockY, control.icon);
+      icon.setScale((buttonSize * 0.6) / Math.max(icon.width, icon.height));
+      icon.setTint(0xFFFFFF);
+      icon.setScrollFactor(0).setDepth(103);
+
+      // Label
+      const label = this.add.text(x, dockY + buttonSize / 2 + 25, control.label, {
+        fontSize: '20px',
+        color: '#101012',
+        fontFamily: 'Arial',
+        fontStyle: 'bold',
+        stroke: '#FFFFFF',
+        strokeThickness: 4
+      }).setOrigin(0.5);
+      label.setScrollFactor(0).setDepth(103);
+
+      // Interactions
+      button.on('pointerdown', () => {
+        this.tweens.add({
+          targets: [button, icon],
+          scale: 0.9,
+          duration: 100,
+          yoyo: true
+        });
+        
+        if (this.audioManager) this.audioManager.playClickSound();
+
+        if (control.action === 'menu') {
+          this.scene.start('GameMenu');
+        } else if (control.action === 'home') {
+          this.scene.start('GameMenu');
+        } else if (control.action === 'help') {
+          this.showHelp();
+        }
+      });
+    });
+  }
+
+  /**
    * Preload game assets
    */
   preload() {
