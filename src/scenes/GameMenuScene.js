@@ -1122,6 +1122,20 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'math'
       },
       {
+        scene: 'OrderingChronology',
+        name: 'Ordering Chronology',
+        icon: 'ordering_chronology.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'Oware',
+        name: 'Oware',
+        icon: 'oware.svg',
+        difficulty: 4,
+        category: 'strategy'
+      },
+      {
         scene: 'OrderingSentences',
         name: 'Ordering Sentences',
         icon: 'ordering_sentences.svg',
