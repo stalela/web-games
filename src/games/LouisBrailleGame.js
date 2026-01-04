@@ -1,247 +1,413 @@
 import { LalelaGame } from '../utils/LalelaGame.js';
+import { BrailleCell } from '../components/BrailleCell.js';
 
 export class LouisBrailleGame extends LalelaGame {
-  constructor(config) {
-    super({
-      key: 'LouisBrailleGame',
-      title: 'The Story of Louis Braille',
-      description: 'Arrange the events in the correct order.',
-      category: 'reading',
-      ...config
-    });
-  }
+    constructor() {
+        super();
+        this.isStoryMode = true;
+        this.currentStoryIndex = 0;
+        this.storyItems = [];
+    }
 
-  preload() {
-    super.preload();
-    // Load assets
-    const images = [
-      'louis', 'stitching_awl', 'blind', 'paris', 'piano', 
-      'night_writing', 'braille', 'teach', 'maths', 'statue', 'world'
-    ];
-    
-    images.forEach(img => {
-      this.load.svg(`louis-${img}`, `assets/louis-braille/${img}.svg`);
-    });
+    preload() {
+        super.preload();
+        
+        // Load assets based on louis_braille_data.js
+        // Note: We map .webp to .svg if that's what we have in the assets folder
+        this.load.svg('louis-louis', 'assets/louis-braille/louis.svg'); // Was webp in data
+        this.load.svg('louis-stitching_awl', 'assets/louis-braille/stitching_awl.svg');
+        this.load.svg('louis-blind', 'assets/louis-braille/blind.svg');
+        this.load.svg('louis-paris', 'assets/louis-braille/paris.svg');
+        this.load.svg('louis-piano', 'assets/louis-braille/piano.svg');
+        this.load.svg('louis-night_writing', 'assets/louis-braille/night_writing.svg');
+        this.load.svg('louis-braille', 'assets/louis-braille/braille.svg');
+        this.load.svg('louis-teach', 'assets/louis-braille/teach.svg');
+        this.load.svg('louis-maths', 'assets/louis-braille/maths.svg');
+        this.load.svg('louis-statue', 'assets/louis-braille/statue.svg');
+        this.load.svg('louis-world', 'assets/louis-braille/world.svg');
 
-    // Load navigation icons
-    const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
-    uiIcons.forEach((icon) => {
-        this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`);
-    });
-  }
+        // UI Assets
+        this.load.svg('arrow_left', 'assets/game-icons/arrow_left.svg');
+        this.load.svg('arrow_right', 'assets/game-icons/arrow_right.svg');
+    }
 
-  createBackground() {
-    const { width, height } = this.cameras.main;
-    this.add.rectangle(width / 2, height / 2, width, height, 0xE6F3FF).setDepth(-1);
-  }
+    createBackground() {
+        // Light blue background matching screenshots
+        this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0xB4D7F0).setOrigin(0).setDepth(-1);
+    }
 
-  createUI() {
-    super.createUI();
-    this.createNavigationDock(this.cameras.main.width, this.cameras.main.height);
-    
-    // Title
-    this.add.text(this.cameras.main.width / 2, 50, 'The Story of Louis Braille', {
-      fontFamily: 'Arial',
-      fontSize: '32px',
-      color: '#000000',
-      fontStyle: 'bold'
-    }).setOrigin(0.5);
-  }
+    createUI() {
+        super.createUI();
+        // Navigation dock is handled by base class
+    }
 
-  setupGameLogic() {
-    this.events = [
-      { year: 1809, text: "Born on January 4th 1809 in Coupvray near Paris.", img: "louis-louis" },
-      { year: 1812, text: "Injured his right eye with a stitching awl.", img: "louis-stitching_awl" },
-      { year: 1812, text: "Became blind due to severe infection.", img: "louis-blind" },
-      { year: 1819, text: "Sent to Paris to study at the Royal Institute.", img: "louis-paris" },
-      { year: 1820, text: "Began to play the piano and the organ.", img: "louis-piano" },
-      { year: 1821, text: "Charles Barbier shared his night writing code.", img: "louis-night_writing" },
-      { year: 1824, text: "Invented the Braille system (6 dots).", img: "louis-braille" },
-      { year: 1828, text: "Became a teacher and promoted his method.", img: "louis-teach" },
-      { year: 1837, text: "Extended Braille to math and music.", img: "louis-maths" },
-      { year: 1852, text: "Died of tuberculosis. Buried in the Pantheon.", img: "louis-statue" },
-      { year: 9999, text: "Braille became a worldwide standard.", img: "louis-world" }
-    ];
+    setupGameLogic() {
+        // Data from louis_braille_data.js
+        this.dataset = [
+            {
+                text: "Born on January 4th 1809 in Coupvray near Paris in France.",
+                year: "1809",
+                img: "louis-louis"
+            },
+            {
+                text: "Louis Braille injured his right eye with a stitching awl from his father's workshop.",
+                year: "1812",
+                img: "louis-stitching_awl"
+            },
+            {
+                text: "At the age of three, Louis became blind due to a severe infection that spread to his left eye.",
+                year: "1812",
+                img: "louis-blind"
+            },
+            {
+                text: "At the age of 10, he was sent to Paris to study at the Royal Institute for Blind Youth.",
+                year: "1819",
+                img: "louis-paris"
+            },
+            {
+                text: "He impressed his classmates and began to play the piano and the organ.",
+                year: "1820",
+                img: "louis-piano"
+            },
+            {
+                text: "Charles Barbier, a French soldier, visited his school and shared his invention of night writing, a code of 12 raised dots to share information on battlefields.",
+                year: "1821",
+                img: "louis-night_writing"
+            },
+            {
+                text: "Louis trimmed Barbier's 12 dots into 6 and invented the braille system.",
+                year: "1824",
+                img: "louis-braille"
+            },
+            {
+                text: "He became a teacher after graduating and promoted his method while secretly teaching it at the Institute.",
+                year: "1828",
+                img: "louis-teach"
+            },
+            {
+                text: "He revised and extended braille to include mathematics, symbols, punctuation and music notations.",
+                year: "1837",
+                img: "louis-maths"
+            },
+            {
+                text: "He died of tuberculosis. He is buried in the Pantheon in Paris. A monument is erected to honor him.",
+                year: "1852",
+                img: "louis-statue"
+            },
+            {
+                text: "Braille got accepted as a world wide standard. Louis Braille proved that if you have motivation you can do incredible things.",
+                year: "After his Death",
+                img: "louis-world"
+            }
+        ];
 
-    // Shuffle for the game
-    this.currentOrder = this.shuffleArray([...this.events]);
-    
-    this.createList();
-  }
+        // Add sequence index for checking later
+        this.dataset.forEach((item, index) => item.sequence = index);
 
-  createList() {
-    const { width, height } = this.cameras.main;
-    const itemHeight = 80;
-    const startY = 100;
-    
-    if (this.listContainer) this.listContainer.destroy();
-    this.listContainer = this.add.container(0, 0);
-    
-    this.items = [];
+        this.startStoryMode();
+    }
 
-    this.currentOrder.forEach((event, index) => {
-      const item = this.createListItem(event, index, width / 2, startY + index * (itemHeight + 10));
-      this.listContainer.add(item);
-      this.items.push(item);
-    });
+    // ==========================================
+    // STORY MODE
+    // ==========================================
 
-    // Check Button
-    const checkBtn = this.add.container(width - 100, height - 100);
-    const btnBg = this.add.circle(0, 0, 40, 0x00B378);
-    const btnText = this.add.text(0, 0, 'OK', { fontSize: '24px', fontStyle: 'bold' }).setOrigin(0.5);
-    
-    checkBtn.add([btnBg, btnText]);
-    checkBtn.setSize(80, 80);
-    checkBtn.setInteractive({ useHandCursor: true });
-    checkBtn.on('pointerdown', () => this.checkOrder());
-    
-    this.listContainer.add(checkBtn);
-  }
+    startStoryMode() {
+        this.isStoryMode = true;
+        this.currentStoryIndex = 0;
+        this.createStoryUI();
+        this.showStoryItem(0);
+    }
 
-  createListItem(event, index, x, y) {
-    const container = this.add.container(x, y);
-    const width = 800;
-    const height = 80;
-    
-    const bg = this.add.rectangle(0, 0, width, height, 0xFFFFFF);
-    bg.setStrokeStyle(2, 0xCCCCCC);
-    
-    const img = this.add.image(-350, 0, event.img);
-    img.setDisplaySize(60, 60);
-    
-    const text = this.add.text(-300, 0, event.text, {
-      fontFamily: 'Arial',
-      fontSize: '18px',
-      color: '#000000',
-      wordWrap: { width: 600 }
-    }).setOrigin(0, 0.5);
+    createStoryUI() {
+        if (this.storyContainer) this.storyContainer.destroy();
+        this.storyContainer = this.add.container(0, 0);
 
-    container.add([bg, img, text]);
-    container.setSize(width, height);
-    container.setInteractive({ draggable: true });
-    
-    container.data = { event, index };
-    
-    // Drag logic
-    container.on('dragstart', () => {
-      this.children.bringToTop(container);
-      bg.setFillStyle(0xE0E0E0);
-    });
+        const { width, height } = this.cameras.main;
+        const safeArea = this.getSafeArea();
 
-    container.on('drag', (pointer, dragX, dragY) => {
-      container.y = dragY;
-    });
+        // 1. Braille Header "LOUIS BRAILLE"
+        const titleText = "LOUIS BRAILLE";
+        const startX = width / 2 - (titleText.length * 40) / 2;
+        const brailleY = safeArea.top + 40;
 
-    container.on('dragend', () => {
-      bg.setFillStyle(0xFFFFFF);
-      this.reorderItems(container);
-    });
-
-    return container;
-  }
-
-  reorderItems(draggedItem) {
-    // Find new index based on y position
-    const itemHeight = 90; // 80 + 10 spacing
-    const startY = 100;
-    
-    let newIndex = Math.round((draggedItem.y - startY) / itemHeight);
-    newIndex = Math.max(0, Math.min(newIndex, this.items.length - 1));
-    
-    const oldIndex = this.items.indexOf(draggedItem);
-    
-    if (newIndex !== oldIndex) {
-      // Remove from old position
-      this.items.splice(oldIndex, 1);
-      // Insert at new position
-      this.items.splice(newIndex, 0, draggedItem);
-      
-      // Update visual positions
-      this.items.forEach((item, i) => {
-        this.tweens.add({
-          targets: item,
-          y: startY + i * itemHeight,
-          duration: 200
+        titleText.split('').forEach((char, i) => {
+            if (char !== ' ') {
+                const cell = new BrailleCell(this, startX + i * 40, brailleY, 30, 50, false);
+                cell.setBraille(char);
+                this.storyContainer.add(cell);
+                
+                const letter = this.add.text(startX + i * 40, brailleY + 40, char, {
+                    fontFamily: 'Arial',
+                    fontSize: '16px',
+                    color: '#000000',
+                    fontStyle: 'bold'
+                }).setOrigin(0.5);
+                this.storyContainer.add(letter);
+            }
         });
-      });
-    } else {
-      // Return to original position
-      this.tweens.add({
-        targets: draggedItem,
-        y: startY + oldIndex * itemHeight,
-        duration: 200
-      });
+
+        // 2. Description Box
+        const boxWidth = Math.min(800, width - 40);
+        const boxHeight = 120;
+        const boxY = brailleY + 100;
+
+        const boxBg = this.add.rectangle(width / 2, boxY, boxWidth, boxHeight, 0xF0F0F0);
+        boxBg.setStrokeStyle(2, 0x000000);
+        this.storyContainer.add(boxBg);
+
+        this.storyText = this.add.text(width / 2, boxY, "", {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#000000',
+            align: 'center',
+            wordWrap: { width: boxWidth - 40 }
+        }).setOrigin(0.5);
+        this.storyContainer.add(this.storyText);
+
+        // 3. Central Image
+        this.storyImage = this.add.image(width / 2, boxY + boxHeight / 2 + 150, 'louis-louis');
+        this.storyImage.setMaxPreferredHeight(250);
+        this.storyContainer.add(this.storyImage);
+
+        // 4. Year Box
+        const yearY = this.storyImage.y + 160;
+        const yearBg = this.add.rectangle(width / 2, yearY, 150, 50, 0xFFFFFF);
+        yearBg.setStrokeStyle(2, 0x000000);
+        this.storyContainer.add(yearBg);
+
+        this.storyYear = this.add.text(width / 2, yearY, "", {
+            fontFamily: 'Arial',
+            fontSize: '24px',
+            color: '#000000'
+        }).setOrigin(0.5);
+        this.storyContainer.add(this.storyYear);
+
+        // 5. Navigation Arrows
+        const arrowY = this.storyImage.y;
+        
+        // Previous
+        this.prevBtn = this.add.image(width / 2 - 250, arrowY, 'arrow_left')
+            .setInteractive({ useHandCursor: true })
+            .setScale(1.5);
+        this.prevBtn.on('pointerdown', () => this.prevStoryItem());
+        this.storyContainer.add(this.prevBtn);
+
+        // Next
+        this.nextBtn = this.add.image(width / 2 + 250, arrowY, 'arrow_right')
+            .setInteractive({ useHandCursor: true })
+            .setScale(1.5);
+        this.nextBtn.on('pointerdown', () => this.nextStoryItem());
+        this.storyContainer.add(this.nextBtn);
     }
-  }
 
-  checkOrder() {
-    let correct = true;
-    for (let i = 0; i < this.items.length - 1; i++) {
-      if (this.items[i].data.event.year > this.items[i+1].data.event.year) {
-        correct = false;
-        break;
-      }
-    }
-
-    if (correct) {
-      this.audioManager.play('success');
-      // Show completion message
-      const { width, height } = this.cameras.main;
-      const msg = this.add.text(width/2, height/2, 'Correct! You know the story of Louis Braille.', {
-        fontSize: '32px',
-        backgroundColor: '#000000',
-        padding: { x: 20, y: 10 }
-      }).setOrigin(0.5).setDepth(100);
-      
-      this.time.delayedCall(3000, () => {
-        msg.destroy();
-        this.scene.start('GameMenu');
-      });
-    } else {
-      this.audioManager.play('fail');
-    }
-  }
-
-  createNavigationDock(width, height) {
-    // Standard dock
-    const dockY = height - 46;
-    const dockBg = this.add.graphics();
-    dockBg.fillStyle(0xFFFFFF, 0.92);
-    dockBg.fillRoundedRect(width / 2 - (width - 60) / 2, dockY - 42, width - 60, 84, 42);
-    dockBg.setDepth(14);
-
-    const dockBorder = this.add.graphics();
-    dockBorder.lineStyle(3, 0x0062FF, 1);
-    dockBorder.strokeRoundedRect(width / 2 - (width - 60) / 2, dockY - 42, width - 60, 84, 42);
-    dockBorder.setDepth(15);
-
-    const controls = [
-      { icon: 'help.svg', action: 'help', color: 0x00B378 },
-      { icon: 'home.svg', action: 'home', color: 0x0062FF },
-      { icon: 'settings.svg', action: 'levels', color: 0xF08A00 },
-      { icon: 'exit.svg', action: 'menu', color: 0xA74BFF }
-    ];
-
-    const totalWidth = controls.length * 92;
-    const startX = width / 2 - totalWidth / 2 + 31;
-
-    controls.forEach((control, index) => {
-      const x = startX + index * 92;
-      const btn = this.add.container(x, dockY);
-      btn.setSize(62, 62);
-      btn.setInteractive({ useHandCursor: true });
-      btn.setDepth(20);
-
-      const circle = this.add.circle(0, 0, 31, control.color);
-      const icon = this.add.image(0, 0, control.icon.replace('.svg', ''));
-      icon.setScale(0.6);
-      btn.add([circle, icon]);
-      
-      btn.on('pointerdown', () => {
-        if (control.action === 'home' || control.action === 'menu') {
-          this.scene.start('GameMenu');
+    showStoryItem(index) {
+        const item = this.dataset[index];
+        
+        this.storyText.setText(item.text);
+        this.storyYear.setText(item.year);
+        this.storyImage.setTexture(item.img);
+        
+        // Scale image to fit
+        const maxDim = 250;
+        if (this.storyImage.width > maxDim || this.storyImage.height > maxDim) {
+            const scale = maxDim / Math.max(this.storyImage.width, this.storyImage.height);
+            this.storyImage.setScale(scale);
+        } else {
+            this.storyImage.setScale(1);
         }
-      });
-    });
-  }
+
+        // Update button visibility
+        this.prevBtn.setVisible(index > 0);
+        // Next button is always visible, but changes function on last item
+    }
+
+    prevStoryItem() {
+        if (this.currentStoryIndex > 0) {
+            this.currentStoryIndex--;
+            this.showStoryItem(this.currentStoryIndex);
+        }
+    }
+
+    nextStoryItem() {
+        if (this.currentStoryIndex < this.dataset.length - 1) {
+            this.currentStoryIndex++;
+            this.showStoryItem(this.currentStoryIndex);
+        } else {
+            // End of story, switch to reorder mode
+            this.startReorderMode();
+        }
+    }
+
+    // ==========================================
+    // REORDER MODE
+    // ==========================================
+
+    startReorderMode() {
+        this.isStoryMode = false;
+        this.storyContainer.destroy();
+        
+        // Title
+        this.add.text(this.cameras.main.width / 2, 50, 'The Story of Louis Braille', {
+            fontFamily: 'Arial',
+            fontSize: '32px',
+            color: '#000000',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        // Shuffle items for the game
+        this.gameItems = this.shuffleArray([...this.dataset]);
+        this.createReorderList();
+    }
+
+    createReorderList() {
+        const { width, height } = this.cameras.main;
+        const safeArea = this.getSafeArea();
+        
+        if (this.listContainer) this.listContainer.destroy();
+        this.listContainer = this.add.container(0, 0);
+
+        const itemHeight = 60; // Compact height to fit all items
+        const itemWidth = Math.min(800, width - 40);
+        const startY = 100;
+        const spacing = 10;
+
+        this.dragItems = [];
+
+        this.gameItems.forEach((data, index) => {
+            const y = startY + index * (itemHeight + spacing);
+            const item = this.createDraggableItem(data, index, width / 2, y, itemWidth, itemHeight);
+            this.listContainer.add(item);
+            this.dragItems.push(item);
+        });
+
+        // OK Button
+        const okBtn = this.add.container(width - 80, height - 80);
+        const okBg = this.add.circle(0, 0, 40, 0x00B378);
+        const okText = this.add.text(0, 0, 'OK', { 
+            fontSize: '24px', 
+            fontStyle: 'bold',
+            fontFamily: 'Arial'
+        }).setOrigin(0.5);
+        
+        okBtn.add([okBg, okText]);
+        okBtn.setSize(80, 80);
+        okBtn.setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => this.checkOrder());
+            
+        this.listContainer.add(okBtn);
+    }
+
+    createDraggableItem(data, index, x, y, w, h) {
+        const container = this.add.container(x, y);
+        container.setSize(w, h);
+        
+        // Background
+        const bg = this.add.rectangle(0, 0, w, h, 0xFFFFFF);
+        bg.setStrokeStyle(1, 0xAAAAAA);
+        container.add(bg);
+        container.bg = bg; // Reference for highlighting
+
+        // Image (Left)
+        const img = this.add.image(-w/2 + h/2 + 10, 0, data.img);
+        const scale = (h - 10) / Math.max(img.width, img.height);
+        img.setScale(scale);
+        container.add(img);
+
+        // Text (Right)
+        const text = this.add.text(-w/2 + h + 20, 0, data.text, {
+            fontFamily: 'Arial',
+            fontSize: '16px',
+            color: '#000000',
+            wordWrap: { width: w - h - 30 }
+        }).setOrigin(0, 0.5);
+        container.add(text);
+
+        // Drag Logic
+        container.setInteractive({ draggable: true });
+        container.dataItem = data;
+        container.currentIndex = index;
+
+        this.input.setDraggable(container);
+
+        container.on('dragstart', () => {
+            this.children.bringToTop(this.listContainer); // Ensure list is on top
+            this.listContainer.bringToTop(container);
+            bg.setFillStyle(0xE6F3FF); // Highlight
+            container.setScale(1.02);
+        });
+
+        container.on('drag', (pointer, dragX, dragY) => {
+            container.y = dragY;
+            // Constrain Y to list area
+            // Simple visual feedback for reordering could be added here
+        });
+
+        container.on('dragend', () => {
+            bg.setFillStyle(0xFFFFFF);
+            container.setScale(1);
+            this.reorderList(container);
+        });
+
+        return container;
+    }
+
+    reorderList(droppedItem) {
+        // Find new index based on Y position
+        const startY = 100;
+        const itemHeight = 60;
+        const spacing = 10;
+        const totalHeight = itemHeight + spacing;
+
+        let newIndex = Math.floor((droppedItem.y - startY + itemHeight/2) / totalHeight);
+        newIndex = Math.max(0, Math.min(newIndex, this.dragItems.length - 1));
+
+        // Remove from old position
+        const oldIndex = this.dragItems.indexOf(droppedItem);
+        this.dragItems.splice(oldIndex, 1);
+        
+        // Insert at new position
+        this.dragItems.splice(newIndex, 0, droppedItem);
+
+        // Animate all items to new positions
+        this.dragItems.forEach((item, index) => {
+            this.tweens.add({
+                targets: item,
+                y: startY + index * totalHeight,
+                duration: 200,
+                ease: 'Power2'
+            });
+            item.currentIndex = index;
+        });
+    }
+
+    checkOrder() {
+        let correct = true;
+        this.dragItems.forEach((item, index) => {
+            if (item.dataItem.sequence !== index) {
+                correct = false;
+                // Visual feedback for wrong items
+                item.bg.setStrokeStyle(2, 0xFF0000);
+            } else {
+                item.bg.setStrokeStyle(2, 0x00B378);
+            }
+        });
+
+        if (correct) {
+            this.audioManager.playSound('success');
+            this.uiManager.showWinModal(() => {
+                this.scene.start('GameMenu');
+            });
+        } else {
+            this.audioManager.playSound('error');
+            this.uiManager.showFeedback("Try again! The events are not in the correct order.");
+        }
+    }
+    
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 }
