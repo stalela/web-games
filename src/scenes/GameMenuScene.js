@@ -1052,6 +1052,41 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'discovery'
       },
       {
+        scene: 'MiningGame',
+        name: 'Mining',
+        icon: 'mining.svg', // Need to check if icon exists, otherwise use generic
+        difficulty: 2,
+        category: 'strategy'
+      },
+      {
+        scene: 'MosaicGame',
+        name: 'Mosaic',
+        icon: 'mosaic.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'NumbersOddEvenGame',
+        name: 'Odd & Even',
+        icon: 'numbers-odd-even.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'NumberSequenceGame',
+        name: 'Number Sequence',
+        icon: 'number_sequence.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'OrderingAlphabetsGame',
+        name: 'Ordering Alphabets',
+        icon: 'ordering_alphabets.svg',
+        difficulty: 2,
+        category: 'reading'
+      },
+      {
         scene: 'Mosaic',
         name: 'Mosaic',
         icon: 'mosaic.svg',

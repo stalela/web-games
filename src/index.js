@@ -169,6 +169,11 @@ import { CategorizationGame } from './games/CategorizationGame.js';
 import { ChessPartyEndGame } from './games/ChessPartyEndGame.js';
 import { DrawingWheelsGame } from './games/DrawingWheelsGame.js';
 import { GeoCountryGame } from './games/GeoCountryGame.js';
+import { MiningGame } from './games/MiningGame.js';
+import { MosaicGame } from './games/MosaicGame.js';
+import { NumbersOddEvenGame } from './games/NumbersOddEvenGame.js';
+import { NumberSequenceGame } from './games/NumberSequenceGame.js';
+import { OrderingAlphabetsGame } from './games/OrderingAlphabetsGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -404,6 +409,11 @@ class LalelaGamesApp {
       this.game.scene.add('ChessPartyEndGame', ChessPartyEndGame);
       this.game.scene.add('DrawingWheelsGame', DrawingWheelsGame);
       this.game.scene.add('GeoCountryGame', GeoCountryGame);
+      this.game.scene.add('MiningGame', MiningGame);
+      this.game.scene.add('MosaicGame', MosaicGame);
+      this.game.scene.add('NumbersOddEvenGame', NumbersOddEvenGame);
+      this.game.scene.add('NumberSequenceGame', NumberSequenceGame);
+      this.game.scene.add('OrderingAlphabetsGame', OrderingAlphabetsGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();
