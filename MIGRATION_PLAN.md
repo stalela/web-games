@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 4, 2026
-> **Total Games:** 199 | **Completed:** 94 | **Remaining:** 105
-> **Progress:** ████████░░ 47.2%
+> **Total Games:** 199 | **Completed:** 99 | **Remaining:** 100
+> **Progress:** ██████████ 49.7%
 
 ---
 
@@ -160,6 +160,11 @@ Copy this checklist for each new game task.
 | GnumchEqualityGame | Math | LalelaGame | ✅ Complete |
 | GnumchFactorsGame | Math | LalelaGame | ✅ Complete |
 | GnumchInequalityGame | Math | LalelaGame | ✅ Complete |
+| ImageNameGame | Reading | DragDropGame | ✅ Complete |
+| ClickAndDrawGame | Computer | LalelaGame | ✅ Complete |
+| LeftRightClickGame | Computer | LalelaGame | ✅ Complete |
+| FollowLineGame | Computer | LalelaGame | ✅ Complete |
+| DrawLettersGame | Reading | LalelaGame | ✅ Complete |
 
 ---
 
@@ -214,7 +219,7 @@ Copy this checklist for each new game task.
 | `wordsgame` | P1 | ✅ Complete | - |
 | `hangman` | P2 | ✅ Complete | - |
 | `gletters` | P2 | ✅ Complete | - |
-| `imagename` | P2 | ⬜ Not Started | - |
+| `imagename` | P2 | ✅ Complete | - |
 | `lang` | P2 | ⬜ Not Started | - |
 | `braille_alphabets` | P3 | ⬜ Not Started | - |
 | `braille_fun` | P3 | ⬜ Not Started | - |
@@ -287,11 +292,11 @@ Copy this checklist for each new game task.
 | `erase` | P1 | ✅ Complete | - |
 | `erase_clic` | P1 | ✅ Complete | - |
 | `erase_2clic` | P1 | ✅ Complete | - |
-| `clickanddraw` | P2 | ⬜ Not Started | - |
-| `drawletters` | P2 | ⬜ Not Started | - |
+| `clickanddraw` | P2 | ✅ Complete | - |
+| `drawletters` | P2 | ✅ Complete | - |
 | `drawnumbers` | P2 | ⬜ Not Started | - |
-| `followline` | P2 | ⬜ Not Started | - |
-| `left_right_click` | P2 | ⬜ Not Started | - |
+| `followline` | P2 | ✅ Complete | - |
+| `left_right_click` | P2 | ✅ Complete | - |
 | `leftright` | P2 | ⬜ Not Started | - |
 | `baby_wordprocessor` | P3 | ⬜ Not Started | - |
 
