@@ -18,6 +18,12 @@ export class FindTheDayGame extends LalelaGame {
         this.load.svg('find-the-day-wood-bg', 'assets/fifteen/background.svg');
         this.load.svg('find-the-day-scroll', 'assets/game-icons/scroll_down.svg');
         this.load.svg('find-the-day-ok', 'assets/game-icons/bar_ok.svg');
+
+        // UI control icons for navigation dock
+        const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
+        uiIcons.forEach((icon) => {
+            this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`);
+        });
     }
 
     createBackground() {
@@ -46,6 +52,10 @@ export class FindTheDayGame extends LalelaGame {
                 showTimer: false,
                 showProgress: false
             });
+
+            // We'll use the GCompris-style bottom navigation dock instead
+            if (this.uiElements.controls?.home) this.uiElements.controls.home.setVisible(false);
+            if (this.uiElements.controls?.settings) this.uiElements.controls.settings.setVisible(false);
         }
 
         this.buildFindTheDayUI();
@@ -290,14 +300,20 @@ export class FindTheDayGame extends LalelaGame {
         this.okButton = this.add.image(okX, okY, 'find-the-day-ok').setDisplaySize(okSize, okSize);
         this.okButton.setInteractive({ useHandCursor: true });
         this.okButton.on('pointerdown', () => this.submitAnswer());
+        this.okButton.setDepth(16);
 
         this.scoreBox = this.add.rectangle(okX - okSize / 2 - 50, okY, 84, 52, 0xffffff, 0.8);
         this.scoreBox.setStrokeStyle(2, 0x000000, 0.2);
+        this.scoreBox.setDepth(16);
         this.scoreText = this.add.text(this.scoreBox.x, this.scoreBox.y, '0/0', {
             fontFamily: 'Arial',
             fontSize: '24px',
             color: '#2c3e50'
         }).setOrigin(0.5);
+        this.scoreText.setDepth(17);
+
+        // Bottom navigation dock (GCompris-style)
+        this.createNavigationDock(width, height);
 
         // Initial paint
         this.updateModeVisibility();
@@ -305,6 +321,125 @@ export class FindTheDayGame extends LalelaGame {
         this.renderCalendarGrid();
         this.updateQuestionText();
         this.updateScoreText();
+    }
+
+    /**
+     * Create bottom navigation dock
+     */
+    createNavigationDock(width, height) {
+        const dockY = height - 46;
+        const buttonSize = 62;
+        const spacing = 92;
+
+        // Dock background pill
+        const dockBg = this.add.graphics();
+        dockBg.fillStyle(0xFFFFFF, 0.92);
+        dockBg.fillRoundedRect(width / 2 - (width - 60) / 2, dockY - 42, width - 60, 84, 42);
+        dockBg.setDepth(14);
+
+        const dockBorder = this.add.graphics();
+        dockBorder.lineStyle(3, 0x0062FF, 1);
+        dockBorder.strokeRoundedRect(width / 2 - (width - 60) / 2, dockY - 42, width - 60, 84, 42);
+        dockBorder.setDepth(15);
+
+        const controls = [
+            { icon: 'help.svg', action: 'help', color: 0x00B378, label: 'Help' },
+            { icon: 'home.svg', action: 'home', color: 0x0062FF, label: 'Home' },
+            { icon: 'settings.svg', action: 'levels', color: 0xF08A00, label: 'Levels' },
+            { icon: 'exit.svg', action: 'menu', color: 0xA74BFF, label: 'Menu' }
+        ];
+
+        const totalWidth = (controls.length - 1) * spacing + buttonSize;
+        const startX = (width - totalWidth) / 2 + buttonSize / 2;
+
+        this.dockElements = this.dockElements || [];
+        this.dockElements.push(dockBg, dockBorder);
+
+        controls.forEach((control, index) => {
+            const x = startX + index * spacing;
+
+            const buttonShadow = this.add.circle(x + 3, dockY + 3, buttonSize / 2, 0x000000, 0.25);
+            buttonShadow.setDepth(15);
+
+            const button = this.add.circle(x, dockY, buttonSize / 2, control.color);
+            button.setStrokeStyle(3, 0xFFFFFF);
+            button.setDepth(16);
+            button.setInteractive({ useHandCursor: true });
+
+            const iconKey = control.icon.replace('.svg', '');
+            const icon = this.add.sprite(x, dockY, iconKey);
+            icon.setTint(0xFFFFFF);
+            icon.setDepth(17);
+            icon.setScale((buttonSize * 0.7) / 100);
+
+            const label = this.add.text(x, dockY + buttonSize / 2 + 14, control.label, {
+                fontSize: '14px',
+                color: '#101012',
+                fontFamily: 'Fredoka One, cursive',
+                fontStyle: 'bold',
+                align: 'center'
+            }).setOrigin(0.5);
+            label.setDepth(17);
+
+            button.on('pointerdown', () => this.handleDockAction(control.action));
+
+            this.dockElements.push(buttonShadow, button, icon, label);
+        });
+    }
+
+    /**
+     * Handle navigation dock actions
+     */
+    handleDockAction(action) {
+        switch (action) {
+            case 'help':
+                this.showHelpModal();
+                break;
+            case 'home':
+            case 'menu':
+                this.scene.start('GameMenu');
+                break;
+            case 'levels':
+                if (this.uiManager) {
+                    this.uiManager.showNotification('Level selection coming soon!', 'info', 2000);
+                }
+                break;
+        }
+    }
+
+    showHelpModal() {
+        const { width, height } = this.cameras.main;
+
+        const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.6);
+        overlay.setDepth(60);
+        overlay.setInteractive({ useHandCursor: true });
+
+        const modalW = Math.min(620, width - 40);
+        const modalH = 260;
+        const modal = this.add.rectangle(width / 2, height / 2, modalW, modalH, 0xFFFFFF, 1);
+        modal.setStrokeStyle(4, 0x0062FF, 1);
+        modal.setDepth(61);
+
+        const text = this.add.text(width / 2, height / 2, 'How to Play\n\n' +
+            '• Read the question at the top\n' +
+            '• Use the arrows to change month\n' +
+            '• Select a date (or a weekday)\n' +
+            '• Press OK to submit', {
+            fontFamily: 'Arial',
+            fontSize: '20px',
+            color: '#2c3e50',
+            align: 'center',
+            wordWrap: { width: modalW - 40 }
+        }).setOrigin(0.5);
+        text.setDepth(62);
+
+        const close = () => {
+            overlay.destroy();
+            modal.destroy();
+            text.destroy();
+        };
+
+        overlay.on('pointerdown', close);
     }
 
     createDayOfWeekChoices() {
