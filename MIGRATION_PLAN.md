@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 4, 2026
-> **Total Games:** 199 | **Completed:** 99 | **Remaining:** 100
-> **Progress:** ██████████ 49.7%
+> **Total Games:** 199 | **Completed:** 107 | **Remaining:** 92
+> **Progress:** ██████████ 53.7%
 
 ---
 
@@ -165,6 +165,14 @@ Copy this checklist for each new game task.
 | LeftRightClickGame | Computer | LalelaGame | ✅ Complete |
 | FollowLineGame | Computer | LalelaGame | ✅ Complete |
 | DrawLettersGame | Reading | LalelaGame | ✅ Complete |
+| CraneGame | Fun | LalelaGame | ✅ Complete |
+| FootballGame | Fun | LalelaGame | ✅ Complete |
+| BallCatchGame | Fun | LalelaGame | ✅ Complete |
+| PenaltyGame | Fun | LalelaGame | ✅ Complete |
+| BarGame | Strategy | LalelaGame | ✅ Complete |
+| BarGame2Players | Strategy | LalelaGame | ✅ Complete |
+| AlgorithmGame | Strategy | LalelaGame | ✅ Complete |
+| FriezeGame | Strategy | LalelaGame | ✅ Complete |
 
 ---
 
@@ -220,7 +228,7 @@ Copy this checklist for each new game task.
 | `hangman` | P2 | ✅ Complete | - |
 | `gletters` | P2 | ✅ Complete | - |
 | `imagename` | P2 | ✅ Complete | - |
-| `lang` | P2 | ⬜ Not Started | - |
+| `lang` | P2 | ❌ Blocked (Missing Assets) | - |
 | `braille_alphabets` | P3 | ✅ Complete | - |
 | `braille_fun` | P3 | ✅ Complete | - |
 | `louis-braille` | P3 | ✅ Complete | - |
@@ -247,11 +255,11 @@ Copy this checklist for each new game task.
 | `mazeinvisible` | P2 | ✅ Complete | - |
 | `mazerelative` | P2 | ✅ Complete | - |
 | `traffic` | P2 | ✅ Complete | - |
-| `bargame` | P3 | ⬜ Not Started | - |
-| `bargame_2players` | P3 | ⬜ Not Started | - |
+| `bargame` | P3 | ✅ Complete | - |
+| `bargame_2players` | P3 | ✅ Complete | - |
 | `graph-coloring` | P3 | ⬜ Not Started | - |
-| `algorithm` | P3 | ⬜ Not Started | - |
-| `frieze` | P3 | ⬜ Not Started | - |
+| `algorithm` | P3 | ✅ Complete | - |
+| `frieze` | P3 | ✅ Complete | - |
 
 ---
 
@@ -310,9 +318,10 @@ Copy this checklist for each new game task.
 | `baby_tangram` | P1 | ✅ Complete | - |
 | `puzzle` | P1 | ⬜ Not Started | - |
 | `babyshapes` | P1 | ✅ Complete | - |
-| `crane` | P2 | ⬜ Not Started | - |
-| `football` | P2 | ⬜ Not Started | - |
-| `ballcatch` | P2 | ⬜ Not Started | - |
+| `crane` | P2 | ✅ Complete | - |
+| `football` | P2 | ✅ Complete | - |
+| `ballcatch` | P2 | ✅ Complete | - |
+| `penalty` | P2 | ✅ Complete | - |
 | `land_safe` | P3 | ✅ Complete | - |
 
 ---

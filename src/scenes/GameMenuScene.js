@@ -875,6 +875,34 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'penalty.svg',
         difficulty: 1,
         category: 'fun'
+      },
+      {
+        scene: 'BarGame',
+        name: 'Bar Game',
+        icon: 'bargame.svg',
+        difficulty: 2,
+        category: 'strategy'
+      },
+      {
+        scene: 'BarGame2Players',
+        name: 'Bar Game (2 Players)',
+        icon: 'bargame_2players.svg',
+        difficulty: 2,
+        category: 'strategy'
+      },
+      {
+        scene: 'AlgorithmGame',
+        name: 'Algorithm',
+        icon: 'algorithm.svg',
+        difficulty: 2,
+        category: 'strategy'
+      },
+      {
+        scene: 'FriezeGame',
+        name: 'Frieze',
+        icon: 'frieze.svg',
+        difficulty: 2,
+        category: 'strategy'
       }
     ];
 

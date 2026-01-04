@@ -102,6 +102,10 @@ import { CraneGame } from './games/CraneGame.js';
 import { FootballGame } from './games/FootballGame.js';
 import { BallCatchGame } from './games/BallCatchGame.js';
 import { PenaltyGame } from './games/PenaltyGame.js';
+import { BarGame } from './games/BarGame.js';
+import { BarGame2Players } from './games/BarGame2Players.js';
+import { AlgorithmGame } from './games/AlgorithmGame.js';
+import { FriezeGame } from './games/FriezeGame.js';
 import { LearnDecimalsGame } from './games/LearnDecimalsGame.js';
 import { LearnDecimalsAdditionsGame } from './games/LearnDecimalsAdditionsGame.js';
 import { LearnDecimalsSubtractionsGame } from './games/LearnDecimalsSubtractionsGame.js';
@@ -316,6 +320,10 @@ class LalelaGamesApp {
       this.game.scene.add('FootballGame', FootballGame);
       this.game.scene.add('BallCatchGame', BallCatchGame);
       this.game.scene.add('PenaltyGame', PenaltyGame);
+      this.game.scene.add('BarGame', BarGame);
+      this.game.scene.add('BarGame2Players', BarGame2Players);
+      this.game.scene.add('AlgorithmGame', AlgorithmGame);
+      this.game.scene.add('FriezeGame', FriezeGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();
