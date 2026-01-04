@@ -4,11 +4,11 @@ import { Card } from '../components/Card.js';
 export class MemoryCaseAssociationGame extends MemoryGame {
     constructor(config) {
         super({
-            ...config,
             key: 'MemoryCaseAssociationGame',
-            title: 'Case Association',
-            description: 'Match uppercase and lowercase letters.',
-            category: 'memory'
+            ...config,
+            title: config?.title || 'Case Association',
+            description: config?.description || 'Match uppercase and lowercase letters.',
+            category: config?.category || 'memory'
         });
     }
 
