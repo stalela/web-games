@@ -3,11 +3,11 @@ import { LalelaGame } from '../utils/LalelaGame.js';
 export class MazeGame extends LalelaGame {
     constructor(config) {
         super({
-            ...config,
             key: 'MazeGame',
-            title: 'Maze',
-            description: 'Find your way out of the maze.',
-            category: 'strategy'
+            ...config,
+            title: config?.title || 'Maze',
+            description: config?.description || 'Find your way out of the maze.',
+            category: config?.category || 'strategy'
         });
     }
 

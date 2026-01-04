@@ -3,11 +3,11 @@ import { LalelaGame } from '../utils/LalelaGame.js';
 export class HanoiGame extends LalelaGame {
     constructor(config) {
         super({
-            ...config,
             key: 'HanoiGame',
-            title: 'Tower of Hanoi',
-            description: 'Move the tower to the rightmost peg.',
-            category: 'strategy'
+            ...config,
+            title: config?.title || 'Tower of Hanoi',
+            description: config?.description || 'Move the tower to the rightmost peg.',
+            category: config?.category || 'strategy'
         });
     }
 

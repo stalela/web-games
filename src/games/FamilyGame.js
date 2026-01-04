@@ -3,11 +3,11 @@ import { LalelaGame } from '../utils/LalelaGame.js';
 export class FamilyGame extends LalelaGame {
     constructor(config) {
         super({
-            ...config,
             key: 'FamilyGame',
-            title: 'Family',
-            description: 'Learn about family relationships.',
-            category: 'discovery'
+            ...config,
+            title: config?.title || 'Family',
+            description: config?.description || 'Learn about family relationships.',
+            category: config?.category || 'discovery'
         });
     }
 
