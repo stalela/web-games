@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <ellipse cx="50" cy="60" rx="25" ry="35" fill="#90EE90"/>
+  <ellipse cx="50" cy="30" rx="15" ry="20" fill="#32CD32"/>
+  <text x="50" y="65" text-anchor="middle" font-family="Arial" font-size="12" fill="#228B22">🍐</text>
+</svg>
