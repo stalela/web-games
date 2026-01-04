@@ -48,6 +48,26 @@ import { WordsGame } from './games/WordsGame.js';
 import { TicTacToeGame } from './games/TicTacToeGame.js';
 import { TicTacToeTwoPlayerGame } from './games/TicTacToeTwoPlayerGame.js';
 import { Align4Game } from './games/Align4Game.js';
+import { Mosaic } from './games/Mosaic.js';
+import { NumberSequence } from './games/NumberSequence.js';
+import { NumbersOddEven } from './games/NumbersOddEven.js';
+import { OrderingAlphabets } from './games/OrderingAlphabets.js';
+import { OrderingNumbers } from './games/OrderingNumbers.js';
+import { OrderingSentences } from './games/OrderingSentences.js';
+import { PathDecoding } from './games/PathDecoding.js';
+import { PathEncoding } from './games/PathEncoding.js';
+import { PhotoHunter } from './games/PhotoHunter.js';
+import { Positions } from './games/Positions.js';
+import { Railroad } from './games/Railroad.js';
+import { Redraw } from './games/Redraw.js';
+import { RedrawSymmetrical } from './games/RedrawSymmetrical.js';
+import { Reversecount } from './games/Reversecount.js';
+import { RomanNumerals } from './games/RomanNumerals.js';
+import { Scalesboard } from './games/Scalesboard.js';
+import { Share } from './games/Share.js';
+import { Simplepaint } from './games/Simplepaint.js';
+import { Superbrain } from './games/Superbrain.js';
+import { Target } from './games/Target.js';
 import { BabyShapesGame } from './games/BabyShapesGame.js';
 import { BabyTangramGame } from './games/BabyTangramGame.js';
 import { TangramGame } from './games/TangramGame.js';
@@ -259,8 +279,26 @@ class LalelaGamesApp {
       this.game.scene.add('WordsGame', WordsGame);
       this.game.scene.add('TicTacToeGame', TicTacToeGame);
       this.game.scene.add('TicTacToeTwoPlayerGame', TicTacToeTwoPlayerGame);
-      this.game.scene.add('Align4Game', Align4Game);
-      this.game.scene.add('BabyShapesGame', BabyShapesGame);
+      this.game.scene.add('Align4Game', Align4Game);    this.game.scene.add('Mosaic', Mosaic);
+    this.game.scene.add('NumberSequence', NumberSequence);
+    this.game.scene.add('NumbersOddEven', NumbersOddEven);
+    this.game.scene.add('OrderingAlphabets', OrderingAlphabets);
+    this.game.scene.add('OrderingNumbers', OrderingNumbers);
+    this.game.scene.add('OrderingSentences', OrderingSentences);
+    this.game.scene.add('PathDecoding', PathDecoding);
+    this.game.scene.add('PathEncoding', PathEncoding);
+    this.game.scene.add('PhotoHunter', PhotoHunter);
+    this.game.scene.add('Positions', Positions);
+    this.game.scene.add('Scalesboard', Scalesboard);
+    this.game.scene.add('Share', Share);
+    this.game.scene.add('Simplepaint', Simplepaint);
+    this.game.scene.add('Superbrain', Superbrain);
+    this.game.scene.add('Target', Target);
+    this.game.scene.add('Railroad', Railroad);
+    this.game.scene.add('Redraw', Redraw);
+    this.game.scene.add('RedrawSymmetrical', RedrawSymmetrical);
+    this.game.scene.add('Reversecount', Reversecount);
+    this.game.scene.add('RomanNumerals', RomanNumerals);      this.game.scene.add('BabyShapesGame', BabyShapesGame);
       this.game.scene.add('BabyTangramGame', BabyTangramGame);
       this.game.scene.add('TangramGame', TangramGame);
       this.game.scene.add('DetailsGame', DetailsGame);
@@ -659,6 +697,186 @@ class LalelaGamesApp {
       });
     } else if (gameScene === 'LeftRightGame') {
       this.game.scene.start('LeftRightGame', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Mosaic') {
+      this.game.scene.start('Mosaic', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'NumberSequence') {
+      this.game.scene.start('NumberSequence', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'NumbersOddEven') {
+      this.game.scene.start('NumbersOddEven', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'OrderingAlphabets') {
+      this.game.scene.start('OrderingAlphabets', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'OrderingNumbers') {
+      this.game.scene.start('OrderingNumbers', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'OrderingSentences') {
+      this.game.scene.start('OrderingSentences', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'PathDecoding') {
+      this.game.scene.start('PathDecoding', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'PathEncoding') {
+      this.game.scene.start('PathEncoding', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'PhotoHunter') {
+      this.game.scene.start('PhotoHunter', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Positions') {
+      this.game.scene.start('Positions', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Railroad') {
+      this.game.scene.start('Railroad', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Redraw') {
+      this.game.scene.start('Redraw', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'RedrawSymmetrical') {
+      this.game.scene.start('RedrawSymmetrical', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Reversecount') {
+      this.game.scene.start('Reversecount', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'RomanNumerals') {
+      this.game.scene.start('RomanNumerals', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Scalesboard') {
+      this.game.scene.start('Scalesboard', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Share') {
+      this.game.scene.start('Share', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Simplepaint') {
+      this.game.scene.start('Simplepaint', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Superbrain') {
+      this.game.scene.start('Superbrain', {
+        gameManager: this.gameManager,
+        assetManager: this.assetManager,
+        uiManager: this.uiManager,
+        audioManager: this.audioManager,
+        dataManager: this.dataManager,
+        inputManager: this.inputManager
+      });
+    } else if (gameScene === 'Target') {
+      this.game.scene.start('Target', {
         gameManager: this.gameManager,
         assetManager: this.assetManager,
         uiManager: this.uiManager,

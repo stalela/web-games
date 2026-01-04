@@ -1015,6 +1015,146 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'baby_wordprocessor.svg',
         difficulty: 2,
         category: 'computer'
+      },
+      {
+        scene: 'Mosaic',
+        name: 'Mosaic',
+        icon: 'mosaic.svg',
+        difficulty: 1,
+        category: 'puzzle'
+      },
+      {
+        scene: 'NumberSequence',
+        name: 'Number Sequence',
+        icon: 'number_sequence.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'NumbersOddEven',
+        name: 'Odd Even Numbers',
+        icon: 'numbers-odd-even.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'OrderingAlphabets',
+        name: 'Ordering Alphabets',
+        icon: 'ordering_alphabets.svg',
+        difficulty: 2,
+        category: 'reading'
+      },
+      {
+        scene: 'OrderingNumbers',
+        name: 'Ordering Numbers',
+        icon: 'ordering_numbers.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'OrderingSentences',
+        name: 'Ordering Sentences',
+        icon: 'ordering_sentences.svg',
+        difficulty: 2,
+        category: 'reading'
+      },
+      {
+        scene: 'PathDecoding',
+        name: 'Path Decoding',
+        icon: 'path_decoding.svg',
+        difficulty: 1,
+        category: 'discovery'
+      },
+      {
+        scene: 'PathEncoding',
+        name: 'Path Encoding',
+        icon: 'path_encoding.svg',
+        difficulty: 1,
+        category: 'discovery'
+      },
+      {
+        scene: 'PhotoHunter',
+        name: 'Photo Hunter',
+        icon: 'photo_hunter.svg',
+        difficulty: 2,
+        category: 'fun'
+      },
+      {
+        scene: 'Positions',
+        name: 'Positions',
+        icon: 'positions.svg',
+        difficulty: 3,
+        category: 'discovery'
+      },
+      {
+        scene: 'Railroad',
+        name: 'Railroad',
+        icon: 'railroad.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'Redraw',
+        name: 'Redraw',
+        icon: 'redraw.svg',
+        difficulty: 3,
+        category: 'puzzle'
+      },
+      {
+        scene: 'RedrawSymmetrical',
+        name: 'Redraw Symmetrical',
+        icon: 'redraw_symmetrical.svg',
+        difficulty: 4,
+        category: 'puzzle'
+      },
+      {
+        scene: 'Reversecount',
+        name: 'Reverse Count',
+        icon: 'reversecount.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'RomanNumerals',
+        name: 'Roman Numerals',
+        icon: 'roman_numerals.svg',
+        difficulty: 4,
+        category: 'sciences'
+      },
+      {
+        scene: 'Scalesboard',
+        name: 'Scalesboard',
+        icon: 'scalesboard.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'Share',
+        name: 'Share',
+        icon: 'share.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'Simplepaint',
+        name: 'Simple Paint',
+        icon: 'simplepaint.svg',
+        difficulty: 1,
+        category: 'discovery'
+      },
+      {
+        scene: 'Superbrain',
+        name: 'Super Brain',
+        icon: 'superbrain.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'Target',
+        name: 'Target',
+        icon: 'target.svg',
+        difficulty: 2,
+        category: 'math'
       }
     ];
 

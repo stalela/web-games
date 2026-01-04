@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 4, 2026
-> **Total Games:** 199 | **Completed:** 124 | **Remaining:** 75
-> **Progress:** ████████████ 62.3%
+> **Total Games:** 199 | **Completed:** 144 | **Remaining:** 55
+> **Progress:** ██████████████ 72.4%
 
 ---
 
