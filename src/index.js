@@ -100,6 +100,11 @@ import { GraduatedLineReadGame } from './games/GraduatedLineReadGame.js';
 import { GraduatedLineUseGame } from './games/GraduatedLineUseGame.js';
 import { LearnDecimalsGame } from './games/LearnDecimalsGame.js';
 import { LearnDecimalsAdditionsGame } from './games/LearnDecimalsAdditionsGame.js';
+import { LearnDecimalsSubtractionsGame } from './games/LearnDecimalsSubtractionsGame.js';
+import { ComparatorGame } from './games/ComparatorGame.js';
+import { GnumchEqualityGame } from './games/GnumchEqualityGame.js';
+import { GnumchFactorsGame } from './games/GnumchFactorsGame.js';
+import { GnumchInequalityGame } from './games/GnumchInequalityGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -268,6 +273,11 @@ class LalelaGamesApp {
       this.game.scene.add('GraduatedLineUseGame', GraduatedLineUseGame);
       this.game.scene.add('LearnDecimalsGame', LearnDecimalsGame);
       this.game.scene.add('LearnDecimalsAdditionsGame', LearnDecimalsAdditionsGame);
+      this.game.scene.add('LearnDecimalsSubtractionsGame', LearnDecimalsSubtractionsGame);
+      this.game.scene.add('ComparatorGame', ComparatorGame);
+      this.game.scene.add('GnumchEqualityGame', GnumchEqualityGame);
+      this.game.scene.add('GnumchFactorsGame', GnumchFactorsGame);
+      this.game.scene.add('GnumchInequalityGame', GnumchInequalityGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

@@ -707,6 +707,41 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'learn_decimals_additions.svg',
         difficulty: 3,
         category: 'math'
+      },
+      {
+        scene: 'LearnDecimalsSubtractionsGame',
+        name: 'Decimal Subtractions',
+        icon: 'learn_decimals_subtractions.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'ComparatorGame',
+        name: 'Comparator',
+        icon: 'comparator.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'GnumchEqualityGame',
+        name: 'Gnumch Equality',
+        icon: 'gnumch-equality.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'GnumchFactorsGame',
+        name: 'Gnumch Factors',
+        icon: 'gnumch-factors.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'GnumchInequalityGame',
+        name: 'Gnumch Inequality',
+        icon: 'gnumch-inequality.svg',
+        difficulty: 3,
+        category: 'math'
       }
     ];
 

@@ -1,7 +1,7 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 84 | **Remaining:** 115
+> **Total Games:** 199 | **Completed:** 89 | **Remaining:** 110
 > **Progress:** ████████░░ 39.6%
 
 ---
@@ -155,6 +155,11 @@ Copy this checklist for each new game task.
 | GraduatedLineUseGame | Math | LalelaGame | ✅ Complete |
 | LearnDecimalsGame | Math | LalelaGame | ✅ Complete |
 | LearnDecimalsAdditionsGame | Math | LalelaGame | ✅ Complete |
+| LearnDecimalsSubtractionsGame | Math | LalelaGame | ✅ Complete |
+| ComparatorGame | Math | LalelaGame | ✅ Complete |
+| GnumchEqualityGame | Math | LalelaGame | ✅ Complete |
+| GnumchFactorsGame | Math | LalelaGame | ✅ Complete |
+| GnumchInequalityGame | Math | LalelaGame | ✅ Complete |
 
 ---
 
@@ -180,11 +185,11 @@ Copy this checklist for each new game task.
 | `graduated_line_use` | P3 | ✅ Complete | - |
 | `learn_decimals` | P3 | ✅ Complete | - |
 | `learn_decimals_additions` | P3 | ✅ Complete | - |
-| `learn_decimals_subtractions` | P3 | ⬜ Not Started | - |
-| `comparator` | P3 | ⬜ Not Started | - |
-| `gnumch-equality` | P3 | ⬜ Not Started | - |
-| `gnumch-factors` | P3 | ⬜ Not Started | - |
-| `gnumch-inequality` | P3 | ⬜ Not Started | - |
+| `learn_decimals_subtractions` | P3 | ✅ Complete | - |
+| `comparator` | P3 | ✅ Complete | - |
+| `gnumch-equality` | P3 | ✅ Complete | - |
+| `gnumch-factors` | P3 | ✅ Complete | - |
+| `gnumch-inequality` | P3 | ✅ Complete | - |
 | `gnumch-multiples` | P3 | ⬜ Not Started | - |
 | `gnumch-primes` | P3 | ⬜ Not Started | - |
 | `guess24` | P3 | ⬜ Not Started | - |
