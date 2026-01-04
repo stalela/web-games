@@ -3,18 +3,46 @@ import { LalelaGame } from '../utils/LalelaGame.js';
 export class Target extends LalelaGame {
     constructor() {
         super();
-        this.score = 0;
-        this.dartsLeft = 5;
-        this.targetSpeed = 2;
-        this.targetDirection = 1;
+        this.currentLevel = 0;
+        this.scores = [];
+        this.dartsThrown = 0;
+        this.totalDarts = 3;
+        this.userInput = "";
+        this.isInputActive = false;
+        
+        // Data from GCompris Data.qml
+        this.levels = [
+            [ // Level 1
+                {size: 50, color: 0xee7f7f, score: 5},
+                {size: 100, color: 0xeebf7f, score: 4},
+                {size: 150, color: 0xe0ee7f, score: 3},
+                {size: 200, color: 0x7fee8f, score: 2},
+                {size: 250, color: 0x7fcbee, score: 1}
+            ],
+            [ // Level 2
+                {size: 50, color: 0xee7f7f, score: 7},
+                {size: 100, color: 0xeebf7f, score: 5},
+                {size: 150, color: 0xe0ee7f, score: 3},
+                {size: 200, color: 0x7fee8f, score: 2},
+                {size: 250, color: 0x7fcbee, score: 1}
+            ],
+            [ // Level 3
+                {size: 50, color: 0xee7f7f, score: 10},
+                {size: 100, color: 0xeebf7f, score: 7},
+                {size: 150, color: 0xe0ee7f, score: 5},
+                {size: 200, color: 0x7fee8f, score: 3},
+                {size: 250, color: 0x7fcbee, score: 2}
+            ]
+        ];
     }
 
     preload() {
         super.preload();
+        this.load.image('target_bg', 'assets/target/target_background.svg');
     }
 
-    init(data) {
-        super.init(data);
+    create() {
+        super.create();
     }
 
     createBackground() {
@@ -25,86 +53,261 @@ export class Target extends LalelaGame {
 
     createUI() {
         super.createUI();
-        this.scoreText = this.add.text(20, 20, "Score: 0", {
-            fontFamily: "Arial",
-            fontSize: "32px",
-            color: "#000000"
-        });
         
-        this.dartsText = this.add.text(20, 60, "Darts: 5", {
+        // Equation display
+        this.equationText = this.add.text(this.cameras.main.centerX, 100, "", {
             fontFamily: "Arial",
-            fontSize: "32px",
+            fontSize: "48px",
+            color: "#000000",
+            fontStyle: "bold"
+        }).setOrigin(0.5);
+
+        // Input display
+        this.inputText = this.add.text(this.cameras.main.centerX, 160, "?", {
+            fontFamily: "Arial",
+            fontSize: "48px",
+            color: "#000066",
+            fontStyle: "bold"
+        }).setOrigin(0.5);
+        
+        this.instructionText = this.add.text(this.cameras.main.centerX, 50, "Watch the darts, then calculate the total score.", {
+            fontFamily: "Arial",
+            fontSize: "24px",
             color: "#000000"
-        });
+        }).setOrigin(0.5);
     }
 
     setupGameLogic() {
-        this.startLevel();
+        this.startLevel(0);
     }
 
-    startLevel() {
-        this.score = 0;
-        this.dartsLeft = 5;
-        this.updateUI();
+    startLevel(levelIndex) {
+        this.currentLevel = levelIndex;
+        this.scores = [];
+        this.dartsThrown = 0;
+        this.totalDarts = Math.min(this.currentLevel + 3, 6);
+        this.userInput = "";
+        this.isInputActive = false;
+        this.equationText.setText("");
+        this.inputText.setText("");
+        this.instructionText.setText("Watch the darts...");
 
-        if (this.target) this.target.destroy();
-        
-        this.target = this.add.container(this.cameras.main.centerX, 200);
-        
-        // Target Rings
-        this.target.add(this.add.circle(0, 0, 60, 0xffffff).setStrokeStyle(2, 0x000000)); // 10 pts
-        this.target.add(this.add.circle(0, 0, 40, 0xff0000)); // 20 pts
-        this.target.add(this.add.circle(0, 0, 20, 0xffff00)); // 50 pts
-        
-        this.target.setSize(120, 120);
-        this.target.setInteractive();
-        
-        this.target.on('pointerdown', (pointer) => this.throwDart(pointer));
+        if (this.targetContainer) {
+            this.targetContainer.destroy();
+        }
+        if (this.keypadContainer) {
+            this.keypadContainer.destroy();
+        }
+
+        this.createTarget();
+        this.startDartSequence();
     }
 
-    update() {
-        if (this.target) {
-            this.target.x += this.targetSpeed * this.targetDirection;
+    createTarget() {
+        this.targetContainer = this.add.container(this.cameras.main.centerX, this.cameras.main.centerY);
+        
+        // Background image
+        const bg = this.add.image(0, 0, 'target_bg');
+        // Scale background to fit largest ring + padding
+        // Assuming largest ring is 250 radius (500 diameter)
+        bg.setDisplaySize(600, 600);
+        this.targetContainer.add(bg);
+
+        // Draw rings from largest to smallest
+        const levelData = this.levels[this.currentLevel % this.levels.length];
+        // Sort by size descending to draw largest first
+        const sortedRings = [...levelData].sort((a, b) => b.size - a.size);
+
+        sortedRings.forEach(ring => {
+            const circle = this.add.circle(0, 0, ring.size, ring.color);
+            circle.setStrokeStyle(2, 0x000000, 0.5);
+            this.targetContainer.add(circle);
             
-            if (this.target.x > this.cameras.main.width - 60 || this.target.x < 60) {
-                this.targetDirection *= -1;
+            // Score label on the ring
+            const text = this.add.text(0, ring.size - 20, ring.score.toString(), {
+                fontFamily: "Arial",
+                fontSize: "20px",
+                color: "#000000"
+            }).setOrigin(0.5);
+            this.targetContainer.add(text);
+        });
+
+        // Animate target
+        this.moveTarget();
+    }
+
+    moveTarget() {
+        if (this.isInputActive) return;
+
+        const rangeX = 200;
+        const rangeY = 100;
+        const targetX = this.cameras.main.centerX + Phaser.Math.Between(-rangeX, rangeX);
+        const targetY = this.cameras.main.centerY + Phaser.Math.Between(-rangeY, rangeY);
+
+        this.tweens.add({
+            targets: this.targetContainer,
+            x: targetX,
+            y: targetY,
+            duration: 2000,
+            ease: 'Sine.easeInOut',
+            onComplete: () => {
+                if (!this.isInputActive) {
+                    this.moveTarget();
+                } else {
+                    // Return to center when input is active
+                    this.tweens.add({
+                        targets: this.targetContainer,
+                        x: this.cameras.main.centerX,
+                        y: this.cameras.main.centerY,
+                        duration: 1000,
+                        ease: 'Power2'
+                    });
+                }
+            }
+        });
+    }
+
+    startDartSequence() {
+        this.time.addEvent({
+            delay: 2000,
+            callback: this.throwDart,
+            callbackScope: this,
+            repeat: this.totalDarts - 1
+        });
+    }
+
+    throwDart() {
+        // Create dart at center screen, large
+        const dart = this.add.circle(this.cameras.main.centerX, this.cameras.main.centerY, 20, 0x555555);
+        dart.setStrokeStyle(2, 0x000000);
+        dart.setScale(3);
+        dart.setAlpha(0);
+
+        this.tweens.add({
+            targets: dart,
+            scale: 0.5,
+            alpha: 1,
+            duration: 1000,
+            ease: 'Quad.easeIn',
+            onComplete: () => {
+                this.handleDartHit(dart);
+            }
+        });
+    }
+
+    handleDartHit(dart) {
+        this.audioManager.play('click');
+
+        // Calculate position relative to target
+        const relX = dart.x - this.targetContainer.x;
+        const relY = dart.y - this.targetContainer.y;
+        const dist = Math.sqrt(relX * relX + relY * relY);
+
+        // Determine score
+        let score = 0;
+        const levelData = this.levels[this.currentLevel % this.levels.length];
+        const sortedRings = [...levelData].sort((a, b) => a.size - b.size);
+        
+        for (const ring of sortedRings) {
+            if (dist <= ring.size) {
+                score = ring.score;
+                break;
             }
         }
-    }
 
-    throwDart(pointer) {
-        if (this.dartsLeft <= 0) return;
-
-        this.dartsLeft--;
-        this.updateUI();
-        this.audioManager.play('click'); // Dart sound
-
-        // Calculate score based on distance from center
-        // Note: pointer is world coordinates, target is moving
-        // We need relative position
-        const dist = Phaser.Math.Distance.Between(pointer.x, pointer.y, this.target.x, this.target.y);
-        
-        let points = 0;
-        if (dist < 20) points = 50;
-        else if (dist < 40) points = 20;
-        else if (dist < 60) points = 10;
-
-        if (points > 0) {
-            this.score += points;
-            this.updateUI();
-            this.audioManager.play('success');
+        if (score > 0) {
+            this.scores.push(score);
+            this.updateEquation();
             
-            // Visual marker - stick to target
-            this.target.add(this.add.circle(pointer.x - this.target.x, pointer.y - this.target.y, 5, 0x000000));
+            // Stick dart to target
+            dart.destroy();
+            const stuckDart = this.add.circle(relX, relY, 10, 0x555555);
+            stuckDart.setStrokeStyle(2, 0x000000);
+            this.targetContainer.add(stuckDart);
+        } else {
+            // Missed
+            dart.destroy();
         }
 
-        if (this.dartsLeft === 0) {
-            this.time.delayedCall(2000, () => this.startLevel());
+        this.dartsThrown++;
+        if (this.dartsThrown >= this.totalDarts) {
+            this.time.delayedCall(1000, this.showInput, [], this);
         }
     }
 
-    updateUI() {
-        this.scoreText.setText("Score: " + this.score);
-        this.dartsText.setText("Darts: " + this.dartsLeft);
+    updateEquation() {
+        this.equationText.setText(this.scores.join(" + ") + " = ");
+    }
+
+    showInput() {
+        this.isInputActive = true;
+        this.instructionText.setText("Calculate the sum and enter the answer.");
+        this.inputText.setText("?");
+        
+        // Create Keypad
+        this.createKeypad();
+    }
+
+    createKeypad() {
+        this.keypadContainer = this.add.container(this.cameras.main.centerX, this.cameras.main.height - 150);
+        
+        const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'C', '0', 'OK'];
+        const size = 60;
+        const gap = 10;
+        
+        keys.forEach((key, index) => {
+            const row = Math.floor(index / 3);
+            const col = index % 3;
+            const x = (col - 1) * (size + gap);
+            const y = (row - 1.5) * (size + gap);
+
+            const btn = this.add.rectangle(x, y, size, size, 0xeeeeee)
+                .setStrokeStyle(2, 0x999999)
+                .setInteractive({ useHandCursor: true });
+            
+            const text = this.add.text(x, y, key, {
+                fontFamily: "Arial",
+                fontSize: "24px",
+                color: "#000000"
+            }).setOrigin(0.5);
+
+            btn.on('pointerdown', () => this.handleKeyInput(key));
+            btn.on('pointerover', () => btn.setFillStyle(0xdddddd));
+            btn.on('pointerout', () => btn.setFillStyle(0xeeeeee));
+
+            this.keypadContainer.add([btn, text]);
+        });
+    }
+
+    handleKeyInput(key) {
+        if (key === 'C') {
+            this.userInput = "";
+        } else if (key === 'OK') {
+            this.checkAnswer();
+            return;
+        } else {
+            if (this.userInput.length < 5) {
+                this.userInput += key;
+            }
+        }
+        this.inputText.setText(this.userInput);
+    }
+
+    checkAnswer() {
+        const totalScore = this.scores.reduce((a, b) => a + b, 0);
+        const userSum = parseInt(this.userInput);
+
+        if (userSum === totalScore) {
+            this.audioManager.play('success');
+            this.instructionText.setText("Correct!");
+            this.time.delayedCall(1500, () => {
+                this.startLevel(this.currentLevel + 1);
+            });
+        } else {
+            this.audioManager.play('fail');
+            this.instructionText.setText("Try again!");
+            this.userInput = "";
+            this.inputText.setText("?");
+        }
     }
 }
