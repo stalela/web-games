@@ -105,6 +105,11 @@ import { ComparatorGame } from './games/ComparatorGame.js';
 import { GnumchEqualityGame } from './games/GnumchEqualityGame.js';
 import { GnumchFactorsGame } from './games/GnumchFactorsGame.js';
 import { GnumchInequalityGame } from './games/GnumchInequalityGame.js';
+import { GnumchMultiplesGame } from './games/GnumchMultiplesGame.js';
+import { GnumchPrimesGame } from './games/GnumchPrimesGame.js';
+import { Guess24Game } from './games/Guess24Game.js';
+import { GuessNumberGame } from './games/GuessNumberGame.js';
+import { GlettersGame } from './games/GlettersGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -278,6 +283,11 @@ class LalelaGamesApp {
       this.game.scene.add('GnumchEqualityGame', GnumchEqualityGame);
       this.game.scene.add('GnumchFactorsGame', GnumchFactorsGame);
       this.game.scene.add('GnumchInequalityGame', GnumchInequalityGame);
+      this.game.scene.add('GnumchMultiplesGame', GnumchMultiplesGame);
+      this.game.scene.add('GnumchPrimesGame', GnumchPrimesGame);
+      this.game.scene.add('Guess24Game', Guess24Game);
+      this.game.scene.add('GuessNumberGame', GuessNumberGame);
+      this.game.scene.add('GlettersGame', GlettersGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

@@ -742,6 +742,41 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'gnumch-inequality.svg',
         difficulty: 3,
         category: 'math'
+      },
+      {
+        scene: 'GnumchMultiplesGame',
+        name: 'Gnumch Multiples',
+        icon: 'gnumch-multiples.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'GnumchPrimesGame',
+        name: 'Gnumch Primes',
+        icon: 'gnumch-primes.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'Guess24Game',
+        name: 'Make 24',
+        icon: 'guess24.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'GuessNumberGame',
+        name: 'Guess Number',
+        icon: 'guessnumber.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'GlettersGame',
+        name: 'Falling Letters',
+        icon: 'gletters.svg',
+        difficulty: 2,
+        category: 'reading'
       }
     ];
 

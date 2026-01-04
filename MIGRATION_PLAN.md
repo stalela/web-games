@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
-> **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 89 | **Remaining:** 110
-> **Progress:** ████████░░ 39.6%
+> **Last Updated:** January 4, 2026
+> **Total Games:** 199 | **Completed:** 94 | **Remaining:** 105
+> **Progress:** ████████░░ 47.2%
 
 ---
 
@@ -190,10 +190,10 @@ Copy this checklist for each new game task.
 | `gnumch-equality` | P3 | ✅ Complete | - |
 | `gnumch-factors` | P3 | ✅ Complete | - |
 | `gnumch-inequality` | P3 | ✅ Complete | - |
-| `gnumch-multiples` | P3 | ⬜ Not Started | - |
-| `gnumch-primes` | P3 | ⬜ Not Started | - |
-| `guess24` | P3 | ⬜ Not Started | - |
-| `guessnumber` | P3 | ⬜ Not Started | - |
+| `gnumch-multiples` | P3 | ✅ Complete | - |
+| `gnumch-primes` | P3 | ✅ Complete | - |
+| `guess24` | P3 | ✅ Complete | - |
+| `guessnumber` | P3 | ✅ Complete | - |
 | `clockgame` | P2 | ✅ Complete | - |
 | `calendar` | P2 | ✅ Complete | - |
 | `find_the_day` | P2 | ✅ Complete | - |
@@ -213,7 +213,7 @@ Copy this checklist for each new game task.
 | `readingv` | P1 | ✅ Complete | - |
 | `wordsgame` | P1 | ✅ Complete | - |
 | `hangman` | P2 | ✅ Complete | - |
-| `gletters` | P2 | ⬜ Not Started | - |
+| `gletters` | P2 | ✅ Complete | - |
 | `imagename` | P2 | ⬜ Not Started | - |
 | `lang` | P2 | ⬜ Not Started | - |
 | `braille_alphabets` | P3 | ⬜ Not Started | - |
