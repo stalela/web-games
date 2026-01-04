@@ -847,6 +847,34 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'gletters.svg',
         difficulty: 2,
         category: 'reading'
+      },
+      {
+        scene: 'CraneGame',
+        name: 'Crane',
+        icon: 'crane.svg',
+        difficulty: 2,
+        category: 'puzzle'
+      },
+      {
+        scene: 'FootballGame',
+        name: 'Football',
+        icon: 'football.svg',
+        difficulty: 2,
+        category: 'fun'
+      },
+      {
+        scene: 'BallCatchGame',
+        name: 'Ball Catch',
+        icon: 'ballcatch.svg',
+        difficulty: 2,
+        category: 'fun'
+      },
+      {
+        scene: 'PenaltyGame',
+        name: 'Penalty Kick',
+        icon: 'penalty.svg',
+        difficulty: 1,
+        category: 'fun'
       }
     ];
 

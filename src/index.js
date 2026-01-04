@@ -98,6 +98,10 @@ import { FindTheDayGame } from './games/FindTheDayGame.js';
 import { BalanceBoxGame } from './games/BalanceBoxGame.js';
 import { GraduatedLineReadGame } from './games/GraduatedLineReadGame.js';
 import { GraduatedLineUseGame } from './games/GraduatedLineUseGame.js';
+import { CraneGame } from './games/CraneGame.js';
+import { FootballGame } from './games/FootballGame.js';
+import { BallCatchGame } from './games/BallCatchGame.js';
+import { PenaltyGame } from './games/PenaltyGame.js';
 import { LearnDecimalsGame } from './games/LearnDecimalsGame.js';
 import { LearnDecimalsAdditionsGame } from './games/LearnDecimalsAdditionsGame.js';
 import { LearnDecimalsSubtractionsGame } from './games/LearnDecimalsSubtractionsGame.js';
@@ -308,6 +312,10 @@ class LalelaGamesApp {
       this.game.scene.add('LouisBrailleGame', LouisBrailleGame);
       this.game.scene.add('DrawNumbersGame', DrawNumbersGame);
       this.game.scene.add('LeftRightGame', LeftRightGame);
+      this.game.scene.add('CraneGame', CraneGame);
+      this.game.scene.add('FootballGame', FootballGame);
+      this.game.scene.add('BallCatchGame', BallCatchGame);
+      this.game.scene.add('PenaltyGame', PenaltyGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

@@ -221,9 +221,9 @@ Copy this checklist for each new game task.
 | `gletters` | P2 | ✅ Complete | - |
 | `imagename` | P2 | ✅ Complete | - |
 | `lang` | P2 | ⬜ Not Started | - |
-| `braille_alphabets` | P3 | ⬜ Not Started | - |
-| `braille_fun` | P3 | ⬜ Not Started | - |
-| `louis-braille` | P3 | ⬜ Not Started | - |
+| `braille_alphabets` | P3 | ✅ Complete | - |
+| `braille_fun` | P3 | ✅ Complete | - |
+| `louis-braille` | P3 | ✅ Complete | - |
 | `grammar_analysis` | P3 | ⬜ Not Started | - |
 | `grammar_classes` | P3 | ⬜ Not Started | - |
 
@@ -294,10 +294,10 @@ Copy this checklist for each new game task.
 | `erase_2clic` | P1 | ✅ Complete | - |
 | `clickanddraw` | P2 | ✅ Complete | - |
 | `drawletters` | P2 | ✅ Complete | - |
-| `drawnumbers` | P2 | ⬜ Not Started | - |
+| `drawnumbers` | P2 | ✅ Complete | - |
 | `followline` | P2 | ✅ Complete | - |
 | `left_right_click` | P2 | ✅ Complete | - |
-| `leftright` | P2 | ⬜ Not Started | - |
+| `leftright` | P2 | ✅ Complete | - |
 | `baby_wordprocessor` | P3 | ⬜ Not Started | - |
 
 ---
@@ -313,7 +313,7 @@ Copy this checklist for each new game task.
 | `crane` | P2 | ⬜ Not Started | - |
 | `football` | P2 | ⬜ Not Started | - |
 | `ballcatch` | P2 | ⬜ Not Started | - |
-| `land_safe` | P3 | ⬜ Not Started | - |
+| `land_safe` | P3 | ✅ Complete | - |
 
 ---
 
