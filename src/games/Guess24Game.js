@@ -21,6 +21,12 @@ export class Guess24Game extends LalelaGame {
   preload() {
     super.preload();
     this.load.json('guess24-data', 'assets/guess24/resource/guess24.json');
+
+    // UI control icons for navigation dock
+    const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
+    uiIcons.forEach((icon) => {
+        this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`);
+    });
   }
 
   createBackground() {
@@ -62,6 +68,103 @@ export class Guess24Game extends LalelaGame {
       fontSize: '24px',
       color: '#ffffff'
     }).setOrigin(0.5);
+
+    // Hide default UI controls to avoid duplication
+    if (this.uiElements && this.uiElements.controls) {
+      Object.values(this.uiElements.controls).forEach(control => {
+        if (control && control.setVisible) control.setVisible(false);
+      });
+    }
+
+    // Add navigation dock
+    this.createNavigationDock(width, height);
+  }
+
+  /**
+   * Create bottom navigation dock
+   */
+  createNavigationDock(width, height) {
+    const dockY = height - 46;
+    const buttonSize = 62;
+    const spacing = 92;
+
+    // Dock background pill
+    const dockBg = this.add.graphics();
+    dockBg.fillStyle(0xFFFFFF, 0.92);
+    dockBg.fillRoundedRect(width / 2 - (width - 60) / 2, dockY - 42, width - 60, 84, 42);
+    dockBg.setDepth(14);
+
+    const dockBorder = this.add.graphics();
+    dockBorder.lineStyle(3, 0x0062FF, 1);
+    dockBorder.strokeRoundedRect(width / 2 - (width - 60) / 2, dockY - 42, width - 60, 84, 42);
+    dockBorder.setDepth(15);
+
+    const controls = [
+      { icon: 'help.svg', action: 'help', color: 0x00B378, label: 'Help' },
+      { icon: 'home.svg', action: 'home', color: 0x0062FF, label: 'Home' },
+      { icon: 'settings.svg', action: 'levels', color: 0xF08A00, label: 'Levels' },
+      { icon: 'exit.svg', action: 'menu', color: 0xA74BFF, label: 'Menu' }
+    ];
+
+    const totalWidth = (controls.length - 1) * spacing + buttonSize;
+    const startX = (width - totalWidth) / 2 + buttonSize / 2;
+
+    this.dockElements = this.dockElements || [];
+    this.dockElements.push(dockBg, dockBorder);
+
+    controls.forEach((control, index) => {
+      const x = startX + index * spacing;
+
+      const buttonShadow = this.add.circle(x + 3, dockY + 3, buttonSize / 2, 0x000000, 0.25);
+      buttonShadow.setDepth(15);
+
+      const button = this.add.circle(x, dockY, buttonSize / 2, control.color);
+      button.setStrokeStyle(3, 0xFFFFFF);
+      button.setDepth(16);
+      button.setInteractive({ useHandCursor: true });
+
+      const iconKey = control.icon.replace('.svg', '');
+      // Check if icon exists, otherwise use text fallback or generic
+      if (this.textures.exists(iconKey)) {
+        const icon = this.add.sprite(x, dockY, iconKey);
+        icon.setTint(0xFFFFFF);
+        icon.setDepth(17);
+        icon.setScale((buttonSize * 0.7) / 100); // Adjust scale assumption
+        this.dockElements.push(icon);
+      }
+
+      const label = this.add.text(x, dockY + buttonSize / 2 + 14, control.label, {
+        fontSize: '14px',
+        color: '#101012',
+        fontFamily: 'Fredoka One, cursive',
+        fontStyle: 'bold',
+        align: 'center'
+      }).setOrigin(0.5);
+      label.setDepth(17);
+
+      button.on('pointerdown', () => this.handleDockAction(control.action));
+
+      this.dockElements.push(buttonShadow, button, label);
+    });
+  }
+
+  /**
+   * Handle navigation dock actions
+   */
+  handleDockAction(action) {
+    switch (action) {
+      case 'help':
+        if (this.uiManager) this.uiManager.showHelp('Use all 4 numbers and operators (+, -, *, /) to make 24.');
+        break;
+      case 'home':
+      case 'menu':
+        this.scene.start('GameMenu');
+        break;
+      case 'levels':
+        // Show level selection or settings
+        console.log('Levels clicked');
+        break;
+    }
   }
 
   setupGameLogic() {
