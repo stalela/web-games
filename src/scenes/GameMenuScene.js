@@ -1387,7 +1387,8 @@ export class GameMenuScene extends Phaser.Scene {
           color: '#101012',
           // GCompris uses "Nunito" or "Andika". Fredoka One is okay, 
           // but 'Nunito' matches the reference image better for legibility.
-          fontFamily: 'Fredoka One, cursive', 
+          fontFamily: '"Nunito", sans-serif',
+          fontWeight: 'bold',
           align: 'center',
           fontStyle: 'normal',
           wordWrap: { width: cardWidth * 0.9 } // 10% side margins
