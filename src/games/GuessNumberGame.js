@@ -51,7 +51,8 @@ export class GuessNumberGame extends LalelaGame {
     }).setOrigin(0.5);
 
     // Input area
-    this.createInput(width / 2, height - 100);
+    // Move up to ensure it fits on screen (numpad height is approx 280px)
+    this.createInput(width / 2, height - 180);
   }
 
   createInput(x, y) {
