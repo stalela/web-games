@@ -1,7 +1,7 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 3, 2026
-> **Total Games:** 199 | **Completed:** 79 | **Remaining:** 120
+> **Total Games:** 199 | **Completed:** 84 | **Remaining:** 115
 > **Progress:** ████████░░ 39.6%
 
 ---
@@ -150,6 +150,11 @@ Copy this checklist for each new game task.
 | ClockGame | Math | LalelaGame | ✅ Complete |
 | CalendarGame | Math | LalelaGame | ✅ Complete |
 | FindTheDayGame | Math | LalelaGame | ✅ Complete |
+| BalanceBoxGame | Math | LalelaGame | ✅ Complete |
+| GraduatedLineReadGame | Math | LalelaGame | ✅ Complete |
+| GraduatedLineUseGame | Math | LalelaGame | ✅ Complete |
+| LearnDecimalsGame | Math | LalelaGame | ✅ Complete |
+| LearnDecimalsAdditionsGame | Math | LalelaGame | ✅ Complete |
 
 ---
 
@@ -170,11 +175,11 @@ Copy this checklist for each new game task.
 | `sudoku` | P2 | ✅ Complete | - |
 | `magic-hat-plus` | P2 | ✅ Complete | - |
 | `magic-hat-minus` | P2 | ✅ Complete | - |
-| `balancebox` | P3 | ⬜ Not Started | - |
-| `graduated_line_read` | P3 | ⬜ Not Started | - |
-| `graduated_line_use` | P3 | ⬜ Not Started | - |
-| `learn_decimals` | P3 | ⬜ Not Started | - |
-| `learn_decimals_additions` | P3 | ⬜ Not Started | - |
+| `balancebox` | P3 | ✅ Complete | - |
+| `graduated_line_read` | P3 | ✅ Complete | - |
+| `graduated_line_use` | P3 | ✅ Complete | - |
+| `learn_decimals` | P3 | ✅ Complete | - |
+| `learn_decimals_additions` | P3 | ✅ Complete | - |
 | `learn_decimals_subtractions` | P3 | ⬜ Not Started | - |
 | `comparator` | P3 | ⬜ Not Started | - |
 | `gnumch-equality` | P3 | ⬜ Not Started | - |

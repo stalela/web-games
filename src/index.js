@@ -95,6 +95,11 @@ import { MagicHatMinusGame } from './games/MagicHatMinusGame.js';
 import { ClockGame } from './games/ClockGame.js';
 import { CalendarGame } from './games/CalendarGame.js';
 import { FindTheDayGame } from './games/FindTheDayGame.js';
+import { BalanceBoxGame } from './games/BalanceBoxGame.js';
+import { GraduatedLineReadGame } from './games/GraduatedLineReadGame.js';
+import { GraduatedLineUseGame } from './games/GraduatedLineUseGame.js';
+import { LearnDecimalsGame } from './games/LearnDecimalsGame.js';
+import { LearnDecimalsAdditionsGame } from './games/LearnDecimalsAdditionsGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -258,6 +263,11 @@ class LalelaGamesApp {
       this.game.scene.add('ClockGame', ClockGame);
       this.game.scene.add('CalendarGame', CalendarGame);
       this.game.scene.add('FindTheDayGame', FindTheDayGame);
+      this.game.scene.add('BalanceBoxGame', BalanceBoxGame);
+      this.game.scene.add('GraduatedLineReadGame', GraduatedLineReadGame);
+      this.game.scene.add('GraduatedLineUseGame', GraduatedLineUseGame);
+      this.game.scene.add('LearnDecimalsGame', LearnDecimalsGame);
+      this.game.scene.add('LearnDecimalsAdditionsGame', LearnDecimalsAdditionsGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

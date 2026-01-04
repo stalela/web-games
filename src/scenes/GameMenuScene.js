@@ -672,6 +672,41 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'find_the_day.svg',
         difficulty: 2,
         category: 'math'
+      },
+      {
+        scene: 'BalanceBoxGame',
+        name: 'Balance Box',
+        icon: 'balancebox.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'GraduatedLineReadGame',
+        name: 'Read the Line',
+        icon: 'graduated_line_read.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'GraduatedLineUseGame',
+        name: 'Use the Line',
+        icon: 'graduated_line_use.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'LearnDecimalsGame',
+        name: 'Learn Decimals',
+        icon: 'learn_decimals.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'LearnDecimalsAdditionsGame',
+        name: 'Decimal Additions',
+        icon: 'learn_decimals_additions.svg',
+        difficulty: 3,
+        category: 'math'
       }
     ];
 
