@@ -1334,7 +1334,8 @@ export class GameMenuScene extends Phaser.Scene {
     this.gridContainer = this.add.container(0, 0);
 
     // Calculate responsive grid
-    const cardSize = Math.min(200, width / 6);
+    // Use width / 8 to encourage more columns on wider screens, matching localhost behavior
+    const cardSize = Math.min(200, width / 8);
     const gridAreaTop = 270;
     const gridAreaBottom = height - 120;
     const gridAreaHeight = gridAreaBottom - gridAreaTop;
