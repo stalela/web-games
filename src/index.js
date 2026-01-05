@@ -208,6 +208,7 @@ import { TensComplementUseGame } from './games/TensComplementUseGame.js';
 import { VerticalSubtractionGame } from './games/VerticalSubtractionGame.js';
 import { VerticalSubtractionCompensationGame } from './games/VerticalSubtractionCompensationGame.js';
 import { MoneyBackCentsGame } from './games/MoneyBackCentsGame.js';
+import { LangGame } from './games/LangGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -286,6 +287,7 @@ class LalelaGamesApp {
       this.game.scene.add('VerticalSubtractionGame', VerticalSubtractionGame);
       this.game.scene.add('VerticalSubtractionCompensationGame', VerticalSubtractionCompensationGame);
       this.game.scene.add('MoneyBackCentsGame', MoneyBackCentsGame);
+      this.game.scene.add('LangGame', LangGame);
       this.game.scene.add('LoadingScene', LoadingScene);
 
       // Add game menu scene

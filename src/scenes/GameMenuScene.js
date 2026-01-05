@@ -1470,6 +1470,13 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'money_back_cents.svg',
         difficulty: 3,
         category: 'math'
+      },
+      {
+        scene: 'LangGame',
+        name: 'Enrich your vocabulary',
+        icon: 'lang.svg',
+        difficulty: 4,
+        category: 'reading'
       }
     ];
 

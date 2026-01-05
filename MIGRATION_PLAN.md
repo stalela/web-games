@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 5, 2026
-> **Total Games:** 199 | **Completed:** 190 | **Remaining:** 9
-> **Progress:** ███████████████████ 95.4%
+> **Total Games:** 199 | **Completed:** 199 | **Remaining:** 0
+> **Progress:** ████████████████████ 100%
 
 ---
 
@@ -271,7 +271,7 @@ Copy this checklist for each new game task.
 | `hangman` | P2 | ✅ Complete | - |
 | `gletters` | P2 | ✅ Complete | - |
 | `imagename` | P2 | ✅ Complete | - |
-| `lang` | P2 | ❌ Blocked (Missing Assets) | - |
+| `lang` | P2 | ✅ Complete | - |
 | `braille_alphabets` | P3 | ✅ Complete | - |
 | `braille_fun` | P3 | ✅ Complete | - |
 | `louis-braille` | P3 | ✅ Complete | - |
