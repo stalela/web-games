@@ -200,6 +200,14 @@ import { ScalesboardWeightGame } from './games/ScalesboardWeightGame.js';
 import { ScalesboardWeightAvoirdupoisGame } from './games/ScalesboardWeightAvoirdupoisGame.js';
 import { SketchGame } from './games/SketchGame.js';
 import { SubmarineGame } from './games/SubmarineGame.js';
+import { CheckersTwoPlayerGame } from './games/CheckersTwoPlayerGame.js';
+import { TensComplementCalculateGame } from './games/TensComplementCalculateGame.js';
+import { TensComplementFindGame } from './games/TensComplementFindGame.js';
+import { TensComplementSwapGame } from './games/TensComplementSwapGame.js';
+import { TensComplementUseGame } from './games/TensComplementUseGame.js';
+import { VerticalSubtractionGame } from './games/VerticalSubtractionGame.js';
+import { VerticalSubtractionCompensationGame } from './games/VerticalSubtractionCompensationGame.js';
+import { MoneyBackCentsGame } from './games/MoneyBackCentsGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -270,6 +278,14 @@ class LalelaGamesApp {
       this.game = new Phaser.Game(GAME_CONFIG);
 
       // Add loading scene first
+      this.game.scene.add('CheckersTwoPlayerGame', CheckersTwoPlayerGame);
+      this.game.scene.add('TensComplementCalculateGame', TensComplementCalculateGame);
+      this.game.scene.add('TensComplementFindGame', TensComplementFindGame);
+      this.game.scene.add('TensComplementSwapGame', TensComplementSwapGame);
+      this.game.scene.add('TensComplementUseGame', TensComplementUseGame);
+      this.game.scene.add('VerticalSubtractionGame', VerticalSubtractionGame);
+      this.game.scene.add('VerticalSubtractionCompensationGame', VerticalSubtractionCompensationGame);
+      this.game.scene.add('MoneyBackCentsGame', MoneyBackCentsGame);
       this.game.scene.add('LoadingScene', LoadingScene);
 
       // Add game menu scene

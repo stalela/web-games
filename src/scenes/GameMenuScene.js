@@ -1414,6 +1414,62 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'submarine.svg',
         difficulty: 3,
         category: 'sciences'
+      },
+      {
+        scene: 'CheckersTwoPlayerGame',
+        name: 'Checkers (2P)',
+        icon: 'checkers_2players.svg',
+        difficulty: 4,
+        category: 'strategy'
+      },
+      {
+        scene: 'TensComplementCalculateGame',
+        name: 'Tens Complement Calculate',
+        icon: 'tens_complement_calculate.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'TensComplementFindGame',
+        name: 'Tens Complement Find',
+        icon: 'tens_complement_find.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'TensComplementSwapGame',
+        name: 'Tens Complement Swap',
+        icon: 'tens_complement_swap.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'TensComplementUseGame',
+        name: 'Tens Complement Use',
+        icon: 'tens_complement_use.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'VerticalSubtractionGame',
+        name: 'Vertical Subtraction',
+        icon: 'vertical_subtraction.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'VerticalSubtractionCompensationGame',
+        name: 'Vertical Subtraction Compensation',
+        icon: 'vertical_subtraction_compensation.svg',
+        difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MoneyBackCentsGame',
+        name: 'Money Back Cents',
+        icon: 'money_back_cents.svg',
+        difficulty: 3,
+        category: 'math'
       }
     ];
 

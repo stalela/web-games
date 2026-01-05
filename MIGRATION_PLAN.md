@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 5, 2026
-> **Total Games:** 199 | **Completed:** 182 | **Remaining:** 17
-> **Progress:** ██████████████████ 91.4%
+> **Total Games:** 199 | **Completed:** 190 | **Remaining:** 9
+> **Progress:** ███████████████████ 95.4%
 
 ---
 
@@ -396,6 +396,14 @@ Copy this checklist for each new game task.
 | `memory-math-minus` | P3 | ✅ Complete | - |
 | `memory-math-mult` | P3 | ✅ Complete | - |
 | `memory-math-mult-div` | P3 | ✅ Complete | - |
+
+| `tens_complement_calculate` | P2 | ✅ Complete | - |
+| `tens_complement_find` | P2 | ✅ Complete | - |
+| `tens_complement_swap` | P2 | ✅ Complete | - |
+| `tens_complement_use` | P2 | ✅ Complete | - |
+| `vertical_subtraction` | P2 | ✅ Complete | - |
+| `vertical_subtraction_compensation` | P2 | ✅ Complete | - |
+| `money_back_cents` | P1 | ✅ Complete | - |
 
 ---
 
