@@ -190,6 +190,16 @@ import { MiningGame } from './games/MiningGame.js';
 import { MosaicGame } from './games/MosaicGame.js';
 import { NumbersOddEvenGame } from './games/NumbersOddEvenGame.js';
 import { NumberSequenceGame } from './games/NumberSequenceGame.js';
+import { MorseCodeGame } from './games/MorseCodeGame.js';
+import { NineMenMorrisGame } from './games/NineMenMorrisGame.js';
+import { NineMenMorrisTwoPlayerGame } from './games/NineMenMorrisTwoPlayerGame.js';
+import { NoteNamesGame } from './games/NoteNamesGame.js';
+import { PianoCompositionGame } from './games/PianoCompositionGame.js';
+import { ProgrammingMazeGame } from './games/ProgrammingMazeGame.js';
+import { ScalesboardWeightGame } from './games/ScalesboardWeightGame.js';
+import { ScalesboardWeightAvoirdupoisGame } from './games/ScalesboardWeightAvoirdupoisGame.js';
+import { SketchGame } from './games/SketchGame.js';
+import { SubmarineGame } from './games/SubmarineGame.js';
 import { LoadingScene } from './scenes/LoadingScene.js';
 import { GameMenuScene } from './scenes/GameMenuScene.js';
 import { browserCompatibility } from './utils/BrowserCompatibility.js';
@@ -447,6 +457,16 @@ class LalelaGamesApp {
       this.game.scene.add('NumbersOddEvenGame', NumbersOddEvenGame);
       this.game.scene.add('NumberSequenceGame', NumberSequenceGame);
       this.game.scene.add('OrderingAlphabetsGame', OrderingAlphabetsGame);
+      this.game.scene.add('MorseCodeGame', MorseCodeGame);
+      this.game.scene.add('NineMenMorrisGame', NineMenMorrisGame);
+      this.game.scene.add('NineMenMorrisTwoPlayerGame', NineMenMorrisTwoPlayerGame);
+      this.game.scene.add('NoteNamesGame', NoteNamesGame);
+      this.game.scene.add('PianoCompositionGame', PianoCompositionGame);
+      this.game.scene.add('ProgrammingMazeGame', ProgrammingMazeGame);
+      this.game.scene.add('ScalesboardWeightGame', ScalesboardWeightGame);
+      this.game.scene.add('ScalesboardWeightAvoirdupoisGame', ScalesboardWeightAvoirdupoisGame);
+      this.game.scene.add('SketchGame', SketchGame);
+      this.game.scene.add('SubmarineGame', SubmarineGame);
 
       // Setup audio manager
       await this.audioManager.preloadCommonSounds();

@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
 > **Last Updated:** January 5, 2026
-> **Total Games:** 199 | **Completed:** 172 | **Remaining:** 27
-> **Progress:** ████████████████ 86.4%
+> **Total Games:** 199 | **Completed:** 182 | **Remaining:** 17
+> **Progress:** ██████████████████ 91.4%
 
 ---
 
@@ -303,6 +303,8 @@ Copy this checklist for each new game task.
 | `graph-coloring` | P3 | ✅ Complete | - |
 | `algorithm` | P3 | ✅ Complete | - |
 | `frieze` | P3 | ✅ Complete | - |
+| `nine_men_morris` | P2 | ✅ Complete | - |
+| `nine_men_morris_2players` | P2 | ✅ Complete | - |
 
 ---
 
@@ -330,6 +332,14 @@ Copy this checklist for each new game task.
 | `chronos` | P3 | ✅ Complete | - |
 | `family` | P2 | ✅ Complete | - |
 | `family_find_relative` | P2 | ✅ Complete | - |
+| `morse_code` | P2 | ✅ Complete | - |
+| `note_names` | P2 | ✅ Complete | - |
+| `piano_composition` | P2 | ✅ Complete | - |
+| `programmingMaze` | P2 | ✅ Complete | - |
+| `scalesboard_weight` | P2 | ✅ Complete | - |
+| `scalesboard_weight_avoirdupois` | P2 | ✅ Complete | - |
+| `sketch` | P2 | ✅ Complete | - |
+| `submarine` | P2 | ✅ Complete | - |
 
 ---
 

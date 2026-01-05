@@ -1344,6 +1344,76 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'target.svg',
         difficulty: 2,
         category: 'math'
+      },
+      {
+        scene: 'MorseCodeGame',
+        name: 'Morse Code',
+        icon: 'morse_code.svg',
+        difficulty: 3,
+        category: 'discovery'
+      },
+      {
+        scene: 'NineMenMorrisGame',
+        name: 'Nine Men Morris',
+        icon: 'nine_men_morris.svg',
+        difficulty: 4,
+        category: 'strategy'
+      },
+      {
+        scene: 'NineMenMorrisTwoPlayerGame',
+        name: 'Nine Men Morris (2P)',
+        icon: 'nine_men_morris_2players.svg',
+        difficulty: 4,
+        category: 'strategy'
+      },
+      {
+        scene: 'NoteNamesGame',
+        name: 'Note Names',
+        icon: 'note_names.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'PianoCompositionGame',
+        name: 'Piano Composition',
+        icon: 'piano_composition.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'ProgrammingMazeGame',
+        name: 'Programming Maze',
+        icon: 'programmingMaze.svg',
+        difficulty: 3,
+        category: 'discovery'
+      },
+      {
+        scene: 'ScalesboardWeightGame',
+        name: 'Scalesboard Weight',
+        icon: 'scalesboard_weight.svg',
+        difficulty: 3,
+        category: 'sciences'
+      },
+      {
+        scene: 'ScalesboardWeightAvoirdupoisGame',
+        name: 'Scalesboard Weight (Av)',
+        icon: 'scalesboard_weight_avoirdupois.svg',
+        difficulty: 3,
+        category: 'sciences'
+      },
+      {
+        scene: 'SketchGame',
+        name: 'Sketch',
+        icon: 'sketch.svg',
+        difficulty: 1,
+        category: 'discovery'
+      },
+      {
+        scene: 'SubmarineGame',
+        name: 'Submarine',
+        icon: 'submarine.svg',
+        difficulty: 3,
+        category: 'sciences'
       }
     ];
 
