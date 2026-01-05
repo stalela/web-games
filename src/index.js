@@ -336,7 +336,7 @@ class LalelaGamesApp {
       this.game.scene.add('Align4Game', Align4Game);    this.game.scene.add('Mosaic', Mosaic);
     this.game.scene.add('NumberSequence', NumberSequence);
     this.game.scene.add('NumbersOddEven', NumbersOddEven);
-    this.game.scene.add('OrderingAlphabets', OrderingAlphabetsGame);
+    this.game.scene.add('OrderingAlphabetsGame', OrderingAlphabetsGame);
     this.game.scene.add('OrderingNumbers', OrderingNumbersGame);
     this.game.scene.add('OrderingSentences', OrderingSentencesGame);
     this.game.scene.add('OrderingChronology', OrderingChronologyGame);
@@ -474,7 +474,6 @@ class LalelaGamesApp {
       this.game.scene.add('MosaicGame', MosaicGame);
       this.game.scene.add('NumbersOddEvenGame', NumbersOddEvenGame);
       this.game.scene.add('NumberSequenceGame', NumberSequenceGame);
-      this.game.scene.add('OrderingAlphabetsGame', OrderingAlphabetsGame);
       this.game.scene.add('MorseCodeGame', MorseCodeGame);
       this.game.scene.add('NineMenMorrisGame', NineMenMorrisGame);
       this.game.scene.add('NineMenMorrisTwoPlayerGame', NineMenMorrisTwoPlayerGame);
