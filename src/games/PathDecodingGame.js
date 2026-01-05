@@ -36,6 +36,8 @@ export class PathDecodingGame extends LalelaGame {
     this.gridSize = 60;
     this.gridOffsetX = 100;
     this.gridOffsetY = 100;
+    this.movement = config.movement || 'absolute';
+    this.tuxFacing = 'UP'; // Default facing
   }
 
   preload() {
@@ -55,6 +57,7 @@ export class PathDecodingGame extends LalelaGame {
     this.grid = level.path;
     this.rows = this.grid.length;
     this.cols = this.grid[0].length;
+    this.tuxFacing = 'UP'; // Reset facing
     
     this.createGrid();
     this.calculateMoves();
@@ -177,14 +180,38 @@ export class PathDecodingGame extends LalelaGame {
     const y = this.cameras.main.height - 80;
     const gap = 60;
 
+    let currentFacing = 'UP'; // Simulation facing for move bar generation
+
     this.moves.forEach((move, index) => {
       const x = startX + index * gap;
       const bg = this.add.rectangle(x, y, 50, 50, 0xeeeeee).setStrokeStyle(2, 0x000000);
       
       let angle = 0;
-      if (move === 'DOWN') angle = 90;
-      if (move === 'LEFT') angle = 180;
-      if (move === 'UP') angle = 270;
+      let displayMove = move;
+
+      if (this.movement === 'relative') {
+        // Calculate relative move
+        // Absolute: UP, DOWN, LEFT, RIGHT
+        // Relative: FORWARD (UP), BACKWARD (DOWN), LEFT, RIGHT (relative to facing)
+        
+        const dirs = ['UP', 'RIGHT', 'DOWN', 'LEFT'];
+        const currentIdx = dirs.indexOf(currentFacing);
+        const targetIdx = dirs.indexOf(move);
+        
+        // diff: 0=Forward, 1=Right, 2=Back, 3=Left
+        let diff = (targetIdx - currentIdx + 4) % 4;
+        
+        if (diff === 0) displayMove = 'UP'; // Forward
+        if (diff === 1) displayMove = 'RIGHT';
+        if (diff === 2) displayMove = 'DOWN'; // Backward
+        if (diff === 3) displayMove = 'LEFT';
+        
+        currentFacing = move; // Update facing for next move
+      }
+
+      if (displayMove === 'DOWN') angle = 90;
+      if (displayMove === 'LEFT') angle = 180;
+      if (displayMove === 'UP') angle = 270;
       
       const arrow = this.add.text(x, y, '➜', { fontSize: '32px', color: '#000000' }).setOrigin(0.5);
       arrow.setRotation(Phaser.Math.DegToRad(angle));
@@ -222,6 +249,15 @@ export class PathDecodingGame extends LalelaGame {
     if (r === expectedR && c === expectedC) {
       // Correct
       this.tuxPos = { r, c };
+      this.tuxFacing = expectedDir; // Update actual facing
+      
+      // Rotate Tux
+      let angle = 0;
+      if (this.tuxFacing === 'RIGHT') angle = 90;
+      if (this.tuxFacing === 'DOWN') angle = 180;
+      if (this.tuxFacing === 'LEFT') angle = 270;
+      this.tux.setAngle(angle);
+
       this.tweens.add({
         targets: this.tux,
         x: this.cells[r][c].x,

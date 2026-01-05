@@ -919,6 +919,20 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'math'
       },
       {
+        scene: 'MemoryMathAddMinusMultDivTuxGame',
+        name: 'Memory All Ops (Tux)',
+        icon: 'memory-math-add-minus-mult-div-tux.svg',
+        difficulty: 5,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathAddMinusTuxGame',
+        name: 'Memory Add/Sub (Tux)',
+        icon: 'memory-math-add-minus-tux.svg',
+        difficulty: 4,
+        category: 'math'
+      },
+      {
         scene: 'MemoryMathAddTuxGame',
         name: 'Addition Memory (Tux)',
         icon: 'memory-math-add-tux.svg',
@@ -933,10 +947,24 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'math'
       },
       {
+        scene: 'MemoryMathDivTuxGame',
+        name: 'Division Memory (Tux)',
+        icon: 'memory-math-div-tux.svg',
+        difficulty: 4,
+        category: 'math'
+      },
+      {
         scene: 'MemoryMathMinusGame',
         name: 'Subtraction Memory',
         icon: 'memory-math-minus.svg',
         difficulty: 3,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathMinusTuxGame',
+        name: 'Subtraction Memory (Tux)',
+        icon: 'memory-math-minus-tux.svg',
+        difficulty: 4,
         category: 'math'
       },
       {
@@ -952,6 +980,41 @@ export class GameMenuScene extends Phaser.Scene {
         icon: 'memory-math-mult-div.svg',
         difficulty: 4,
         category: 'math'
+      },
+      {
+        scene: 'MemoryMathMultDivTuxGame',
+        name: 'Mult/Div Memory (Tux)',
+        icon: 'memory-math-mult-div-tux.svg',
+        difficulty: 5,
+        category: 'math'
+      },
+      {
+        scene: 'MemoryMathMultTuxGame',
+        name: 'Multiplication Memory (Tux)',
+        icon: 'memory-math-mult-tux.svg',
+        difficulty: 4,
+        category: 'math'
+      },
+      {
+        scene: 'MemorySoundTuxGame',
+        name: 'Memory Sound (Tux)',
+        icon: 'memory-sound-tux.svg',
+        difficulty: 3,
+        category: 'memory'
+      },
+      {
+        scene: 'MemoryTuxGame',
+        name: 'Memory (Tux)',
+        icon: 'memory-tux.svg',
+        difficulty: 2,
+        category: 'memory'
+      },
+      {
+        scene: 'MemoryWordNumberGame',
+        name: 'Memory Word Number',
+        icon: 'memory-wordnumber.svg',
+        difficulty: 2,
+        category: 'reading'
       },
       {
         scene: 'GraphColoringGame',
@@ -1136,6 +1199,13 @@ export class GameMenuScene extends Phaser.Scene {
         category: 'strategy'
       },
       {
+        scene: 'OwareTwoPlayerGame',
+        name: 'Oware (2 Players)',
+        icon: 'oware_2players.svg',
+        difficulty: 4,
+        category: 'strategy'
+      },
+      {
         scene: 'OrderingSentences',
         name: 'Ordering Sentences',
         icon: 'ordering_sentences.svg',
@@ -1154,6 +1224,41 @@ export class GameMenuScene extends Phaser.Scene {
         name: 'Path Encoding',
         icon: 'path_encoding.svg',
         difficulty: 1,
+        category: 'discovery'
+      },
+      {
+        scene: 'PathEncodingRelative',
+        name: 'Path Encoding Relative',
+        icon: 'path_encoding_relative.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'PathDecodingRelative',
+        name: 'Path Decoding Relative',
+        icon: 'path_decoding_relative.svg',
+        difficulty: 2,
+        category: 'discovery'
+      },
+      {
+        scene: 'PlaneGame',
+        name: 'Plane Game',
+        icon: 'planegame.svg',
+        difficulty: 2,
+        category: 'math'
+      },
+      {
+        scene: 'PlayPiano',
+        name: 'Play Piano',
+        icon: 'play_piano.svg',
+        difficulty: 1,
+        category: 'discovery'
+      },
+      {
+        scene: 'PlayRhythm',
+        name: 'Play Rhythm',
+        icon: 'play_rhythm.svg',
+        difficulty: 2,
         category: 'discovery'
       },
       {
