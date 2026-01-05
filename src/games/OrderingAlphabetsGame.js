@@ -1,7 +1,7 @@
 import { LalelaGame } from '../utils/LalelaGame.js';
 
 export class OrderingAlphabetsGame extends LalelaGame {
-  constructor(config) {
+  constructor(config = {}) {
     super({
       key: 'OrderingAlphabetsGame',
       title: 'Ordering Alphabets',
