@@ -1572,8 +1572,25 @@ export class GameMenuScene extends Phaser.Scene {
     this.searchInput = document.getElementById('search-input');
     this.searchInput.style.display = 'none';
 
-    this.searchInput.addEventListener('input', () => {
-        this.filterGamesBySearch(this.searchInput.value);
+    // Remove any existing event listeners to prevent duplicates
+    this.searchInput.removeEventListener('input', this.handleSearchInput);
+    this.handleSearchInput = () => {
+        if (this.searchInput.value.trim() === '') {
+            this.filterGamesByCategory('all');
+        } else {
+            this.filterGamesBySearch(this.searchInput.value);
+        }
+    };
+    this.searchInput.addEventListener('input', this.handleSearchInput);
+
+    // Handle Enter key to dismiss keyboard focus
+    this.searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            this.searchInput.style.display = 'none';
+            this.searchInput.blur();
+            // Reset to favorite category
+            this.selectCategory('favorite');
+        }
     });
 
     // Start with all games visible
@@ -1803,10 +1820,16 @@ export class GameMenuScene extends Phaser.Scene {
     this.currentCategory = categoryId;
 
     if (categoryId === 'search') {
+      // Show the search input and focus it
       this.searchInput.style.display = 'block';
-      if(this.gridContainer) this.gridContainer.setVisible(false);
+      this.searchInput.value = ''; // Clear previous search
       this.searchInput.focus();
+      
+      // Show all games initially when entering search mode
+      if(this.gridContainer) this.gridContainer.setVisible(true);
+      this.filterGamesByCategory('all');
     } else {
+      // Hide search input when selecting other categories
       this.searchInput.style.display = 'none';
       if(this.gridContainer) this.gridContainer.setVisible(true);
       this.filterGamesByCategory(categoryId);

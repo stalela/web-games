@@ -42,10 +42,45 @@
             width: 100%;
             height: 100vh;
         }
+
+        /* GCompris-style search bar */
+        #search-input {
+            position: absolute;
+            top: 145px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            max-width: 600px;
+            min-width: 280px;
+            height: 50px;
+            padding: 0 20px;
+            font-size: 22px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            text-align: center;
+            color: #4a4a4a;
+            background-color: #FFFFFF;
+            border: 2px solid #cccccc;
+            border-radius: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            outline: none;
+            z-index: 1000;
+            display: none;
+        }
+
+        #search-input::placeholder {
+            color: #888888;
+            font-weight: 500;
+        }
+
+        #search-input:focus {
+            border-color: #4ECDC4;
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+        }
     </style>
 </head>
 <body>
-    <input type="text" id="search-input" style="position: absolute; top: 15px; left: 15px; width: 200px; display: none;">
+    <input type="text" id="search-input" placeholder="Search specific activities">
     <div id="game-container"></div>
 
     <!-- Game scripts will be injected here by webpack -->
