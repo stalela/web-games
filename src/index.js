@@ -559,8 +559,13 @@ class LalelaGamesApp {
   }
 
   showGameMenu() {
-    // Start the GameMenu scene (now properly registered during initialization)
-    this.game.scene.start('GameMenu', { app: this });
+    // Start the LoadingScene first, which will then transition to GameMenu
+    this.game.scene.start('LoadingScene', {
+      nextScene: 'GameMenu',
+      loadingText: 'Loading Lalela Games...',
+      assetManager: this.assetManager,
+      app: this
+    });
   }
 
   // Legacy GameMenu code completely removed - now using proper GameMenuScene class
