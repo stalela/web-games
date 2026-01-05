@@ -1,7 +1,7 @@
 import { LalelaGame } from '../utils/LalelaGame.js';
 
 export class PathDecodingGame extends LalelaGame {
-  constructor(config) {
+  constructor(config = {}) {
     super({
       key: 'PathDecodingGame',
       title: 'Path Decoding',
