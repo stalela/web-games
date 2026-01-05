@@ -802,3 +802,41 @@ export function getPieceChar(piece) {
         default: return null;
     }
 }
+
+/**
+ * Check for checkmate or stalemate
+ * Returns:
+ * 0: Game continues
+ * 1: White wins (Black checkmated)
+ * 2: Black wins (White checkmated)
+ * 3: Stalemate (Draw)
+ */
+export function p4_check_checkmate(state) {
+    const colour = state.to_play;
+    const moves = p4_parse(state, colour, state.enpassant, 0);
+    let hasLegalMove = false;
+
+    for (let i = 0; i < moves.length; i++) {
+        const move = moves[i];
+        const changes = p4_make_move(state, move[1], move[2], P4_QUEEN); // Try queen promotion for simplicity
+        const inCheck = p4_check_check(state, colour);
+        p4_unmake_move(state, changes);
+        
+        if (!inCheck) {
+            hasLegalMove = true;
+            break;
+        }
+    }
+
+    if (!hasLegalMove) {
+        if (p4_check_check(state, colour)) {
+            // Checkmate
+            return colour === 0 ? 2 : 1; // If white to play (0) and mated, Black wins (2)
+        } else {
+            // Stalemate
+            return 3;
+        }
+    }
+
+    return 0;
+}

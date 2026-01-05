@@ -2,8 +2,7 @@ import { CheckersGame } from './CheckersGame.js';
 
 export class CheckersTwoPlayerGame extends CheckersGame {
   constructor() {
-    super();
-    this.key = 'CheckersTwoPlayerGame';
+    super('CheckersTwoPlayerGame');
   }
 
   create() {

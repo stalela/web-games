@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import Draughts from '../utils/engine.js';
 
 export class CheckersGame extends Phaser.Scene {
-  constructor() {
-    super({ key: 'CheckersGame' });
+  constructor(key = 'CheckersGame') {
+    super({ key: key });
 
     this.gameConfig = {
       numberOfCases: 10,
