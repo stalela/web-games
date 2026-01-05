@@ -1,8 +1,8 @@
 # GCompris to Lalela Web Games - Migration Plan
 
-> **Last Updated:** January 4, 2026
-> **Total Games:** 199 | **Completed:** 154 | **Remaining:** 45
-> **Progress:** ██████████████ 77.3%
+> **Last Updated:** January 5, 2026
+> **Total Games:** 199 | **Completed:** 172 | **Remaining:** 27
+> **Progress:** ████████████████ 86.4%
 
 ---
 
@@ -180,6 +180,23 @@ Copy this checklist for each new game task.
 | MemoryMathMinusGame | Math | MemoryGame | ✅ Complete |
 | MemoryMathMultGame | Math | MemoryGame | ✅ Complete |
 | MemoryMathMultDivGame | Math | MemoryGame | ✅ Complete |
+| MemoryMathAddMinusTuxGame | Math | MemoryTuxGame | ✅ Complete |
+| MemoryMathAddMinusMultDivTuxGame | Math | MemoryTuxGame | ✅ Complete |
+| MemoryMathAddTuxGame | Math | MemoryTuxGame | ✅ Complete |
+| MemoryMathDivTuxGame | Math | MemoryTuxGame | ✅ Complete |
+| MemoryMathMinusTuxGame | Math | MemoryTuxGame | ✅ Complete |
+| MemoryMathMultTuxGame | Math | MemoryTuxGame | ✅ Complete |
+| MemoryMathMultDivTuxGame | Math | MemoryTuxGame | ✅ Complete |
+| MemorySoundTuxGame | Memory | MemoryTuxGame | ✅ Complete |
+| MemoryTuxGame | Memory | MemoryTuxGame | ✅ Complete |
+| MemoryWordNumberGame | Reading | MemoryGame | ✅ Complete |
+| OwareTwoPlayerGame | Strategy | OwareGame | ✅ Complete |
+| PathEncodingGame | Discovery | PathEncodingGame | ✅ Complete |
+| PathEncodingRelativeGame | Discovery | PathEncodingGame | ✅ Complete |
+| PathDecodingRelativeGame | Discovery | PathDecodingGame | ✅ Complete |
+| PlaneGame | Math | PlaneGame | ✅ Complete |
+| PlayPianoGame | Discovery | PlayPianoGame | ✅ Complete |
+| PlayRhythmGame | Discovery | PlayPianoGame | ✅ Complete |
 | GraphColoringGame | Strategy | LalelaGame | ✅ Complete |
 | GrammarAnalysisGame | Reading | LalelaGame | ✅ Complete |
 | GrammarClassesGame | Reading | LalelaGame | ✅ Complete |
