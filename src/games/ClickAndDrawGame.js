@@ -76,11 +76,21 @@ export class ClickAndDrawGame extends LalelaGame {
     uiIcons.forEach((icon) => {
         this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`);
     });
+
+    // Wood background used by the original activity
+    const { width, height } = this.scale;
+    this.load.svg('clickanddraw-wood', 'assets/game-icons/background-wood.svg', {
+      width: width,
+      height: height
+    });
   }
 
   createBackground() {
     const { width, height } = this.cameras.main;
-    this.add.rectangle(width / 2, height / 2, width, height, 0xFFFFFF).setDepth(-1);
+    const bg = this.add.image(width / 2, height / 2, 'clickanddraw-wood');
+    const scale = Math.max(width / bg.width, height / bg.height);
+    bg.setScale(scale);
+    bg.setDepth(-2);
   }
 
   createUI() {
@@ -99,6 +109,7 @@ export class ClickAndDrawGame extends LalelaGame {
   setupGameLogic() {
     const levelData = this.levels[this.level % this.levels.length];
     const { width, height } = this.cameras.main;
+    const boardSize = Math.min(width * 0.7, height * 0.7);
     
     // Clear previous
     if (this.points) this.points.forEach(p => p.destroy());
@@ -110,70 +121,75 @@ export class ClickAndDrawGame extends LalelaGame {
     this.lines = [];
     this.currentPointIndex = 0;
     
-    // Add background image (centered)
-    // Original coordinates are based on ~800x600?
-    // We need to scale/center them.
-    // Let's assume the coordinates are relative to an 800x600 area.
+    // Original coordinates are based on a 520x520 virtual board (NumberSequence).
+    const base = 520;
+    const scale = boardSize / base;
+    const offsetX = (width - boardSize) / 2;
+    const offsetY = (height - boardSize) / 2;
     
-    const scaleX = width / 800;
-    const scaleY = height / 600;
-    const scale = Math.min(scaleX, scaleY) * 0.9;
-    
-    const offsetX = (width - 800 * scale) / 2;
-    const offsetY = (height - 600 * scale) / 2;
-    
-    this.bgImage = this.add.image(width/2, height/2, `clickanddraw-${levelData.imageName1}`);
-    // We might need to scale the image too?
-    // The SVG might be any size.
-    // Let's assume the SVG fits the 800x600 coordinate space.
-    // We'll scale it to fit the screen.
-    
-    // Actually, let's just use the coordinates directly with scaling.
-    
-    // Create points
-    levelData.coordinates.forEach((coord, index) => {
+    // Background image (outline)
+    this.bgImage = this.add.image(width / 2, height / 2, `clickanddraw-${levelData.imageName1}`)
+      .setDisplaySize(boardSize, boardSize)
+      .setDepth(-1);
+
+    // Points
+    this.points = levelData.coordinates.map((coord, index) => {
       const x = coord[0] * scale + offsetX;
       const y = coord[1] * scale + offsetY;
-      
-      const point = this.add.image(x, y, 'clickanddraw-bluepoint');
-      point.setScale(0.5); // Adjust size
-      point.setInteractive({ useHandCursor: true });
-      point.setVisible(index === 0); // Only show first point initially?
-      
-      point.on('pointerdown', () => this.handlePointClick(index, x, y));
-      
-      this.points.push(point);
+      const point = this.add.image(x, y, 'clickanddraw-bluepoint')
+        .setInteractive({ useHandCursor: true });
+      point.data = { index, x, y, clicked: false };
+      point.on('pointerdown', () => this.handlePointClick(index));
+      return point;
     });
-    
+
     // Graphics for lines
     this.graphics = this.add.graphics();
+    this.graphics.lineStyle(4, 0x0062FF, 1);
     this.lines.push(this.graphics);
+
+    this.updatePointVisuals();
   }
   
-  handlePointClick(index, x, y) {
+  handlePointClick(index) {
     if (index !== this.currentPointIndex) return;
-    
-    // Play sound
     if (this.audioManager) this.audioManager.playSound('click');
-    
-    // Draw line from previous point
+
     if (index > 0) {
       const prevPoint = this.points[index - 1];
-      this.graphics.lineStyle(4, 0x0062FF);
+      const currPoint = this.points[index];
       this.graphics.beginPath();
       this.graphics.moveTo(prevPoint.x, prevPoint.y);
-      this.graphics.lineTo(x, y);
+      this.graphics.lineTo(currPoint.x, currPoint.y);
       this.graphics.strokePath();
     }
-    
-    // Show next point
+
+    this.points[index].data.clicked = true;
+
     if (index < this.points.length - 1) {
-      this.points[index + 1].setVisible(true);
       this.currentPointIndex++;
+      this.updatePointVisuals();
     } else {
-      // Level complete
       this.showFinalImage();
     }
+  }
+
+  updatePointVisuals() {
+    this.points.forEach((point, i) => {
+      if (point.data.clicked) {
+        point.setTexture('clickanddraw-blackpoint');
+        point.setScale(0.5);
+        point.setVisible(true);
+      } else if (i === this.currentPointIndex) {
+        point.setTexture('clickanddraw-bluepointHighlight');
+        point.setScale(0.65);
+        point.setVisible(true);
+      } else {
+        point.setTexture('clickanddraw-greenpoint');
+        point.setScale(0.5);
+        point.setVisible(true);
+      }
+    });
   }
   
   showFinalImage() {
