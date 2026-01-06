@@ -252,7 +252,8 @@ export class DragDropGame extends LalelaGame {
     // Check if close enough to snap to a zone
     const nearestZone = this.getNearestDropZone(pointer.x, pointer.y);
 
-    if (nearestZone && this.getDistance(pointer.x, pointer.y, nearestZone.x, nearestZone.y) < this.snapThreshold) {
+    if (nearestZone && nearestZone.x !== undefined && nearestZone.y !== undefined &&
+        this.getDistance(pointer.x, pointer.y, nearestZone.x, nearestZone.y) < this.snapThreshold) {
       // Auto-snap to nearest zone
       this.snapTileToZone(tile, nearestZone);
     } else {
