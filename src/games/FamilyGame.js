@@ -101,11 +101,11 @@ export class FamilyGame extends LalelaGame {
             
             sprite.on('pointerdown', () => {
                 if (node.id === question.target) {
-                    this.audioManager.playSound('success');
+                    if (this.audioManager) this.audioManager.playSound('success');
                     this.instructionText.setText('Correct!');
                     // Next level logic here
                 } else {
-                    this.audioManager.playSound('error');
+                    if (this.audioManager) this.audioManager.playSound('error');
                 }
             });
             
