@@ -44,14 +44,24 @@ export class BabyMouseGame extends LalelaGame {
 
   createGameObjects() {
     const { width, height } = this.scale;
-    
-    // Background - position at center and scale to fill
-    const bg = this.add.image(width / 2, height / 2, 'baby_mouse_bg');
-    bg.setDepth(-1);
-      
+
+    // Background is handled in createBackground
     this.createLeftDucks();
     this.createArrows();
     this.createMainDuck();
+  }
+
+  createBackground() {
+    const { width, height } = this.scale;
+
+    // Fallback color in case SVG fails
+    this.cameras.main.setBackgroundColor(0x2c3e50);
+
+    const bg = this.add.image(width / 2, height / 2, 'baby_mouse_bg');
+    // Scale to cover the viewport without stretching the aspect ratio too much
+    const scale = Math.max(width / bg.width, height / bg.height);
+    bg.setScale(scale);
+    bg.setDepth(-1);
   }
 
   createUI() {
