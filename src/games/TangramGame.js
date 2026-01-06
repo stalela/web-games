@@ -11,16 +11,7 @@ class TangramPiece extends DraggableTile {
         this.config.color = this.config.color || 0xffffff;
         this.config.borderColor = this.config.borderColor || 0xcccccc;
 
-        // Shadow for depth effect
-        this.shadow = this.scene.add.rectangle(3, 3, size, size, 0x000000, 0.15);
-        this.shadow.setOrigin(0.5);
-
-        // Background
-        this.background = this.scene.add.rectangle(0, 0, size, size, 0xffffff, 0.9);
-        this.background.setStrokeStyle(2, 0xcccccc, 0.5);
-        this.background.setOrigin(0.5);
-
-        // The tangram piece image
+        // The tangram piece image (no background - just the colored shape)
         this.image = this.scene.add.image(0, 0, this.config.imageKey);
 
         // Apply initial flipping if needed
@@ -33,25 +24,26 @@ class TangramPiece extends DraggableTile {
             this.image.setAngle(this.config.rotation);
         }
 
-        // Scale image to fit within size
-        const scale = Math.min(size / this.image.width, size / this.image.height) * 0.9;
+        // Scale image to the configured size
+        const scale = size / Math.max(this.image.width, this.image.height);
         this.image.setScale(scale);
+        this.pieceScale = scale;
 
-        this.add([this.shadow, this.background, this.image]);
-
-        // Selection glow
+        // Selection glow (outline around piece)
         this.glow = this.scene.add.rectangle(0, 0, size + 10, size + 10, 0xFFFF00, 0);
-        this.glow.setStrokeStyle(4, 0xFFFF00, 0);
-        this.addAt(this.glow, 0);
+        this.glow.setStrokeStyle(4, 0x00AAFF, 0);
+        
+        this.add([this.glow, this.image]);
 
-        // Rotation button (shown when selected)
-        this.rotateBtn = this.scene.add.container(-size/2 - 25, 0);
-        const rotateBg = this.scene.add.circle(0, 0, 18, 0x4a90d9, 1);
+        // Rotation button (shown when selected) - positioned outside the piece
+        const btnOffset = size / 2 + 30;
+        this.rotateBtn = this.scene.add.container(-btnOffset, 0);
+        const rotateBg = this.scene.add.circle(0, 0, 20, 0x4a90d9, 1);
         rotateBg.setStrokeStyle(2, 0xffffff, 1);
-        const rotateIcon = this.scene.add.text(0, 0, '↻', { fontSize: '20px', color: '#fff' }).setOrigin(0.5);
+        const rotateIcon = this.scene.add.text(0, 0, '↻', { fontSize: '22px', color: '#fff' }).setOrigin(0.5);
         this.rotateBtn.add([rotateBg, rotateIcon]);
         this.rotateBtn.setVisible(false);
-        this.rotateBtn.setSize(36, 36);
+        this.rotateBtn.setSize(40, 40);
         this.rotateBtn.setInteractive({ useHandCursor: true });
         this.rotateBtn.on('pointerdown', (pointer) => {
             pointer.event.stopPropagation();
@@ -61,13 +53,13 @@ class TangramPiece extends DraggableTile {
 
         // Flip button (shown when selected and flippable)
         if (this.config.flippable) {
-            this.flipBtn = this.scene.add.container(0, size/2 + 25);
-            const flipBg = this.scene.add.circle(0, 0, 18, 0x4a90d9, 1);
+            this.flipBtn = this.scene.add.container(0, btnOffset);
+            const flipBg = this.scene.add.circle(0, 0, 20, 0x4a90d9, 1);
             flipBg.setStrokeStyle(2, 0xffffff, 1);
-            const flipIcon = this.scene.add.text(0, 0, '⇄', { fontSize: '18px', color: '#fff' }).setOrigin(0.5);
+            const flipIcon = this.scene.add.text(0, 0, '⇄', { fontSize: '20px', color: '#fff' }).setOrigin(0.5);
             this.flipBtn.add([flipBg, flipIcon]);
             this.flipBtn.setVisible(false);
-            this.flipBtn.setSize(36, 36);
+            this.flipBtn.setSize(40, 40);
             this.flipBtn.setInteractive({ useHandCursor: true });
             this.flipBtn.on('pointerdown', (pointer) => {
                 pointer.event.stopPropagation();
@@ -195,21 +187,18 @@ export class TangramGame extends DragDropGame {
         graphics.fillRect(0, 0, width, height);
         graphics.setDepth(-2);
 
-        // Play area border (optional visual guide)
-        const playSize = Math.min(width * 0.7, height * 0.7);
+        // Play area is the full screen minus margins
+        // Use a square centered in the available space
+        const margin = 80;
+        const availableWidth = width - margin * 2;
+        const availableHeight = height - margin * 2 - 60; // extra for nav dock
+        const playSize = Math.min(availableWidth, availableHeight);
+        
         this.playAreaX = (width - playSize) / 2;
-        this.playAreaY = (height - playSize) / 2 - 20;
+        this.playAreaY = margin + 30; // below title
         this.playSize = playSize;
-
-        // Subtle play area indicator
-        const playArea = this.add.rectangle(
-            this.playAreaX + playSize / 2,
-            this.playAreaY + playSize / 2,
-            playSize, playSize,
-            0xffffff, 0.1
-        );
-        playArea.setStrokeStyle(2, 0x4a90d9, 0.3);
-        playArea.setDepth(-1);
+        this.screenWidth = width;
+        this.screenHeight = height;
     }
 
     createUI() {
@@ -375,36 +364,38 @@ export class TangramGame extends DragDropGame {
             this.levelText.setText(`Level ${this.currentLevelIndex + 1}: ${levelData.name}`);
         }
 
-        // Create silhouettes (target positions)
+        // Create silhouettes (target positions) - centered in play area
         levelData.pieces.forEach((piece, i) => {
             const x = this.playAreaX + piece.x * this.playSize;
             const y = this.playAreaY + piece.y * this.playSize;
-            const pieceWidth = piece.width * this.playSize;
-            const pieceHeight = piece.height * this.playSize;
+            const pieceSize = Math.max(piece.width, piece.height) * this.playSize;
 
             const silhouette = this.add.image(x, y, `tangram-m-${piece.img}`);
-            const scale = Math.min(pieceWidth / silhouette.width, pieceHeight / silhouette.height);
+            const scale = pieceSize / Math.max(silhouette.width, silhouette.height);
             silhouette.setScale(scale);
             silhouette.setAngle(piece.rotation);
-            silhouette.setTint(0x888888);
-            silhouette.setAlpha(0.7);
+            silhouette.setTint(0x666666);
+            silhouette.setAlpha(0.6);
             silhouette.setDepth(0);
             this.silhouettes.push(silhouette);
         });
 
-        // Create draggable pieces (initial positions)
+        // Create draggable pieces - spread across top area
+        const pieceSpacing = this.screenWidth / (levelData.pieces.length + 1);
+        const pieceY = 100; // fixed Y position at top
+        
         levelData.pieces.forEach((piece, i) => {
-            const initX = this.playAreaX + piece.initX * this.playSize;
-            const initY = this.playAreaY + piece.initY * this.playSize;
-            const pieceWidth = piece.width * this.playSize;
-            const pieceHeight = piece.height * this.playSize;
+            // Spread pieces evenly across the top
+            const initX = pieceSpacing * (i + 1);
+            const initY = pieceY;
+            const pieceSize = Math.max(piece.width, piece.height) * this.playSize * 0.8; // Slightly smaller for manageability
 
             const tile = new TangramPiece(this, {
                 x: initX,
                 y: initY,
                 value: `${piece.img}-${i}`,
                 imageKey: `tangram-${piece.img}`,
-                size: Math.max(pieceWidth, pieceHeight),
+                size: Math.min(pieceSize, 120), // Cap max size
                 rotation: piece.initRotation,
                 flipping: false,
                 flippable: piece.flippable,
