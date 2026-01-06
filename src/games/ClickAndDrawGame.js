@@ -70,6 +70,8 @@ export class ClickAndDrawGame extends LalelaGame {
     
     this.load.svg('clickanddraw-bluepoint', 'assets/clickanddraw/bluepoint.svg');
     this.load.svg('clickanddraw-bluepointHighlight', 'assets/clickanddraw/bluepointHighlight.svg');
+    this.load.svg('clickanddraw-blackpoint', 'assets/clickanddraw/blackpoint.svg');
+    this.load.svg('clickanddraw-greenpoint', 'assets/clickanddraw/greenpoint.svg');
     
     // Load navigation icons
     const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
@@ -136,9 +138,19 @@ export class ClickAndDrawGame extends LalelaGame {
     this.points = levelData.coordinates.map((coord, index) => {
       const x = coord[0] * scale + offsetX;
       const y = coord[1] * scale + offsetY;
+      const minSize = 18;
+      const baseSize = 32;
+      const size = Math.max(minSize, Math.min(baseSize, 0.06 * boardSize));
       const point = this.add.image(x, y, 'clickanddraw-bluepoint')
-        .setInteractive({ useHandCursor: true });
-      point.data = { index, x, y, clicked: false };
+        .setDisplaySize(size, size)
+        .setDepth(2);
+      const hitRadius = Math.max(size * 0.45, 12);
+      point.setInteractive({
+        useHandCursor: true,
+        hitArea: new Phaser.Geom.Circle(point.displayWidth / 2, point.displayHeight / 2, hitRadius),
+        hitAreaCallback: Phaser.Geom.Circle.Contains
+      });
+      point.meta = { index, x, y, clicked: false, size };
       point.on('pointerdown', () => this.handlePointClick(index));
       return point;
     });
@@ -164,7 +176,7 @@ export class ClickAndDrawGame extends LalelaGame {
       this.graphics.strokePath();
     }
 
-    this.points[index].data.clicked = true;
+    this.points[index].meta.clicked = true;
 
     if (index < this.points.length - 1) {
       this.currentPointIndex++;
@@ -176,25 +188,31 @@ export class ClickAndDrawGame extends LalelaGame {
 
   updatePointVisuals() {
     this.points.forEach((point, i) => {
-      if (point.data.clicked) {
+      if (point.meta.clicked) {
         point.setTexture('clickanddraw-blackpoint');
-        point.setScale(0.5);
-        point.setVisible(true);
+        point.setDisplaySize(point.meta.size * 0.7, point.meta.size * 0.7);
+        point.setDepth(3).setVisible(true);
       } else if (i === this.currentPointIndex) {
         point.setTexture('clickanddraw-bluepointHighlight');
-        point.setScale(0.65);
-        point.setVisible(true);
+        point.setDisplaySize(point.meta.size * 0.9, point.meta.size * 0.9);
+        point.setDepth(4).setVisible(true);
       } else {
         point.setTexture('clickanddraw-greenpoint');
-        point.setScale(0.5);
-        point.setVisible(true);
+        point.setDisplaySize(point.meta.size * 0.7, point.meta.size * 0.7);
+        point.setDepth(3).setVisible(true);
       }
     });
+  }
+
+  startLevel(levelNumber) {
+    super.startLevel(levelNumber);
+    this.setupGameLogic();
   }
   
   showFinalImage() {
     const levelData = this.levels[this.level % this.levels.length];
     const { width, height } = this.cameras.main;
+    const boardSize = Math.min(width * 0.7, height * 0.7);
     
     // Hide points and lines
     this.points.forEach(p => p.setVisible(false));
@@ -202,7 +220,8 @@ export class ClickAndDrawGame extends LalelaGame {
     this.bgImage.setVisible(false);
     
     // Show final image
-    this.finalImage = this.add.image(width/2, height/2, `clickanddraw-${levelData.imageName2}`);
+    this.finalImage = this.add.image(width/2, height/2, `clickanddraw-${levelData.imageName2}`)
+      .setDisplaySize(boardSize, boardSize);
     this.finalImage.setAlpha(0);
     
     this.tweens.add({
@@ -211,7 +230,7 @@ export class ClickAndDrawGame extends LalelaGame {
       duration: 1000,
       onComplete: () => {
         this.time.delayedCall(2000, () => {
-          this.nextLevel();
+          this.startLevel(this.level + 1);
         });
       }
     });
