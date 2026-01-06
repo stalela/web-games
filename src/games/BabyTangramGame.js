@@ -5,6 +5,8 @@ import { DropZone } from '../components/DropZone.js';
 class TangramPiece extends DraggableTile {
     createVisualElements() {
         const size = this.config.size || 100;
+        this.config.color = this.config.color || 0xffffff;
+        this.config.borderColor = this.config.borderColor || 0xcccccc;
         const baseColor = 0xffffff;
         const strokeColor = 0xcccccc;
         const shadowColor = 0x000000;
