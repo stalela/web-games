@@ -21,9 +21,10 @@ export class PaintingsGame extends DragDropGame {
   preload() {
     super.preload();
     
-    // Load UI icons
-    const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
-    uiIcons.forEach(icon => this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`));
+    // Load navigation icons (same as BabyKeyboardGame)
+    this.load.svg('home', 'assets/game-icons/bar_home.svg');
+    this.load.svg('help', 'assets/game-icons/bar_help.svg');
+    this.load.svg('reload', 'assets/game-icons/bar_reload.svg');
     
     // Load wood background textures
     this.load.svg('wood-bg-main', 'assets/details/resource/backgroundW01.svg');
@@ -93,77 +94,77 @@ export class PaintingsGame extends DragDropGame {
   }
 
   createNavigationDock(width, height) {
-    const dockY = height - 40;
-    const iconSize = 45;
-    const iconSpacing = 60;
-    const icons = ['exit', 'home', 'help'];
-    const startX = width / 2 - 30;
+    const barY = height - 55;
+    const buttonSize = 72;
+    const spacing = 95;
+    const buttonRadius = 10;
 
-    // Dock background
-    const dockWidth = 280;
-    const dockBg = this.add.rectangle(width / 2 + 60, dockY, dockWidth, 60, 0x4a4a4a, 0.85);
-    dockBg.setStrokeStyle(2, 0x666666, 1);
-    dockBg.setDepth(10);
+    const controls = [
+      { icon: 'home', action: 'home', color: 0x0062FF },
+      { icon: 'reload', action: 'reload', color: 0x00B378 },
+      { icon: 'help', action: 'help', color: 0xF08A00 }
+    ];
 
-    icons.forEach((iconName, i) => {
-      const x = startX + i * iconSpacing;
-      const iconBtn = this.add.image(x, dockY, iconName);
-      iconBtn.setDisplaySize(iconSize, iconSize);
-      iconBtn.setDepth(11);
-      iconBtn.setInteractive({ useHandCursor: true });
-      iconBtn.on('pointerover', () => iconBtn.setScale(1.15));
-      iconBtn.on('pointerout', () => iconBtn.setScale(1));
-      iconBtn.on('pointerdown', () => {
-        if (this.audioManager) this.audioManager.playSound('click');
-        switch (iconName) {
-          case 'exit':
-          case 'home':
-            this.scene.start('GameMenu');
-            break;
-          case 'help':
-            this.showHelpModal();
-            break;
-        }
+    const totalWidth = (controls.length * buttonSize) + ((controls.length - 1) * (spacing - buttonSize));
+    const startX = (width - totalWidth) / 2;
+
+    this.navButtons = [];
+
+    controls.forEach((control, index) => {
+      const x = startX + index * spacing;
+      
+      // Create button background
+      const button = this.add.graphics();
+      button.fillStyle(control.color);
+      button.fillRoundedRect(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize, buttonRadius);
+      button.lineStyle(2, 0xFFFFFF, 0.8);
+      button.strokeRoundedRect(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize, buttonRadius);
+      button.setInteractive(
+        new Phaser.Geom.Rectangle(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize),
+        Phaser.Geom.Rectangle.Contains
+      );
+
+      // Create icon
+      const icon = this.add.sprite(x, barY, control.icon);
+      icon.setScale((buttonSize * 0.6) / Math.max(icon.width, icon.height));
+      icon.setTint(0xFFFFFF);
+
+      // Button interactions
+      button.on('pointerdown', () => {
+        icon.y += 2;
+        this.handleNavAction(control.action);
+        this.time.delayedCall(100, () => {
+          icon.y -= 2;
+        });
       });
-    });
 
-    // Level navigation arrows
-    this.prevBtn = this.add.text(width / 2 - 80, dockY, '❮', {
-      fontSize: '40px',
-      color: '#FFB800',
-      fontStyle: 'bold'
-    }).setOrigin(0.5).setDepth(11).setInteractive({ useHandCursor: true });
-    this.prevBtn.on('pointerdown', () => {
-      if (this.currentLevelIndex > 0) {
-        this.startLevel(this.currentLevelIndex - 1);
-      }
-    });
+      button.on('pointerover', () => {
+        this.tweens.add({ targets: icon, scale: (buttonSize * 0.65) / Math.max(icon.width, icon.height), duration: 100 });
+      });
 
-    this.levelNumText = this.add.text(width / 2 + 170, dockY, '1', {
-      fontSize: '28px',
-      color: '#ffffff',
-      fontStyle: 'bold'
-    }).setOrigin(0.5).setDepth(11);
+      button.on('pointerout', () => {
+        this.tweens.add({ targets: icon, scale: (buttonSize * 0.6) / Math.max(icon.width, icon.height), duration: 100 });
+      });
 
-    this.nextBtn = this.add.text(width / 2 + 220, dockY, '❯', {
-      fontSize: '40px',
-      color: '#FFB800',
-      fontStyle: 'bold'
-    }).setOrigin(0.5).setDepth(11).setInteractive({ useHandCursor: true });
-    this.nextBtn.on('pointerdown', () => {
-      if (this.currentLevelIndex < this.levels.length - 1) {
-        this.startLevel(this.currentLevelIndex + 1);
-      }
+      button.setDepth(100);
+      icon.setDepth(101);
+
+      this.navButtons.push({ button, icon });
     });
-    
-    // Expand button on left panel
-    this.expandBtn = this.add.text(60, height - 80, '❯', {
-      fontSize: '36px',
-      color: '#FFB800',
-      fontStyle: 'bold',
-      backgroundColor: '#5c3317',
-      padding: { x: 15, y: 8 }
-    }).setOrigin(0.5).setDepth(15).setInteractive({ useHandCursor: true });
+  }
+
+  handleNavAction(action) {
+    switch (action) {
+      case 'home':
+        this.scene.start('GameMenu');
+        break;
+      case 'reload':
+        this.startLevel(this.currentLevelIndex);
+        break;
+      case 'help':
+        this.showHelpModal();
+        break;
+    }
   }
 
   showHelpModal() {
