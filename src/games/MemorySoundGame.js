@@ -376,7 +376,9 @@ export class MemorySoundGame extends MemoryGame {
     });
 
     // Instructions for sound game
-    this.instructionText.setText('Listen to the sounds and find matching pairs!');
+    if (this.instructionText) {
+      this.instructionText.setText('Listen to the sounds and find matching pairs!');
+    }
   }
 
   /**

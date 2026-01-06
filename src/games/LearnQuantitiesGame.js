@@ -83,8 +83,17 @@ export class LearnQuantitiesGame extends DragDropGame {
 
     // Load game assets
     this.load.svg('orange', 'assets/game-icons/orange.svg');
-    this.load.svg('learn_quantities_bg', 'assets/game-icons/learn_quantities_bg.svg');
+    this.load.svg('hillside_bg', 'assets/learn_quantities/hillside.svg');
     this.load.svg('arrow_selector', 'assets/game-icons/arrow_selector.svg');
+    
+    // Load navigation icons
+    this.load.svg('home', 'assets/game-icons/bar_home.svg');
+    this.load.svg('help', 'assets/game-icons/bar_help.svg');
+    this.load.svg('bar_next', 'assets/game-icons/bar_next.svg');
+    this.load.svg('bar_prev', 'assets/game-icons/bar_previous.svg');
+    this.load.svg('config', 'assets/game-icons/bar_config.svg');
+    this.load.svg('bar_hint', 'assets/game-icons/bar_hint.svg');
+    this.load.svg('bar_ok', 'assets/game-icons/bar_ok.svg');
   }
 
   /**
@@ -93,8 +102,8 @@ export class LearnQuantitiesGame extends DragDropGame {
   createBackground() {
     const { width, height } = this.scale;
 
-    // Background image with proper depth - ensure sky/grass theme
-    this.background = this.add.image(width / 2, height / 2, 'learn_quantities_bg');
+    // GCompris hillside background (sky blue top, green hills bottom)
+    this.background = this.add.image(width / 2, height / 2, 'hillside_bg');
     this.background.setDisplaySize(width, height);
     this.background.setDepth(-10);
   }
@@ -105,45 +114,36 @@ export class LearnQuantitiesGame extends DragDropGame {
   createUI() {
     const { width, height } = this.scale;
 
-    // Title
-    this.titleText = this.add.text(width / 2, 50, 'Learn Quantities', {
-      fontSize: '32px',
-      color: '#0062FF',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'center'
-    }).setOrigin(0.5).setDepth(10);
-
-    // Level display
-    this.levelText = this.add.text(width - 50, 50, 'Level 1', {
-      fontSize: '24px',
-      color: '#101012',
-      fontFamily: 'Fredoka One, cursive'
-    }).setOrigin(1, 0).setDepth(10);
-
-    // Instruction panel (GCompris style - dark grey rounded rectangle at top)
+    // Instruction panel at top (GCompris style - dark rounded rectangle)
+    const instructionPanelWidth = Math.min(500, width * 0.5);
     const instructionPanelBg = this.add.graphics();
-    instructionPanelBg.fillStyle(0x000000, 0.7);
-    instructionPanelBg.fillRoundedRect(width / 2 - 250, 90, 500, 80, 20);
+    instructionPanelBg.fillStyle(0x333333, 0.95);
+    instructionPanelBg.fillRoundedRect(width / 2 - instructionPanelWidth / 2, 15, instructionPanelWidth, 50, 10);
     instructionPanelBg.setDepth(9);
 
-    this.instructionText = this.add.text(width / 2, 130, 'Represent the quantity: ?', {
-      fontSize: '32px',
+    this.instructionText = this.add.text(width / 2, 40, 'Represent the quantity: ?', {
+      fontSize: '24px',
       color: '#ffffff',
-      fontFamily: 'Fredoka One, cursive',
+      fontFamily: 'Arial',
+      fontStyle: 'bold',
       align: 'center'
     }).setOrigin(0.5).setDepth(10);
 
     // Create navigation dock
     this.createNavigationDock(width, height);
 
-    // Sublevel progress indicator (0/3 format on left) - in navigation dock area
-    this.progressText = this.add.text(80, height - 80, '0/3', {
-      fontSize: '24px',
-      color: '#FFFFFF',
-      fontFamily: 'Fredoka One, cursive',
+    // Sublevel progress indicator (0/3 format on left)
+    const progressBg = this.add.rectangle(50, height - 150, 60, 40, 0xFFFFFF, 0.9);
+    progressBg.setStrokeStyle(2, 0x333333);
+    progressBg.setDepth(100);
+    
+    this.progressText = this.add.text(50, height - 150, '0/3', {
+      fontSize: '20px',
+      color: '#333333',
+      fontFamily: 'Arial',
+      fontStyle: 'bold',
       align: 'center'
-    }).setOrigin(0, 0.5).setDepth(110); // Above navigation dock
-    this.progressText.setStroke('#000000', 3);
+    }).setOrigin(0.5).setDepth(101);
   }
 
   /**
@@ -167,33 +167,14 @@ export class LearnQuantitiesGame extends DragDropGame {
   createGameElements() {
     const { width, height } = this.scale;
 
-    // Target quantity display (large, prominent in basket)
-    this.targetText = this.add.text(width / 2, height / 2 - 50, '?', {
-      fontSize: '72px',
-      color: '#FACA2A',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'center',
-      backgroundColor: '#FFFFFF',
-      padding: { left: 20, right: 20, top: 10, bottom: 10 }
-    }).setOrigin(0.5).setDepth(5);
-    this.targetText.setStroke('#000000', 4);
-
     // Create the basket (large white rounded rectangle in center)
     this.createBasket();
 
     // Create the horizontal orange selector (bottom)
     this.createHorizontalSelector();
 
-    // OK button (circular, green, on the right)
+    // OK button and Hint button (circular, on the right)
     this.createOKButton();
-
-    // Current quantity display
-    this.currentQuantityText = this.add.text(width / 2, height - 120, 'Oranges: 0', {
-      fontSize: '28px',
-      color: '#00B378',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'center'
-    }).setOrigin(0.5).setDepth(15);
   }
 
   /**
@@ -201,33 +182,18 @@ export class LearnQuantitiesGame extends DragDropGame {
    */
   createBasket() {
     const { width, height } = this.scale;
-    const basketWidth = 500;
-    const basketHeight = 350;
+    const basketWidth = Math.min(700, width * 0.7);
+    const basketHeight = Math.min(200, height * 0.28);
     const basketX = width / 2;
-    // Center basket perfectly in the middle of the screen
-    const basketY = height / 2;
+    const basketY = height * 0.35;
 
-    // Basket background (white with thick border - sticker style)
+    // Basket background (white with gray border - GCompris style)
     this.basketBg = this.add.graphics();
-    this.basketBg.fillStyle(0xFFFFFF, 1);
-    this.basketBg.fillRoundedRect(basketX - basketWidth/2, basketY - basketHeight/2, basketWidth, basketHeight, 20);
-    this.basketBg.lineStyle(5, 0x101012, 1);
-    this.basketBg.strokeRoundedRect(basketX - basketWidth/2, basketY - basketHeight/2, basketWidth, basketHeight, 20);
+    this.basketBg.fillStyle(0xFAFAFA, 1);
+    this.basketBg.fillRoundedRect(basketX - basketWidth/2, basketY - basketHeight/2, basketWidth, basketHeight, 10);
+    this.basketBg.lineStyle(3, 0x888888, 1);
+    this.basketBg.strokeRoundedRect(basketX - basketWidth/2, basketY - basketHeight/2, basketWidth, basketHeight, 10);
     this.basketBg.setDepth(5);
-
-    // Basket drop shadow
-    this.basketShadow = this.add.graphics();
-    this.basketShadow.fillStyle(0x000000, 0.2);
-    this.basketShadow.fillRoundedRect(basketX - basketWidth/2 + 3, basketY - basketHeight/2 + 3, basketWidth, basketHeight, 20);
-    this.basketShadow.setDepth(4);
-
-    // Basket label
-    this.basketLabel = this.add.text(basketX, basketY - basketHeight/2 - 25, 'Basket', {
-      fontSize: '24px',
-      color: '#00B378',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'center'
-    }).setOrigin(0.5).setDepth(5);
 
     // Store basket bounds for drop detection
     this.basketBounds = {
@@ -246,122 +212,111 @@ export class LearnQuantitiesGame extends DragDropGame {
    */
   createHorizontalSelector() {
     const { width, height } = this.scale;
-    const selectorY = height - 220;
-    const selectorWidth = 500;
+    const selectorY = height * 0.62;
+    const selectorWidth = Math.min(700, width * 0.7);
     const selectorX = width / 2;
 
-    // Selector background (sticker style)
+    // Selector background (white with gray border - GCompris style)
     this.selectorBg = this.add.graphics();
-    this.selectorBg.fillStyle(0xFFFFFF, 0.9);
-    this.selectorBg.fillRoundedRect(selectorX - selectorWidth/2, selectorY - 30, selectorWidth, 60, 15);
-    this.selectorBg.lineStyle(4, 0x0062FF, 1);
-    this.selectorBg.strokeRoundedRect(selectorX - selectorWidth/2, selectorY - 30, selectorWidth, 60, 15);
+    this.selectorBg.fillStyle(0xFAFAFA, 1);
+    this.selectorBg.fillRoundedRect(selectorX - selectorWidth/2, selectorY - 30, selectorWidth, 60, 10);
+    this.selectorBg.lineStyle(3, 0x888888, 1);
+    this.selectorBg.strokeRoundedRect(selectorX - selectorWidth/2, selectorY - 30, selectorWidth, 60, 10);
     this.selectorBg.setDepth(4);
 
-    // Display 10 small faded oranges in a row
+    // Display 10 small oranges in a row (GCompris style - outlined when empty, filled when selected)
     this.selectorOranges = [];
     const orangeSpacing = selectorWidth / 11; // Space for 10 oranges + margins
 
     for (let i = 0; i < 10; i++) {
       const orangeX = selectorX - selectorWidth/2 + 30 + (i * orangeSpacing);
-      const orange = this.add.image(orangeX, selectorY, 'orange');
-      orange.setDisplaySize(25, 25);
-      orange.setTint(0xCCCCCC); // Start faded
-      orange.setInteractive({ useHandCursor: true });
-      orange.setDepth(5);
+      
+      // Create orange circle (empty outline style initially)
+      const orangeCircle = this.add.circle(orangeX, selectorY, 15, 0xFFFFFF);
+      orangeCircle.setStrokeStyle(3, 0xF08A00); // Orange outline
+      orangeCircle.setDepth(5);
+      orangeCircle.index = i;
+      orangeCircle.filled = false;
 
-      // Make oranges clickable to drag
-      orange.on('pointerdown', () => {
-        if (orange.tintTopLeft !== 0xCCCCCC) { // Only if filled
+      // Make oranges clickable
+      orangeCircle.setInteractive({ useHandCursor: true });
+      orangeCircle.on('pointerdown', () => {
+        if (orangeCircle.filled) {
           this.createDraggableOrangeFromSelector(i);
         }
       });
 
-      this.selectorOranges.push(orange);
+      this.selectorOranges.push(orangeCircle);
     }
 
-    // Triangle selector (draggable) - Much larger for visibility
-    this.selectorTriangle = this.add.image(selectorX - selectorWidth/2 + 30, selectorY + 40, 'arrow_selector');
-    this.selectorTriangle.setDisplaySize(60, 60);
-    this.selectorTriangle.setTint(0xFACA2A); // Lalela Yellow
-    this.selectorTriangle.setInteractive({ draggable: true, hitArea: new Phaser.Geom.Circle(30, 30, 30), hitAreaCallback: Phaser.Geom.Circle.Contains });
+    // Triangle selector (draggable) - GCompris style orange triangle pointing up
+    const triangleX = selectorX - selectorWidth/2 + 30;
+    const triangleY = selectorY + 40;
+    
+    this.selectorTriangle = this.add.graphics();
+    this.selectorTriangle.fillStyle(0xF08A00, 1); // Orange
+    this.selectorTriangle.beginPath();
+    this.selectorTriangle.moveTo(0, -20); // Top point
+    this.selectorTriangle.lineTo(15, 15); // Bottom right
+    this.selectorTriangle.lineTo(-15, 15); // Bottom left
+    this.selectorTriangle.closePath();
+    this.selectorTriangle.fillPath();
+    this.selectorTriangle.lineStyle(2, 0xFFFFFF, 1);
+    this.selectorTriangle.strokePath();
+    this.selectorTriangle.setPosition(triangleX, triangleY);
     this.selectorTriangle.setDepth(6);
+    
+    // Make triangle draggable with hit area
+    this.selectorTriangle.setInteractive(
+      new Phaser.Geom.Circle(0, 0, 25),
+      Phaser.Geom.Circle.Contains
+    );
+    this.input.setDraggable(this.selectorTriangle);
 
-    // Add white border to selector triangle
-    this.selectorTriangleBorder = this.add.graphics();
-    this.selectorTriangleBorder.lineStyle(4, 0xFFFFFF, 1);
-    this.selectorTriangleBorder.strokeCircle(this.selectorTriangle.x, this.selectorTriangle.y, 30);
-    this.selectorTriangleBorder.setDepth(7);
-
-    // Add drop shadow
-    this.selectorTriangleShadow = this.add.graphics();
-    this.selectorTriangleShadow.fillStyle(0x000000, 0.3);
-    this.selectorTriangleShadow.fillCircle(this.selectorTriangle.x + 2, this.selectorTriangle.y + 2, 30);
-    this.selectorTriangleShadow.setDepth(5);
-
-    // Selection indicator line
-    this.selectionLine = this.add.graphics();
-    this.selectionLine.lineStyle(3, 0xFF6B6B, 1);
-    this.selectionLine.moveTo(selectorX - selectorWidth/2 + 30, selectorY - 35);
-    this.selectionLine.lineTo(selectorX - selectorWidth/2 + 30, selectorY + 35);
-    this.selectionLine.setDepth(5);
+    // Store selector bounds for reference
+    this.selectorBounds = {
+      minX: selectorX - selectorWidth/2 + 30,
+      maxX: selectorX + selectorWidth/2 - 30,
+      y: selectorY,
+      width: selectorWidth
+    };
 
     // Setup triangle dragging
     this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
       if (gameObject === this.selectorTriangle) {
         // Constrain triangle movement horizontally
-        const constrainedX = Phaser.Math.Clamp(dragX, selectorX - selectorWidth/2 + 30, selectorX + selectorWidth/2 - 30);
+        const constrainedX = Phaser.Math.Clamp(dragX, this.selectorBounds.minX, this.selectorBounds.maxX);
         gameObject.x = constrainedX;
 
-        // Update border position
-        this.selectorTriangleBorder.x = constrainedX;
-        this.selectorTriangleBorder.y = gameObject.y;
-
-        // Update shadow position
-        this.selectorTriangleShadow.x = constrainedX + 2;
-        this.selectorTriangleShadow.y = gameObject.y + 2;
-
-        // Update selection line position
-        this.selectionLine.clear();
-        this.selectionLine.lineStyle(3, 0xFF6B6B, 1);
-        this.selectionLine.moveTo(constrainedX, selectorY - 35);
-        this.selectionLine.lineTo(constrainedX, selectorY + 35);
-
         // Calculate selected oranges based on triangle position
-        const progress = (constrainedX - (selectorX - selectorWidth/2 + 30)) / (selectorWidth - 60);
+        const progress = (constrainedX - this.selectorBounds.minX) / (this.selectorBounds.maxX - this.selectorBounds.minX);
         const selected = Math.round(progress * 10);
         this.setSelectedOranges(selected);
       }
     });
 
-    // Selection count display
-    this.selectedOrangesText = this.add.text(selectorX, selectorY - 50, '0', {
-      fontSize: '32px',
-      color: '#FF6B6B',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'center'
-    }).setOrigin(0.5).setDepth(5);
+    // Selection count display removed - GCompris doesn't show it
   }
 
   /**
    * Create a draggable orange from the selector
    */
   createDraggableOrangeFromSelector(index) {
-    const orange = this.selectorOranges[index];
-    if (!orange || orange.tintTopLeft !== 0xFFFFFF) {
+    const circle = this.selectorOranges[index];
+    if (!circle || !circle.filled) {
       return null; // Only allow dragging filled oranges
     }
 
-    // Create a copy for dragging
-    const dragOrange = this.add.image(orange.x, orange.y, 'orange');
-    dragOrange.setDisplaySize(30, 30);
+    // Create a copy for dragging (orange circle)
+    const dragOrange = this.add.circle(circle.x, circle.y, 18, 0xF08A00);
+    dragOrange.setStrokeStyle(2, 0xFFFFFF);
     dragOrange.setInteractive({ draggable: true });
     dragOrange.setDepth(20);
 
     // Setup orange dragging
     this.input.on('dragstart', (pointer, gameObject) => {
       if (gameObject === dragOrange) {
-        gameObject.setTint(0xAAAAAA);
+        gameObject.setFillStyle(0xD07800); // Darker when dragging
       }
     });
 
@@ -374,7 +329,7 @@ export class LearnQuantitiesGame extends DragDropGame {
 
     this.input.on('dragend', (pointer, gameObject) => {
       if (gameObject === dragOrange) {
-        gameObject.clearTint();
+        gameObject.setFillStyle(0xF08A00);
         this.checkOrangeDrop(gameObject);
       }
     });
@@ -383,40 +338,67 @@ export class LearnQuantitiesGame extends DragDropGame {
   }
 
   /**
-   * Create OK button (circular, green, on the right)
+   * Create OK button and Hint button (GCompris style - bottom right)
    */
   createOKButton() {
     const { width, height } = this.scale;
-    // Position OK button clearly on the right side, above the basket
-    const buttonX = width - 150;
-    const buttonY = height / 2 - 100; // Position above the basket center
-
-    // Larger circular OK button (green with white border)
-    this.okButton = this.add.circle(buttonX, buttonY, 60, 0x00B378);
-    this.okButton.setStrokeStyle(6, 0xFFFFFF);
+    const buttonY = height - 150;
+    
+    // Hint button (orange circle with lightbulb)
+    const hintX = width - 150;
+    this.hintButton = this.add.circle(hintX, buttonY, 40, 0xF08A00);
+    this.hintButton.setStrokeStyle(4, 0xFFFFFF);
+    this.hintButton.setInteractive({ useHandCursor: true });
+    this.hintButton.setDepth(150);
+    
+    // Hint icon (lightbulb symbol)
+    this.hintIcon = this.add.text(hintX, buttonY, '💡', {
+      fontSize: '32px'
+    }).setOrigin(0.5).setDepth(151);
+    
+    this.hintButton.on('pointerdown', () => this.showHint());
+    
+    // OK button (green circle with OK text)
+    const okX = width - 60;
+    this.okButton = this.add.circle(okX, buttonY, 40, 0x44AA44);
+    this.okButton.setStrokeStyle(4, 0xFFFFFF);
     this.okButton.setInteractive({ useHandCursor: true });
-    this.okButton.setDepth(150); // Above all game elements
-    this.okButton.setVisible(false); // Initially hidden
+    this.okButton.setDepth(150);
 
     // OK text
-    this.okButtonText = this.add.text(buttonX, buttonY, 'OK', {
-      fontSize: '24px',
+    this.okButtonText = this.add.text(okX, buttonY, 'OK', {
+      fontSize: '22px',
       color: '#FFFFFF',
-      fontFamily: 'Fredoka One, cursive',
+      fontFamily: 'Arial',
+      fontStyle: 'bold',
       align: 'center'
     }).setOrigin(0.5).setDepth(151);
-    this.okButtonText.setVisible(false); // Initially hidden
 
     // Click handler
     this.okButton.on('pointerdown', () => this.checkAnswer());
 
     // Hover effects
     this.okButton.on('pointerover', () => {
-      this.okButton.setFillStyle(0x008844);
+      this.okButton.setFillStyle(0x338833);
     });
     this.okButton.on('pointerout', () => {
-      this.okButton.setFillStyle(0x00B378);
+      this.okButton.setFillStyle(0x44AA44);
     });
+  }
+  
+  /**
+   * Show hint for current question
+   */
+  showHint() {
+    // Flash the target quantity
+    this.tweens.add({
+      targets: this.instructionText,
+      scale: 1.2,
+      duration: 200,
+      yoyo: true,
+      repeat: 2
+    });
+    this.playSound('click');
   }
 
   /**
@@ -453,14 +435,15 @@ export class LearnQuantitiesGame extends DragDropGame {
    */
   setSelectedOranges(count) {
     this.orangesSelected = Phaser.Math.Clamp(count, 0, 10);
-    this.selectedOrangesText.setText(this.orangesSelected.toString());
 
-    // Update selector oranges (fill with color based on selection)
-    this.selectorOranges.forEach((orange, index) => {
+    // Update selector oranges (fill with orange color based on selection)
+    this.selectorOranges.forEach((circle, index) => {
       if (index < this.orangesSelected) {
-        orange.clearTint(); // Full color
+        circle.setFillStyle(0xF08A00); // Filled orange
+        circle.filled = true;
       } else {
-        orange.setTint(0xCCCCCC); // Faded
+        circle.setFillStyle(0xFFFFFF); // White/empty
+        circle.filled = false;
       }
     });
   }
@@ -592,10 +575,10 @@ export class LearnQuantitiesGame extends DragDropGame {
   }
 
   /**
-   * Update quantity display
+   * Update quantity display (updates instruction text to show current count)
    */
   updateQuantityDisplay() {
-    this.currentQuantityText.setText(`Oranges: ${this.currentQuantity}`);
+    // No separate display - instruction panel shows target
   }
 
   /**
@@ -841,7 +824,6 @@ export class LearnQuantitiesGame extends DragDropGame {
   generateTargetQuantity() {
     const currentLevelData = this.levels[this.level - 1];
     this.targetQuantity = Phaser.Math.Between(currentLevelData.minValue, currentLevelData.maxValue);
-    this.targetText.setText(this.targetQuantity.toString());
     this.instructionText.setText(`Represent the quantity: ${this.targetQuantity}`);
   }
 
@@ -864,12 +846,15 @@ export class LearnQuantitiesGame extends DragDropGame {
    */
   startLevel() {
     const currentLevelData = this.levels[this.level - 1];
-    this.levelText.setText(`Level ${this.level}`);
-    this.instructionText.setText(`${currentLevelData.objective}`);
+    if (this.instructionText) {
+      this.instructionText.setText(`Represent the quantity: ${currentLevelData.objective}`);
+    }
 
     // Update progress indicator
     const currentSublevel = 1; // This would need to be tracked properly
-    this.progressText.setText(`${currentSublevel}/${currentLevelData.sublevels}`);
+    if (this.progressText) {
+      this.progressText.setText(`${currentSublevel}/${currentLevelData.sublevels}`);
+    }
   }
 
   /**
