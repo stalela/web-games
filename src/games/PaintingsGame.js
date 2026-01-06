@@ -59,7 +59,7 @@ export class PaintingsGame extends DragDropGame {
     // Left panel for pieces (wood strip)
     this.leftPanel = this.add.image(60, height / 2, 'wood-bg-panel');
     this.leftPanel.setDisplaySize(120, height);
-    this.leftPanel.setDepth(2);
+    this.leftPanel.setDepth(1);
   }
 
   createUI() {
