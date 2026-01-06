@@ -130,8 +130,9 @@ export class DetailsGame extends DragDropGame {
         const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
         uiIcons.forEach(icon => this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`));
 
-        // Load wood background
-        this.load.svg('wood-bg', 'assets/babyshapes/resource/wood_bg.svg');
+        // Load wood background textures
+        this.load.svg('wood-bg-main', 'assets/details/resource/backgroundW01.svg');
+        this.load.svg('wood-bg-panel', 'assets/details/resource/backgroundW02.svg');
 
         // Load all level assets
         const loadedImages = new Set();
@@ -153,15 +154,15 @@ export class DetailsGame extends DragDropGame {
         const width = this.cameras.main.width;
         const height = this.cameras.main.height;
 
-        // Wood texture background like GCompris
-        this.bgWood = this.add.image(width / 2, height / 2, 'wood-bg');
+        // Main wood background (full screen)
+        this.bgWood = this.add.image(width / 2, height / 2, 'wood-bg-main');
         this.bgWood.setDisplaySize(width, height);
         this.bgWood.setDepth(-2);
 
-        // Left panel for pieces (wood strip)
-        this.leftPanel = this.add.rectangle(60, height / 2, 120, height, 0x5c3317, 0.9);
-        this.leftPanel.setStrokeStyle(3, 0x3d2210, 1);
-        this.leftPanel.setDepth(-1);
+        // Left panel for pieces (wood strip panel)
+        this.leftPanel = this.add.image(60, height / 2, 'wood-bg-panel');
+        this.leftPanel.setDisplaySize(120, height);
+        this.leftPanel.setDepth(2);
 
         // Main image container will be set per level
         this.bgImage = null;
