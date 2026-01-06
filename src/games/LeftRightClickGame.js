@@ -314,7 +314,7 @@ export class LeftRightClickGame extends LalelaGame {
 
     const { width, height } = this.cameras.main;
     const panelWidth = Math.min(width * 0.7, 680);
-    const panelHeight = Math.min(height * 0.7, 420);
+    const panelHeight = Math.min(height * 0.7, 460);
 
     const container = this.add.container(width / 2, height / 2).setDepth(200);
 
@@ -330,7 +330,7 @@ export class LeftRightClickGame extends LalelaGame {
       .setDepth(201)
       .setOrigin(0.5);
 
-    const title = this.add.text(0, -panelHeight / 2 + 40, 'How to Play', {
+    const title = this.add.text(0, -panelHeight / 2 + 36, 'How to Play', {
       fontSize: '32px',
       color: '#0a0a0a',
       fontStyle: 'bold'
@@ -340,18 +340,32 @@ export class LeftRightClickGame extends LalelaGame {
       'Left click the fish and send them to the pond.',
       'Right click the monkeys and send them to the tree.',
       'Score 10 correct clicks to finish the level.',
-      'Use the reload button to restart anytime.'
+      'Tap reload if you want to restart.'
     ];
 
-    const text = this.add.text(-panelWidth / 2 + 40, -panelHeight / 2 + 90, instructions.join('\n'), {
+    const text = this.add.text(-panelWidth / 2 + 40, -panelHeight / 2 + 88, instructions.join('\n'), {
       fontSize: '22px',
       color: '#222222',
       wordWrap: { width: panelWidth - 80 }
     }).setOrigin(0, 0);
 
-    const mouseVisual = this.add.image(panelWidth / 2 - 130, 0, 'lrc-mouse')
-      .setDisplaySize(panelWidth * 0.22, panelHeight * 0.4)
+    const mouseVisual = this.add.image(panelWidth / 2 - 140, 0, 'lrc-mouse')
+      .setDisplaySize(panelWidth * 0.2, panelHeight * 0.36)
       .setDepth(202);
+
+    const leftKey = this.add.rectangle(-panelWidth / 2 + 70, panelHeight / 2 - 110, 120, 44, 0x00b378)
+      .setStrokeStyle(2, 0xffffff)
+      .setDepth(202);
+    const leftLabel = this.add.text(leftKey.x, leftKey.y, 'Left = Fish', {
+      fontSize: '18px', color: '#ffffff', fontStyle: 'bold'
+    }).setOrigin(0.5);
+
+    const rightKey = this.add.rectangle(leftKey.x + 150, leftKey.y, 140, 44, 0x0062ff)
+      .setStrokeStyle(2, 0xffffff)
+      .setDepth(202);
+    const rightLabel = this.add.text(rightKey.x, rightKey.y, 'Right = Monkey', {
+      fontSize: '18px', color: '#ffffff', fontStyle: 'bold'
+    }).setOrigin(0.5);
 
     const closeBtn = this.add.rectangle(0, panelHeight / 2 - 50, 140, 46, 0x0062FF, 1)
       .setStrokeStyle(2, 0xFFFFFF)
@@ -367,7 +381,7 @@ export class LeftRightClickGame extends LalelaGame {
       fontStyle: 'bold'
     }).setOrigin(0.5);
 
-    container.add([overlay, panel, title, text, mouseVisual, closeBtn, closeLabel]);
+    container.add([overlay, panel, title, text, mouseVisual, leftKey, leftLabel, rightKey, rightLabel, closeBtn, closeLabel]);
     this.helpModal = container;
   }
 }
