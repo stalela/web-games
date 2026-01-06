@@ -41,6 +41,7 @@ export class BabyShapesGame extends DragDropGame {
             category: 'fun' // or 'discovery'
         });
         
+        this.helpModal = null;
         this.levels = [
             // Level 1
             {
@@ -98,36 +99,52 @@ export class BabyShapesGame extends DragDropGame {
                 }
             });
         });
+
+        // Navigation icons and background
+        const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
+        uiIcons.forEach(icon => this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`));
+        this.load.svg('babyshapes-wood', 'assets/game-icons/background-wood.svg');
     }
 
     createBackground() {
-        // Simple gradient background
-        const width = this.cameras.main.width;
-        const height = this.cameras.main.height;
-        
-        const graphics = this.add.graphics();
-        graphics.fillGradientStyle(0xFFFFFF, 0xFFFFFF, 0xDDDDDD, 0xDDDDDD, 1);
-        graphics.fillRect(0, 0, width, height);
-        graphics.setDepth(-1);
+        const { width, height } = this.cameras.main;
+        const bg = this.add.image(width / 2, height / 2, 'babyshapes-wood');
+        const scale = Math.max(width / bg.width, height / bg.height);
+        bg.setScale(scale).setDepth(-2);
     }
 
     createUI() {
         super.createUI();
+
+        // Hide default controls (if any) and draw our dock
+        if (this.uiElements && this.uiElements.controls) {
+            Object.values(this.uiElements.controls).forEach(control => {
+                if (control && control.setVisible) control.setVisible(false);
+            });
+        }
+
+        this.createNavigationDock(this.cameras.main.width, this.cameras.main.height);
         
-        // Add instruction text
-        this.instructionText = this.add.text(this.cameras.main.centerX, 50, 'Drag and Drop the items to match them.', {
+        // Instruction banner
+        const banner = this.add.rectangle(this.cameras.main.centerX, 60, Math.min(this.cameras.main.width * 0.9, 900), 70, 0xffffff)
+            .setStrokeStyle(3, 0x0062ff)
+            .setDepth(10)
+            .setOrigin(0.5);
+        this.instructionText = this.add.text(banner.x, banner.y, 'Drag and Drop the items to match them.', {
             fontFamily: 'Arial',
-            fontSize: '24px',
-            color: '#333333',
+            fontSize: '28px',
+            color: '#1d1d1d',
             fontStyle: 'bold'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setDepth(11);
     }
 
     setupGameLogic() {
+        this.currentLevelIndex = 0;
         this.startLevel(0);
     }
 
     startLevel(levelIndex) {
+        this.currentLevelIndex = levelIndex % this.levels.length;
         // Clear existing items
         this.draggableTiles.forEach(t => t.destroy());
         this.dropZones.forEach(z => z.destroy());
@@ -139,28 +156,34 @@ export class BabyShapesGame extends DragDropGame {
         const height = this.cameras.main.height;
 
         // Create drop zones (targets)
+        const zoneSize = Math.min(width, height) * 0.18;
         levelData.items.forEach(item => {
             const x = item.x * width;
             const y = item.y * height;
-            
-            // Create a "hole" or target visual
-            const zoneSize = 120;
+
             const zone = new DropZone(this, {
-                x: x,
-                y: y,
+                x,
+                y,
                 width: zoneSize,
                 height: zoneSize,
-                expectedValue: item.id
+                expectedValue: item.id,
+                color: 0x4d7cff,
+                borderColor: 0xffffff,
+                borderWidth: 4
             });
-            
-            // Add a visual representation of the target (e.g. silhouette or just the image with low opacity)
+
             const targetImage = this.add.image(0, 0, `babyshapes-${item.id}`);
-            const scale = Math.min(100 / targetImage.width, 100 / targetImage.height);
+            const scale = Math.min((zoneSize * 0.7) / targetImage.width, (zoneSize * 0.7) / targetImage.height);
             targetImage.setScale(scale);
-            targetImage.setAlpha(0.3); // Ghost effect
-            targetImage.setTint(0x000000); // Silhouette effect
+            targetImage.setAlpha(0.35);
+            targetImage.setTint(0x000000);
             zone.add(targetImage);
-            
+
+            // Orange center dot for alignment cue
+            const dot = this.add.circle(0, 0, Math.max(6, zoneSize * 0.05), 0xf08a00, 0.9);
+            zone.add(dot);
+            dot.setDepth(2);
+
             this.dropZones.push(zone);
             this.add.existing(zone);
         });
@@ -174,17 +197,19 @@ export class BabyShapesGame extends DragDropGame {
         // Or maybe the items ARE the targets and you drag from a bank?
         // "Drag and Drop the items to match them."
         
-        // Let's assume we spawn the draggable items in the center or bottom.
-        const startY = height - 100;
-        const spacing = width / (levelData.items.length + 1);
-        
+        // Vertical bank on the left
+        const bankX = Math.min(120, width * 0.12);
+        const availableHeight = height * 0.75;
+        const startY = height * 0.2;
+        const spacing = availableHeight / Math.max(levelData.items.length, 1);
+
         levelData.items.forEach((item, index) => {
             const tile = new ImageDraggable(this, {
-                x: spacing * (index + 1),
-                y: startY,
+                x: bankX,
+                y: startY + index * spacing,
                 value: item.id,
                 imageKey: `babyshapes-${item.id}`,
-                size: 100
+                size: Math.min(140, width * 0.14)
             });
             
             this.draggableTiles.push(tile);
@@ -212,12 +237,62 @@ export class BabyShapesGame extends DragDropGame {
             if (this.correctPlacements >= this.totalPlacements) {
                 this.time.delayedCall(1000, () => {
                     this.audioManager.playSound('win');
-                    this.startLevel(this.levels.indexOf(this.levels.find(l => l === this.levels[this.currentLevelIndex])) + 1);
+                    this.startLevel(this.currentLevelIndex + 1);
                 });
             }
         } else {
             // Incorrect
             this.handleDropOutsideZone(tile);
         }
+    }
+
+    showHelpModal() {
+        // Toggle existing modal
+        if (this.helpModal) {
+            this.helpModal.destroy(true);
+            this.helpModal = null;
+            return;
+        }
+
+        const { width, height } = this.cameras.main;
+        const panelWidth = Math.min(width * 0.7, 720);
+        const panelHeight = Math.min(height * 0.7, 440);
+
+        const container = this.add.container(width / 2, height / 2).setDepth(200);
+
+        const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.45)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { container.destroy(true); this.helpModal = null; });
+
+        const panel = this.add.rectangle(0, 0, panelWidth, panelHeight, 0xffffff)
+            .setStrokeStyle(3, 0x0062ff)
+            .setOrigin(0.5);
+
+        const title = this.add.text(0, -panelHeight / 2 + 40, 'How to Play', {
+            fontSize: '32px', color: '#0a0a0a', fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        const steps = [
+            'Drag each food item from the left column.',
+            'Drop it on the matching silhouette on the board.',
+            'When all items are matched, the level advances.',
+            'Use reload to restart the current level.'
+        ];
+
+        const body = this.add.text(-panelWidth / 2 + 40, -panelHeight / 2 + 90, steps.join('\n'), {
+            fontSize: '22px', color: '#222222', wordWrap: { width: panelWidth - 80 }
+        }).setOrigin(0, 0);
+
+        const closeBtn = this.add.rectangle(0, panelHeight / 2 - 50, 140, 46, 0x0062ff)
+            .setStrokeStyle(2, 0xffffff)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { container.destroy(true); this.helpModal = null; });
+
+        const closeLabel = this.add.text(0, panelHeight / 2 - 50, 'Close', {
+            fontSize: '22px', color: '#ffffff', fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        container.add([overlay, panel, title, body, closeBtn, closeLabel]);
+        this.helpModal = container;
     }
 }
