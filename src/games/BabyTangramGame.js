@@ -265,12 +265,12 @@ export class BabyTangramGame extends DragDropGame {
             tile.input.enabled = false;
             tile.setAlpha(1);
             
-            this.audioManager.playSound('success');
+            if (this.audioManager) this.audioManager.playSound('success');
             this.correctPlacements++;
             
             if (this.correctPlacements >= this.totalPlacements) {
                 this.time.delayedCall(1000, () => {
-                    this.audioManager.playSound('win');
+                    if (this.audioManager) this.audioManager.playSound('win');
                     this.startLevel(this.currentLevelIndex + 1);
                 });
             }
