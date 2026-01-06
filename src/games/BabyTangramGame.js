@@ -5,6 +5,17 @@ import { DropZone } from '../components/DropZone.js';
 class TangramPiece extends DraggableTile {
     createVisualElements() {
         const size = this.config.size || 100;
+        const baseColor = 0xffffff;
+        const strokeColor = 0xcccccc;
+        const shadowColor = 0x000000;
+
+        this.shadow = this.scene.add.rectangle(2, 2, size, size, shadowColor, 0.08);
+        this.shadow.setStrokeStyle(2, shadowColor, 0.1);
+        this.shadow.setOrigin(0.5);
+
+        this.background = this.scene.add.rectangle(0, 0, size, size, baseColor, 1);
+        this.background.setStrokeStyle(3, strokeColor, 1);
+        this.background.setOrigin(0.5);
         
         // Add image
         this.image = this.scene.add.image(0, 0, this.config.imageKey);
@@ -27,7 +38,7 @@ class TangramPiece extends DraggableTile {
         const scale = Math.min(size / this.image.width, size / this.image.height);
         this.image.setScale(scale);
         
-        this.add(this.image);
+        this.add([this.shadow, this.background, this.image]);
         
         // Add a subtle shadow/glow when dragging
         this.glow = this.scene.add.rectangle(0, 0, size + 10, size + 10, 0xFFFFFF, 0);
@@ -54,6 +65,7 @@ export class BabyTangramGame extends DragDropGame {
             category: 'fun'
         });
         
+        this.helpModal = null;
         this.levels = [
             // Level 1: Train
             {
@@ -96,6 +108,8 @@ export class BabyTangramGame extends DragDropGame {
 
     preload() {
         super.preload();
+        const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
+        uiIcons.forEach(icon => this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`));
         const loadedImages = new Set();
         this.levels.forEach(level => {
             if (level.bg && !loadedImages.has(level.bg)) {
@@ -116,7 +130,7 @@ export class BabyTangramGame extends DragDropGame {
         const height = this.cameras.main.height;
         
         this.bgGraphics = this.add.graphics();
-        this.bgGraphics.fillGradientStyle(0xE0F7FA, 0xE0F7FA, 0xB2EBF2, 0xB2EBF2, 1);
+        this.bgGraphics.fillGradientStyle(0xd6e9ff, 0xd6e9ff, 0xb6d5ff, 0xb6d5ff, 1);
         this.bgGraphics.fillRect(0, 0, width, height);
         this.bgGraphics.setDepth(-2);
         
@@ -126,12 +140,20 @@ export class BabyTangramGame extends DragDropGame {
 
     createUI() {
         super.createUI();
+        if (this.uiElements && this.uiElements.controls) {
+            Object.values(this.uiElements.controls).forEach(control => {
+                if (control && control.setVisible) control.setVisible(false);
+            });
+        }
+
+        this.createNavigationDock(this.cameras.main.width, this.cameras.main.height);
+
         this.instructionText = this.add.text(this.cameras.main.centerX, 50, 'Complete the puzzle.', {
             fontFamily: 'Arial',
-            fontSize: '24px',
-            color: '#333333',
+            fontSize: '28px',
+            color: '#1d1d1d',
             fontStyle: 'bold'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setDepth(10);
     }
 
     setupGameLogic() {
@@ -140,13 +162,14 @@ export class BabyTangramGame extends DragDropGame {
     }
 
     startLevel(levelIndex) {
+        this.currentLevelIndex = levelIndex % this.levels.length;
         // Clear existing
         this.draggableTiles.forEach(t => t.destroy());
         this.dropZones.forEach(z => z.destroy());
         this.draggableTiles = [];
         this.dropZones = [];
         
-        const levelData = this.levels[levelIndex % this.levels.length];
+        const levelData = this.levels[this.currentLevelIndex];
         const width = this.cameras.main.width;
         const height = this.cameras.main.height;
 
@@ -161,7 +184,6 @@ export class BabyTangramGame extends DragDropGame {
             this.bgImage.setVisible(false);
         }
 
-        // Create drop zones (targets)
         levelData.items.forEach(item => {
             const x = item.x * width;
             const y = item.y * height;
@@ -175,7 +197,10 @@ export class BabyTangramGame extends DragDropGame {
                 y: y,
                 width: zoneWidth,
                 height: zoneHeight,
-                expectedValue: item.id
+                expectedValue: item.id,
+                color: 0xffffff,
+                borderColor: 0xd0d0d0,
+                borderWidth: 2
             });
             
             // Visual target (silhouette)
@@ -193,26 +218,25 @@ export class BabyTangramGame extends DragDropGame {
             if (item.flipping) targetImage.setFlipX(true);
             if (item.rotation) targetImage.setAngle(item.rotation);
             
-            targetImage.setAlpha(0.3);
-            targetImage.setTint(0x000000);
+            targetImage.setAlpha(0.32);
+            targetImage.setTint(0x7f7f7f);
             zone.add(targetImage);
             
             this.dropZones.push(zone);
             this.add.existing(zone);
         });
 
-        // Create draggable pieces
-        // Place them at the bottom or side
-        const startY = height - 80;
+        // Create draggable pieces along the top row (match GCompris train layout)
+        const bankY = height * 0.2;
         const spacing = width / (levelData.items.length + 1);
         
         levelData.items.forEach((item, index) => {
             const tile = new TangramPiece(this, {
                 x: spacing * (index + 1),
-                y: startY,
+                y: bankY,
                 value: item.id,
                 imageKey: `babytangram-${item.image.replace(/\//g, '-')}`,
-                size: 80, // Smaller size for the bank
+                size: Math.min(120, width * 0.14),
                 flipping: item.flipping,
                 rotation: item.rotation
             });
@@ -245,12 +269,60 @@ export class BabyTangramGame extends DragDropGame {
             if (this.correctPlacements >= this.totalPlacements) {
                 this.time.delayedCall(1000, () => {
                     this.audioManager.playSound('win');
-                    this.currentLevelIndex++;
-                    this.startLevel(this.currentLevelIndex);
+                    this.startLevel(this.currentLevelIndex + 1);
                 });
             }
         } else {
             this.handleDropOutsideZone(tile);
         }
+    }
+
+    showHelpModal() {
+        if (this.helpModal) {
+            this.helpModal.destroy(true);
+            this.helpModal = null;
+            return;
+        }
+
+        const { width, height } = this.cameras.main;
+        const panelWidth = Math.min(width * 0.7, 720);
+        const panelHeight = Math.min(height * 0.7, 440);
+
+        const container = this.add.container(width / 2, height / 2).setDepth(200);
+
+        const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.45)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { container.destroy(true); this.helpModal = null; });
+
+        const panel = this.add.rectangle(0, 0, panelWidth, panelHeight, 0xffffff)
+            .setStrokeStyle(3, 0x0062ff)
+            .setOrigin(0.5);
+
+        const title = this.add.text(0, -panelHeight / 2 + 40, 'How to Play', {
+            fontSize: '32px', color: '#0a0a0a', fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        const steps = [
+            'Drag each piece from the top row.',
+            'Drop it onto the matching silhouette.',
+            'Match all pieces to finish and move to the next vehicle.',
+            'Use reload to restart the current puzzle.'
+        ];
+
+        const body = this.add.text(-panelWidth / 2 + 40, -panelHeight / 2 + 90, steps.join('\n'), {
+            fontSize: '22px', color: '#222222', wordWrap: { width: panelWidth - 80 }
+        }).setOrigin(0, 0);
+
+        const closeBtn = this.add.rectangle(0, panelHeight / 2 - 50, 140, 46, 0x0062ff)
+            .setStrokeStyle(2, 0xffffff)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => { container.destroy(true); this.helpModal = null; });
+
+        const closeLabel = this.add.text(0, panelHeight / 2 - 50, 'Close', {
+            fontSize: '22px', color: '#ffffff', fontStyle: 'bold'
+        }).setOrigin(0.5);
+
+        container.add([overlay, panel, title, body, closeBtn, closeLabel]);
+        this.helpModal = container;
     }
 }
