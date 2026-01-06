@@ -32,7 +32,7 @@ export class ClickGame extends LalelaGame {
 
   preload() {
     super.preload();
-    this.load.image('sea_bg', 'assets/clickgame/sea1.webp');
+    this.load.image('sea_bg', 'assets/clickgame/sea6.webp');
     this.load.audio('bubble', 'assets/clickgame/bubble.wav');
     this.load.audio('drip', 'assets/clickgame/drip.wav');
     
@@ -50,11 +50,8 @@ export class ClickGame extends LalelaGame {
   }
 
   createGameObjects() {
-    // Background
-    this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'sea_bg')
-      .setDisplaySize(this.cameras.main.width, this.cameras.main.height)
-      .setDepth(-1);
-      
+    const { width, height } = this.scale;
+
     this.fishGroup = this.add.group();
     
     // Create animations
@@ -71,6 +68,17 @@ export class ClickGame extends LalelaGame {
             repeat: -1
         });
     });
+  }
+
+  createBackground() {
+    const { width, height } = this.scale;
+    // Fallback color
+    this.cameras.main.setBackgroundColor(0x2c3e50);
+
+    const bg = this.add.image(width / 2, height / 2, 'sea_bg');
+    const scale = Math.max(width / bg.width, height / bg.height);
+    bg.setScale(scale);
+    bg.setDepth(-1);
   }
 
   createUI() {
@@ -134,6 +142,8 @@ export class ClickGame extends LalelaGame {
     }
     
     this.physics.add.existing(fish);
+    fish.body.setAllowRotation(false);
+    fish.body.setAngularVelocity(0);
     fish.body.setVelocityX(velocityX);
     
     fish.on('pointerdown', () => {
