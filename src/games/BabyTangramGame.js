@@ -275,7 +275,9 @@ export class BabyTangramGame extends DragDropGame {
                 });
             }
         } else {
-            this.handleDropOutsideZone(tile);
+            // Wrong match - return tile to start
+            this.returnTileToStart(tile);
+            if (this.audioManager) this.audioManager.playSound('error');
         }
     }
 

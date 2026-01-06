@@ -249,6 +249,12 @@ export class DragDropGame extends LalelaGame {
    * Handle dropping a tile outside any drop zone
    */
   handleDropOutsideZone(tile, pointer) {
+    // Guard against missing pointer
+    if (!pointer || pointer.x === undefined || pointer.y === undefined) {
+      this.returnTileToStart(tile);
+      return;
+    }
+
     // Check if close enough to snap to a zone
     const nearestZone = this.getNearestDropZone(pointer.x, pointer.y);
 
