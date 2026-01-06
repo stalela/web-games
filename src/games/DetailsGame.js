@@ -11,6 +11,9 @@ class ImageDraggable extends DraggableTile {
         this.config.color = this.config.color || 0x8b4513;
         this.config.borderColor = this.config.borderColor || 0x654321;
 
+        // Shadow for drag effect
+        this.shadow = this.scene.add.circle(3, 3, size / 2 + 8, 0x000000, 0.3);
+
         // Circular background frame (wood style)
         this.frame = this.scene.add.circle(0, 0, size / 2 + 8, 0x8b4513, 1);
         this.frame.setStrokeStyle(4, 0x654321, 1);
@@ -29,7 +32,7 @@ class ImageDraggable extends DraggableTile {
         this.glow = this.scene.add.circle(0, 0, size / 2 + 12, 0xFFFF00, 0);
         this.glow.setStrokeStyle(4, 0xFFFF00, 0);
 
-        this.add([this.glow, this.frame, this.innerCircle, this.image]);
+        this.add([this.glow, this.shadow, this.frame, this.innerCircle, this.image]);
 
         // Create a fake background for DraggableTile hover compatibility
         this.background = this.frame;
