@@ -190,7 +190,10 @@ export class FollowLineGame extends LalelaGame {
   
   levelComplete() {
     this.input.off('pointermove');
-    this.offPathTimer.remove();
+    if (this.offPathTimer) {
+      this.offPathTimer.remove(false);
+      this.offPathTimer = null;
+    }
     
     if (this.audioManager) this.audioManager.playSound('success');
     
@@ -202,10 +205,35 @@ export class FollowLineGame extends LalelaGame {
       duration: 1000,
       onComplete: () => {
         this.time.delayedCall(1000, () => {
-          this.nextLevel();
+          this.startLevel(this.level + 1);
         });
       }
     });
+  }
+
+  startLevel(levelNumber) {
+    // Clean up existing timers and listeners before rebuilding the path
+    this.input.off('pointermove', this.handlePointerMove, this);
+    if (this.offPathTimer) {
+      this.offPathTimer.remove(false);
+      this.offPathTimer = null;
+    }
+    if (this.pathGraphics) {
+      this.pathGraphics.destroy();
+      this.pathGraphics = null;
+    }
+    if (this.progressGraphics) {
+      this.progressGraphics.destroy();
+      this.progressGraphics = null;
+    }
+
+    this.currentProgress = 0;
+    this.isOffPath = false;
+
+    super.startLevel(levelNumber);
+
+    // Re-run level setup to regenerate the pipe for the new level
+    this.setupGameLogic();
   }
 
   /**
