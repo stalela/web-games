@@ -5,6 +5,16 @@ import { DropZone } from '../components/DropZone.js';
 class ImageDraggable extends DraggableTile {
     createVisualElements() {
         const size = this.config.size || 100;
+        const baseColor = 0xffffff;
+        const strokeColor = 0xcccccc;
+        const shadowColor = 0x000000;
+        this.shadow = this.scene.add.rectangle(2, 2, size, size, shadowColor, 0.08);
+        this.shadow.setStrokeStyle(2, shadowColor, 0.1);
+        this.shadow.setOrigin(0.5);
+
+        this.background = this.scene.add.rectangle(0, 0, size, size, baseColor, 1);
+        this.background.setStrokeStyle(3, strokeColor, 1);
+        this.background.setOrigin(0.5);
         
         // Add image
         // We use the key provided in config
@@ -14,7 +24,7 @@ class ImageDraggable extends DraggableTile {
         const scale = Math.min(size / this.image.width, size / this.image.height);
         this.image.setScale(scale);
         
-        this.add(this.image);
+        this.add([this.shadow, this.background, this.image]);
         
         // Add a subtle shadow/glow when dragging
         this.glow = this.scene.add.rectangle(0, 0, size + 10, size + 10, 0xFFFFFF, 0);
