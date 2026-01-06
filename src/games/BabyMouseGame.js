@@ -15,7 +15,14 @@ export class BabyMouseGame extends LalelaGame {
 
   preload() {
     super.preload();
-    this.load.svg('baby_mouse_bg', 'assets/baby_mouse/background.svg');
+    
+    // Load background SVG with proper dimensions
+    const { width, height } = this.scale;
+    this.load.svg('baby_mouse_bg', 'assets/baby_mouse/background.svg', {
+      width: width,
+      height: height
+    });
+    
     this.load.svg('arrow', 'assets/baby_mouse/arrow.svg');
     
     const ducks = ['pink', 'green', 'yellow', 'orange', 'blue'];
@@ -36,10 +43,11 @@ export class BabyMouseGame extends LalelaGame {
   }
 
   createGameObjects() {
-    // Background
-    this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'baby_mouse_bg')
-      .setDisplaySize(this.cameras.main.width, this.cameras.main.height)
-      .setDepth(-1);
+    const { width, height } = this.scale;
+    
+    // Background - position at center and scale to fill
+    const bg = this.add.image(width / 2, height / 2, 'baby_mouse_bg');
+    bg.setDepth(-1);
       
     this.createLeftDucks();
     this.createArrows();
