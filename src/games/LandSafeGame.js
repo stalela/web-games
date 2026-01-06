@@ -191,7 +191,7 @@ export class LandSafeGame extends LalelaGame {
         this.crashed = true;
         this.rocket.setTint(0xff0000);
         this.flame.setVisible(false);
-        this.audioManager.playSound('error');
+        if (this.audioManager) this.audioManager.playSound('error');
         this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'CRASHED!', { fontSize: '64px', color: '#ff0000' }).setOrigin(0.5);
         this.time.delayedCall(2000, () => this.scene.restart());
     }
@@ -208,7 +208,7 @@ export class LandSafeGame extends LalelaGame {
             this.handleCrash();
         } else {
             this.landed = true;
-            this.audioManager.playSound('success');
+            if (this.audioManager) this.audioManager.playSound('success');
             this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'SAFE LANDING!', { fontSize: '64px', color: '#00ff00' }).setOrigin(0.5);
             this.time.delayedCall(2000, () => this.scene.restart());
         }
