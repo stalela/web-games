@@ -44,6 +44,11 @@ export class EraseGame extends LalelaGame {
     
     this.load.audio('eraser1', 'assets/erase/eraser1.wav');
     this.load.audio('eraser2', 'assets/erase/eraser2.wav');
+
+    // Navigation icons
+    this.load.svg('home', 'assets/game-icons/bar_home.svg');
+    this.load.svg('help', 'assets/game-icons/bar_help.svg');
+    this.load.svg('reload', 'assets/game-icons/bar_reload.svg');
   }
 
   createGameObjects() {
@@ -61,6 +66,15 @@ export class EraseGame extends LalelaGame {
     bg.setDepth(-1);
     
     this.createBlocks();
+  }
+
+  createBackground() {
+    const { width, height } = this.scale;
+    // Fallback solid background behind the hidden image
+    this.cameras.main.setBackgroundColor(0x1f2a35);
+
+    // Optional: add a subtle backdrop rectangle for contrast
+    this.add.rectangle(width / 2, height / 2, width, height, 0x1f2a35).setDepth(-2);
   }
 
   createBlocks() {
@@ -134,16 +148,125 @@ export class EraseGame extends LalelaGame {
   }
 
   createNavigationDock() {
-    const dockY = this.cameras.main.height - 60;
+    const { width, height } = this.scale;
+    const barY = height - 55;
+    const buttonSize = 72;
+    const spacing = 95;
+    const buttonRadius = 10;
+
+    const controls = [
+      { icon: 'home', action: 'home', color: 0x0062FF },
+      { icon: 'reload', action: 'reload', color: 0x00B378 },
+      { icon: 'help', action: 'help', color: 0xF08A00 }
+    ];
+
+    const totalWidth = (controls.length * buttonSize) + ((controls.length - 1) * (spacing - buttonSize));
+    const startX = (width - totalWidth) / 2;
+
+    this.navButtons = [];
+
+    controls.forEach((control, index) => {
+      const x = startX + index * spacing;
+      
+      // Button background
+      const button = this.add.graphics();
+      button.fillStyle(control.color);
+      button.fillRoundedRect(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize, buttonRadius);
+      button.lineStyle(2, 0xFFFFFF, 0.8);
+      button.strokeRoundedRect(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize, buttonRadius);
+      button.setInteractive(
+        new Phaser.Geom.Rectangle(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize),
+        Phaser.Geom.Rectangle.Contains
+      );
+
+      // Create icon
+      const icon = this.add.sprite(x, barY, control.icon);
+      icon.setScale((buttonSize * 0.6) / Math.max(icon.width, icon.height));
+      icon.setTint(0xFFFFFF);
+
+      // Button interactions
+      button.on('pointerdown', () => {
+        icon.y += 2;
+        this.handleNavAction(control.action);
+        this.time.delayedCall(100, () => {
+          icon.y -= 2;
+        });
+      });
+
+      button.on('pointerover', () => {
+        this.tweens.add({ targets: icon, scale: (buttonSize * 0.65) / Math.max(icon.width, icon.height), duration: 100 });
+      });
+
+      button.on('pointerout', () => {
+        this.tweens.add({ targets: icon, scale: (buttonSize * 0.6) / Math.max(icon.width, icon.height), duration: 100 });
+      });
+
+      button.setDepth(100);
+      icon.setDepth(101);
+
+      this.navButtons.push({ button, icon });
+    });
+  }
+
+  handleNavAction(action) {
+    switch (action) {
+      case 'home':
+        this.scene.start('GameMenu');
+        break;
+      case 'reload':
+        this.scene.restart();
+        break;
+      case 'help':
+        this.showHelpModal();
+        break;
+    }
+  }
+
+  showHelpModal() {
+    const { width, height } = this.scale;
     
-    // Back button
-    this.add.text(50, dockY, '⬅ Back', { 
-        fontSize: '24px', 
-        color: '#ffffff',
-        backgroundColor: '#00000088',
-        padding: { x: 10, y: 5 }
-    })
-    .setInteractive({ useHandCursor: true })
-    .on('pointerdown', () => this.scene.start('GameMenu'));
+    this.helpOverlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.65);
+    this.helpOverlay.setDepth(200).setInteractive();
+
+    const panelWidth = Math.min(520, width * 0.85);
+    const panelHeight = 260;
+    this.helpPanel = this.add.graphics();
+    this.helpPanel.fillStyle(0xFFFFFF, 1);
+    this.helpPanel.fillRoundedRect(width / 2 - panelWidth / 2, height / 2 - panelHeight / 2, panelWidth, panelHeight, 20);
+    this.helpPanel.setDepth(201);
+
+    this.helpTitle = this.add.text(width / 2, height / 2 - 90, 'How to Play', {
+      fontFamily: 'Arial',
+      fontSize: '32px',
+      color: '#0062FF',
+      fontStyle: 'bold'
+    }).setOrigin(0.5).setDepth(202);
+
+    this.helpText = this.add.text(width / 2, height / 2, 'Move your mouse to erase the blocks and reveal the picture.', {
+      fontFamily: 'Arial',
+      fontSize: '20px',
+      color: '#333333',
+      align: 'center',
+      lineSpacing: 8
+    }).setOrigin(0.5).setDepth(202);
+
+    this.closeBtn = this.add.text(width / 2, height / 2 + 90, 'Close', {
+      fontFamily: 'Arial',
+      fontSize: '24px',
+      color: '#FFFFFF',
+      backgroundColor: '#0062FF',
+      padding: { x: 30, y: 10 }
+    }).setOrigin(0.5).setDepth(202).setInteractive({ useHandCursor: true });
+
+    this.closeBtn.on('pointerdown', () => this.closeHelpModal());
+    this.helpOverlay.on('pointerdown', () => this.closeHelpModal());
+  }
+
+  closeHelpModal() {
+    if (this.helpOverlay) this.helpOverlay.destroy();
+    if (this.helpPanel) this.helpPanel.destroy();
+    if (this.helpTitle) this.helpTitle.destroy();
+    if (this.helpText) this.helpText.destroy();
+    if (this.closeBtn) this.closeBtn.destroy();
   }
 }
