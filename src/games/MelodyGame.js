@@ -132,7 +132,7 @@ export class MelodyGame extends LalelaGame {
         keyObj.sprite.setTint(0xFFFF00); // Highlight
         
         // Audio
-        this.audioManager.playSound(keyObj.sound);
+        if (this.audioManager) this.audioManager.playSound(keyObj.sound);
         
         this.time.delayedCall(300, () => {
             keyObj.sprite.setAlpha(0.01);
@@ -150,7 +150,7 @@ export class MelodyGame extends LalelaGame {
         const currentIndex = this.playerSequence.length - 1;
         if (this.playerSequence[currentIndex] !== this.sequence[currentIndex]) {
             // Wrong note
-            this.audioManager.playSound('error');
+            if (this.audioManager) this.audioManager.playSound('error');
             this.instructionText.setText('Wrong! Try again.');
             this.time.delayedCall(1000, () => {
                 this.playerSequence = [];
@@ -160,7 +160,7 @@ export class MelodyGame extends LalelaGame {
             // Correct so far
             if (this.playerSequence.length === this.sequence.length) {
                 // Level complete
-                this.audioManager.playSound('success');
+                if (this.audioManager) this.audioManager.playSound('success');
                 this.instructionText.setText('Good job!');
                 this.level++;
                 this.time.delayedCall(1500, () => this.startLevel());
