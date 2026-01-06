@@ -13,6 +13,7 @@ export class LeftRightClickGame extends LalelaGame {
     this.score = 0;
     this.items = [];
     this.spawnTimer = null;
+    this.helpModal = null;
   }
 
   preload() {
@@ -22,6 +23,8 @@ export class LeftRightClickGame extends LalelaGame {
     this.load.svg('lrc-pond', 'assets/left_right_click/pond.svg');
     this.load.svg('lrc-tree', 'assets/left_right_click/tree.svg');
     this.load.svg('lrc-hill', 'assets/left_right_click/hill.svg');
+    this.load.svg('lrc-mouse', 'assets/left_right_click/mouse.svg');
+    this.load.svg('lrc-mouse-button', 'assets/left_right_click/mouse_button.svg');
     
     // Load navigation icons
     const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
@@ -32,26 +35,29 @@ export class LeftRightClickGame extends LalelaGame {
 
   createBackground() {
     const { width, height } = this.cameras.main;
-    
-    // Sky
-    this.add.rectangle(width/2, height/2, width, height, 0x87CEEB).setDepth(-2);
-    
-    // Hill
-    const hill = this.add.image(width/2, height, 'lrc-hill');
+    const sky = this.add.rectangle(width / 2, height / 2, width, height, 0x7ed5ff).setDepth(-3);
+    sky.setOrigin(0.5);
+
+    const grass = this.add.rectangle(width / 2, height * 0.72, width, height * 0.6, 0x6fbf6a).setDepth(-2);
+    grass.setOrigin(0.5, 0.5);
+
+    const hill = this.add.image(width / 2, height, 'lrc-hill');
     hill.setOrigin(0.5, 1);
-    const scale = width / hill.width;
-    hill.setScale(scale);
-    hill.setDepth(-1);
-    
-    // Pond (Left)
-    this.pond = this.add.image(width * 0.2, height * 0.8, 'lrc-pond');
-    this.pond.setScale(0.8);
-    this.pond.setDepth(0);
-    
-    // Tree (Right)
-    this.tree = this.add.image(width * 0.8, height * 0.6, 'lrc-tree');
-    this.tree.setScale(0.8);
-    this.tree.setDepth(0);
+    const hillScale = Math.max(width / hill.width, 0.9);
+    hill.setScale(hillScale).setDepth(-1);
+    hill.y = height * 0.75;
+
+    this.pond = this.add.image(width * 0.16, height * 0.78, 'lrc-pond')
+      .setDisplaySize(width * 0.18, height * 0.12)
+      .setDepth(0);
+
+    this.tree = this.add.image(width * 0.84, height * 0.55, 'lrc-tree')
+      .setDisplaySize(width * 0.12, height * 0.22)
+      .setDepth(0);
+
+    this.mouseHint = this.add.image(width * 0.5, height * 0.18, 'lrc-mouse')
+      .setDisplaySize(width * 0.18, height * 0.25)
+      .setDepth(1);
   }
 
   createUI() {
@@ -73,6 +79,8 @@ export class LeftRightClickGame extends LalelaGame {
   setupGameLogic() {
     this.items = [];
     this.score = 0;
+    const { width, height } = this.cameras.main;
+    this.spawnArea = new Phaser.Geom.Rectangle(width * 0.15, height * 0.28, width * 0.7, height * 0.45);
     
     // Spawn items periodically
     this.spawnTimer = this.time.addEvent({
@@ -88,23 +96,21 @@ export class LeftRightClickGame extends LalelaGame {
   
   spawnItem() {
     const { width, height } = this.cameras.main;
-    
-    // Randomly choose Fish or Monkey
+    const area = this.spawnArea || new Phaser.Geom.Rectangle(width * 0.2, height * 0.25, width * 0.6, height * 0.5);
+
     const type = Math.random() > 0.5 ? 'fish' : 'monkey';
     const key = type === 'fish' ? 'lrc-fish' : 'lrc-monkey';
+    const x = Phaser.Math.Between(area.x, area.right);
+    const y = Phaser.Math.Between(area.y, area.bottom);
     
-    // Random position in the middle area
-    const x = Phaser.Math.Between(width * 0.3, width * 0.7);
-    const y = Phaser.Math.Between(height * 0.3, height * 0.7);
-    
-    const item = this.add.image(x, y, key);
+    const item = this.add.image(x, y, key).setDepth(2);
     item.setScale(0);
     item.itemType = type;
     
     // Pop in animation
     this.tweens.add({
       targets: item,
-      scale: 0.5,
+      scale: 0.9,
       duration: 500,
       ease: 'Back.out'
     });
@@ -158,7 +164,7 @@ export class LeftRightClickGame extends LalelaGame {
         targets: item,
         x: targetX,
         y: targetY,
-        scale: 0.2,
+        scale: 0.3,
         alpha: 0,
         duration: 1000,
         onComplete: () => {
@@ -186,8 +192,8 @@ export class LeftRightClickGame extends LalelaGame {
       // Show hint
       const hintText = item.itemType === 'fish' ? 'Left Click!' : 'Right Click!';
       const hint = this.add.text(item.x, item.y - 50, hintText, {
-        fontSize: '24px',
-        color: '#FF0000',
+        fontSize: '28px',
+        color: '#f44336',
         fontStyle: 'bold'
       }).setOrigin(0.5);
       
@@ -208,6 +214,14 @@ export class LeftRightClickGame extends LalelaGame {
     this.time.delayedCall(2000, () => {
         this.scene.restart();
     });
+  }
+
+  shutdown() {
+    if (this.spawnTimer) {
+      this.spawnTimer.remove(false);
+      this.spawnTimer = null;
+    }
+    super.shutdown && super.shutdown();
   }
 
   /**
@@ -291,24 +305,69 @@ export class LeftRightClickGame extends LalelaGame {
   }
   
   showHelpModal() {
-      // Simple help modal
-      const { width, height } = this.cameras.main;
-      const modal = this.add.container(width/2, height/2).setDepth(100);
-      
-      const bg = this.add.rectangle(0, 0, 400, 300, 0xFFFFFF).setStrokeStyle(2, 0x000000);
-      const text = this.add.text(0, -50, this.description, {
-          color: '#000000',
-          fontSize: '24px',
-          wordWrap: { width: 350 }
-      }).setOrigin(0.5);
-      
-      const closeBtn = this.add.text(0, 100, 'Close', {
-          color: '#000000',
-          backgroundColor: '#CCCCCC',
-          padding: { x: 10, y: 5 }
-      }).setOrigin(0.5).setInteractive({ useHandCursor: true })
-      .on('pointerdown', () => modal.destroy());
-      
-      modal.add([bg, text, closeBtn]);
+    // Toggle existing modal
+    if (this.helpModal) {
+      this.helpModal.destroy(true);
+      this.helpModal = null;
+      return;
+    }
+
+    const { width, height } = this.cameras.main;
+    const panelWidth = Math.min(width * 0.7, 680);
+    const panelHeight = Math.min(height * 0.7, 420);
+
+    const container = this.add.container(width / 2, height / 2).setDepth(200);
+
+    const overlay = this.add.rectangle(0, 0, width, height, 0x000000, 0.45)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerdown', () => {
+        container.destroy(true);
+        this.helpModal = null;
+      });
+
+    const panel = this.add.rectangle(0, 0, panelWidth, panelHeight, 0xFFFFFF)
+      .setStrokeStyle(3, 0x0062FF)
+      .setDepth(201)
+      .setOrigin(0.5);
+
+    const title = this.add.text(0, -panelHeight / 2 + 40, 'How to Play', {
+      fontSize: '32px',
+      color: '#0a0a0a',
+      fontStyle: 'bold'
+    }).setOrigin(0.5);
+
+    const instructions = [
+      'Left click the fish and send them to the pond.',
+      'Right click the monkeys and send them to the tree.',
+      'Score 10 correct clicks to finish the level.',
+      'Use the reload button to restart anytime.'
+    ];
+
+    const text = this.add.text(-panelWidth / 2 + 40, -panelHeight / 2 + 90, instructions.join('\n'), {
+      fontSize: '22px',
+      color: '#222222',
+      wordWrap: { width: panelWidth - 80 }
+    }).setOrigin(0, 0);
+
+    const mouseVisual = this.add.image(panelWidth / 2 - 130, 0, 'lrc-mouse')
+      .setDisplaySize(panelWidth * 0.22, panelHeight * 0.4)
+      .setDepth(202);
+
+    const closeBtn = this.add.rectangle(0, panelHeight / 2 - 50, 140, 46, 0x0062FF, 1)
+      .setStrokeStyle(2, 0xFFFFFF)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerdown', () => {
+        container.destroy(true);
+        this.helpModal = null;
+      });
+
+    const closeLabel = this.add.text(0, panelHeight / 2 - 50, 'Close', {
+      fontSize: '22px',
+      color: '#FFFFFF',
+      fontStyle: 'bold'
+    }).setOrigin(0.5);
+
+    container.add([overlay, panel, title, text, mouseVisual, closeBtn, closeLabel]);
+    this.helpModal = container;
   }
 }
