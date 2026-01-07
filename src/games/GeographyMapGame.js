@@ -226,30 +226,153 @@ export class GeographyMapGame extends LalelaGame {
   }
   
   createNavigationDock() {
-      // Simple navigation dock
-      const dockY = this.cameras.main.height - 60;
-      
-      // Back button
-      const backBtn = this.add.text(50, dockY, '⬅ Back', { 
-          fontSize: '24px', 
-          color: '#ffffff',
-          backgroundColor: '#00000088',
-          padding: { x: 10, y: 5 }
-      })
-      .setInteractive({ useHandCursor: true })
-      .on('pointerdown', () => this.scene.start('GameMenu'));
-      
-      // Next Level button (debug/cheat)
-      const nextBtn = this.add.text(this.cameras.main.width - 150, dockY, 'Next Level ➡', { 
-          fontSize: '24px', 
-          color: '#ffffff',
-          backgroundColor: '#00000088',
-          padding: { x: 10, y: 5 }
-      })
-      .setInteractive({ useHandCursor: true })
-      .on('pointerdown', () => {
-          this.level++;
+      const { width, height } = this.cameras.main;
+      this.navContainer = this.add.container(0, 0).setDepth(200);
+      const btnSize = 60;
+      const spacing = 8;
+      let x = 15;
+      const y = height - btnSize / 2 - 12;
+
+      // Brown menu button (hamburger)
+      this.createNavButton(x + btnSize / 2, y, btnSize, 0x8B4513, '☰', 'menu');
+      x += btnSize + spacing;
+
+      // Green help button
+      this.createNavButton(x + btnSize / 2, y, btnSize, 0x2ECC71, '?', 'help');
+      x += btnSize + spacing;
+
+      // Cyan home button
+      this.createNavButton(x + btnSize / 2, y, btnSize, 0x17A2B8, '⌂', 'home');
+      x += btnSize + spacing;
+
+      // Orange left arrow (prev level)
+      this.createNavButton(x + btnSize / 2, y, btnSize * 0.7, 0xE67E22, '❮', 'prevLevel');
+      x += btnSize * 0.7 + spacing;
+
+      // Level number display
+      this.levelText = this.add.text(x + 15, y, (this.currentLevelIndex + 1).toString(), {
+        fontSize: '32px',
+        fontFamily: 'Arial',
+        fontWeight: 'bold',
+        color: '#FFFFFF'
+      }).setOrigin(0.5).setDepth(201);
+      this.navContainer.add(this.levelText);
+      x += 40;
+
+      // Orange right arrow (next level) 
+      this.createNavButton(x + btnSize / 2, y, btnSize * 0.7, 0xE67E22, '❯', 'nextLevel');
+  }
+
+  createNavButton(x, y, size, color, symbol, action) {
+    const btn = this.add.container(x, y).setDepth(200);
+
+    // Circle background
+    const bg = this.add.graphics();
+    bg.fillStyle(color, 1);
+    bg.fillCircle(0, 0, size / 2);
+    bg.lineStyle(3, 0xFFFFFF, 0.3);
+    bg.strokeCircle(0, 0, size / 2);
+
+    // Symbol text
+    const text = this.add.text(0, 0, symbol, {
+      fontSize: `${size * 0.5}px`,
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF'
+    }).setOrigin(0.5);
+
+    btn.add([bg, text]);
+    this.navContainer.add(btn);
+
+    // Make interactive
+    const hitArea = this.add.circle(x, y, size / 2).setInteractive({ useHandCursor: true });
+    hitArea.setAlpha(0.001);
+    hitArea.on('pointerdown', () => this.handleNavAction(action));
+  }
+
+  handleNavAction(action) {
+    switch (action) {
+      case 'home':
+        this.scene.start('GameMenu');
+        break;
+      case 'help':
+        this.showHelp();
+        break;
+      case 'menu':
+        // Settings menu - could be expanded
+        break;
+      case 'prevLevel':
+        if (this.currentLevelIndex > 0) {
+          this.level = this.currentLevelIndex; // Going to previous (0-indexed becomes level N)
           this.scene.restart({ level: this.level });
-      });
+        }
+        break;
+      case 'nextLevel':
+        if (this.currentLevelIndex < levelsData.length - 1) {
+          this.level = this.currentLevelIndex + 2; // Current index + 2 for next level (1-indexed)
+          this.scene.restart({ level: this.level });
+        }
+        break;
+    }
+  }
+
+  showHelp() {
+    const { width, height } = this.cameras.main;
+
+    // Overlay
+    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7)
+      .setDepth(300)
+      .setInteractive();
+
+    // Help panel
+    const panel = this.add.graphics().setDepth(301);
+    const panelWidth = 500;
+    const panelHeight = 280;
+    const panelX = width / 2 - panelWidth / 2;
+    const panelY = height / 2 - panelHeight / 2;
+
+    panel.fillStyle(0x1a5276, 0.95);
+    panel.fillRoundedRect(panelX, panelY, panelWidth, panelHeight, 16);
+    panel.lineStyle(3, 0x3498db);
+    panel.strokeRoundedRect(panelX, panelY, panelWidth, panelHeight, 16);
+
+    // Title
+    const title = this.add.text(width / 2, panelY + 40, 'Geography', {
+      fontSize: '28px',
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF'
+    }).setOrigin(0.5).setDepth(302);
+
+    // Instructions
+    const instructions = this.add.text(width / 2, panelY + 120, 
+      'Click on the correct region on the map.\n\n' +
+      'Listen to the name and find it!',
+      {
+        fontSize: '20px',
+        fontFamily: 'Arial',
+        color: '#CCCCCC',
+        align: 'center',
+        lineSpacing: 8
+      }
+    ).setOrigin(0.5).setDepth(302);
+
+    // Close button
+    const closeBtn = this.add.text(width / 2, panelY + panelHeight - 45, 'Got it!', {
+      fontSize: '22px',
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF',
+      backgroundColor: '#2ECC71',
+      padding: { x: 30, y: 10 }
+    }).setOrigin(0.5).setDepth(302).setInteractive({ useHandCursor: true });
+
+    closeBtn.on('pointerdown', () => {
+      overlay.destroy();
+      panel.destroy();
+      title.destroy();
+      instructions.destroy();
+      closeBtn.destroy();
+    });
   }
 }
