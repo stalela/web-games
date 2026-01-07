@@ -1,120 +1,171 @@
 # Lalela Web Games - AI Coding Agent Instructions
 
 ## Project Overview
-Web-based educational games platform converting GCompris games to **Phaser 3**.
-- **Goal**: 199 target games (currently ~80 implemented).
-- **Engine**: Phaser 3.80.0 + Howler.js.
-- **Repo**: `web-games` (active development), `GCompris-qt-master` (reference assets/logic).
+Web-based educational games platform converting GCompris (Qt/QML) games to **Phaser 3**.
+- **Goal**: 199 target games (~200 implemented, some duplicates being consolidated).
+- **Engine**: Phaser 3.80.0 + Howler.js for audio.
+- **Repos**: `web-games` (active), `GCompris-qt-master` (reference source for porting).
+
+## GCompris Reference (Porting Source)
+Original game logic in `GCompris-qt-master/src/activities/{activity_name}/`:
+- `ActivityInfo.qml`: Metadata (difficulty 1-6, category, description)
+- `{Name}.qml`: Main QML logic to port (translate to Phaser patterns)
+- `resource/`: Assets (SVGs preferred - copy to `src/assets/`)
 
 ## Architecture
 
-### Game Hierarchy
-1. **`LalelaGame`** ([src/utils/LalelaGame.js](src/utils/LalelaGame.js)): Base class. Handles lifecycle, performance, object pooling, and common UI.
-2. **`DragDropGame`** ([src/games/DragDropGame.js](src/games/DragDropGame.js)): Extends `LalelaGame` for drag-and-drop mechanics.
-3. **Specific Games**: Extend `LalelaGame` or `DragDropGame`.
+### Game Class Hierarchy
+```
+Phaser.Scene
+  └── LalelaGame (src/utils/LalelaGame.js) - Base with lifecycle, pooling, nav dock
+        └── DragDropGame (src/games/DragDropGame.js) - Drag-and-drop mechanics
+              └── Specific games (e.g., AdjacentNumbers, OrderingGame)
+```
 
-### Manager Singleton Pattern
-Managers are instantiated in [src/index.js](src/index.js) and injected into games via `init(data)`.
-**DO NOT** instantiate managers in games. Use `this.managerName`.
+### Manager Injection Pattern (Critical)
+Managers instantiated once in [src/index.js](src/index.js#L250-L260), injected via `init(data)`.
+**NEVER instantiate managers in games.** Access via `this.managerName`.
 
-| Manager | Purpose |
-|---------|---------|
-| `GameManager` | Orchestrates lifecycle, scene transitions. |
-| `AssetManager` | Asset preloading (programmatic graphics preferred). |
-| `UIManager` | Reusable UI (modals, buttons, nav). |
-| `InputManager` | Unified touch/mouse/keyboard. |
-| `AudioManager` | Howler.js wrapper, mobile unlock. |
-| `DataManager` | Local storage, progress tracking. |
-| `PerformanceMonitor` | FPS/memory tracking (auto-integrated in base). |
-| `HelpSystem` | In-game help overlays. |
+| Manager | Access | Purpose |
+|---------|--------|---------|
+| `assetManager` | `this.assetManager` | Asset preloading |
+| `uiManager` | `this.uiManager` | Modals, buttons |
+| `audioManager` | `this.audioManager` | Howler.js sounds |
+| `gameManager` | `this.gameManager` | Scene orchestration |
+| `dataManager` | `this.dataManager` | LocalStorage progress |
 
-### Lifecycle Hooks (Override Order)
-1. `init(data)`: Call `super.init(data)`. Setup game-specific data.
-2. `preload()`: Call `super.preload()`. Load assets (if any).
-3. `create()`: **DO NOT OVERRIDE**. It calls the following methods in order:
-    - `createBackground()`: Depth -1.
-    - `createUI()`: Score, instructions, nav dock.
-    - `setupGameLogic()`: Start game loop, spawn objects.
+### Lifecycle Hooks (Override These)
+```javascript
+init(data) {
+  super.init(data);  // REQUIRED - stores managers
+  this.levels = this.loadLevelData();  // Game-specific setup
+}
 
-## Development Workflows
+preload() {
+  super.preload();  // REQUIRED
+  this.load.svg('bg', 'assets/game-icons/background-wood.svg');
+}
+
+// DON'T override create() - it chains these automatically:
+createBackground() { }  // Depth -1
+createUI() { }          // Score, instructions, nav dock
+setupGameLogic() { }    // Start game, spawn objects
+```
+
+## Development Workflow
 
 ### Commands
-- **Run**: `npm start` (Dev server :8081)
-- **Build**: `npm run build` (dist/)
-- **Test**: 
-  - `npm test` (Jest unit tests)
-  - `npm run test:comprehensive` (Puppeteer full suite)
-  - `npm run test:browser` (Cross-browser simulation)
-  - `npm run benchmark` (Performance profiling)
+```bash
+npm start                    # Dev server at localhost:8081
+npm run build               # Production build to dist/
+npm test                    # Jest unit tests
+npm run test:comprehensive  # Puppeteer full integration
+npm run benchmark           # Performance profiling
+```
 
-**Test Location:** `src/**/__tests__/**/*.test.js` - tests colocated with source code.
+### Adding a New Game (3 Registration Points)
+1. **Create class** in `src/games/YourGame.js` extending `LalelaGame` or `DragDropGame`
+2. **Import + add scene** in [src/index.js](src/index.js):
+   ```javascript
+   import { YourGame } from './games/YourGame.js';
+   // In init(): 
+   this.game.scene.add('YourGame', YourGame);
+   ```
+3. **Add metadata** to `allGames` in [src/scenes/GameMenuScene.js](src/scenes/GameMenuScene.js#L65):
+   ```javascript
+   { scene: 'YourGame', name: 'Your Game', icon: 'yourgame.svg', difficulty: 2, category: 'math' }
+   ```
 
-### Adding a New Game
-1. **Create Class**: Extend `LalelaGame` or `DragDropGame` in `src/games/`.
-2. **Register**:
-   - Import in [src/index.js](src/index.js).
-   - Add to Phaser: `this.game.scene.add('GameName', GameClass)`.
-   - Add metadata to `allGames` in [src/scenes/GameMenuScene.js](src/scenes/GameMenuScene.js).
+**Scene key pattern**: Some use suffix (`CheckersGame`), some don't (`Oware`). Match existing patterns for that game family.
 
-## Conventions & Patterns
+## Conventions
 
-### Brand Colors
-- **River Blue:** `0x0062FF`
-- **Aloe Green:** `0x00B378`
-- **Orange:** `0xF08A00`
-- **Purple:** `0xA74BFF`
+### Brand Colors (Hex for Phaser)
+- River Blue: `0x0062FF` | Aloe Green: `0x00B378`
+- Orange: `0xF08A00` | Purple: `0xA74BFF`
 
-### Graphics & Assets
-- **Programmatic Graphics**: Prefer `this.add.graphics()` or `this.add.rectangle()` over loading images.
-- **Asset Loading**: If needed, check `src/utils/AssetManager.js`.
-- **Z-Depth**:
-  - `-1`: Background
-  - `0-9`: Game Objects
-  - `10-19`: UI
-  - `20+`: Modals/Overlays
+### Z-Depth Layers
+| Range | Usage |
+|-------|-------|
+| -1 | Background |
+| 0-9 | Game objects |
+| 10-19 | UI elements |
+| 100+ | Navigation dock, modals |
 
-### Performance
-- **Object Pooling**: Use `this.objectPools` (Map) or `GameObjectPool` from `src/utils/ObjectPool.js` for frequent spawns.
-- **Rendering**: `LalelaGame` includes `RenderingOptimizer`.
+### Graphics Preference
+Prefer **programmatic graphics** over images:
+```javascript
+// Good - no asset loading
+this.add.rectangle(x, y, 100, 100, 0x0062FF);
+const gfx = this.add.graphics();
+gfx.fillStyle(0x00B378).fillCircle(x, y, 50);
 
-### Audio
-- Use `this.audioManager.play('soundKey')`.
-- Always check existence: `if (this.audioManager.sounds.has('click')) ...`
+// Only load SVGs when complex graphics needed
+this.load.svg('icon', 'assets/category-icons/icon.svg');
+```
 
-### Navigation
-- Implement `createNavigationDock()` (available in base) or copy from `AdjacentNumbers.js`.
-- Icons: Exit, Settings, Help, Home.
+### Navigation Dock (Required)
+Every game needs bottom nav. Use `createNavigationDock()` from base class:
+```javascript
+createUI() {
+  // ... your UI
+  this.createNavigationDock(this.scale.width, this.scale.height);
+}
+```
+Icons loaded in preload: `exit`, `settings`, `help`, `home` from `assets/category-icons/`.
 
-## Common Pitfalls
+## Common Patterns
 
-1. **Don't create managers in games** - Use injected instances from `init(data)`, e.g., `this.assetManager`, `this.uiManager`
-2. **Call super methods** - Always call `super.preload()`, `super.init(data)`, etc. before your code
-3. **Scene lifecycle order matters** - Background → UI → Game Logic. Don't spawn game objects before UI is ready
-4. **Depth management** - Explicitly set `.setDepth()` on all sprites to avoid z-fighting
-5. **Asset paths** - Assets are copied to `dist/assets/` by webpack. Reference as `'assets/category-icons/icon.svg'`
-6. **Mobile testing** - Always test touch input, not just mouse. Use InputManager for unified handling
+### DragDropGame Usage
+```javascript
+class MyGame extends DragDropGame {
+  setupGameLogic() {
+    this.createDraggableTiles([
+      { x: 100, y: 200, value: 5, text: '5', color: 0x0062FF }
+    ]);
+    this.createDropZones([
+      { x: 400, y: 200, expectedValue: 5, width: 80, height: 80 }
+    ]);
+  }
+}
+```
 
-## Integration Points
+### Object Pooling (Performance)
+```javascript
+// Pools auto-created in base class
+const rect = this.getPooledObject('rectangles', { x, y, width, height });
+// When done:
+this.releasePooledObject('rectangles', rect);
+```
 
 ### Scene Transitions
 ```javascript
-// Return to menu
+// Return to menu (managers auto-available on GameMenu)
 this.scene.start('GameMenu');
 
-// Start another game
+// Start game with explicit manager injection (for inter-game transitions)
 this.scene.start('AdjacentNumbers', {
   assetManager: this.assetManager,
-  uiManager: this.uiManager,
-  gameManager: this.gameManager,
   audioManager: this.audioManager
 });
 ```
 
-### Phaser Version
-Using **Phaser 3.80.0**.
+## Common Pitfalls
 
-## Key Files
-- [src/index.js](src/index.js): App bootstrap, manager injection.
-- [src/utils/LalelaGame.js](src/utils/LalelaGame.js): Base class. READ THIS FIRST.
-- [src/scenes/GameMenuScene.js](src/scenes/GameMenuScene.js): Game selection menu.
-- [src/games/AdjacentNumbers.js](src/games/AdjacentNumbers.js): Reference implementation.
+1. **Manager instantiation in games** - Use injected `this.assetManager`, never `new AssetManager()`
+2. **Missing super calls** - Always `super.init(data)`, `super.preload()` first
+3. **Overriding create()** - Override `createBackground()`, `createUI()`, `setupGameLogic()` instead
+4. **Depth collisions** - Always `.setDepth()` explicitly; dock is 100+
+5. **Asset paths** - Webpack copies to `dist/assets/`. Reference as `'assets/category-icons/foo.svg'`
+6. **Touch/mouse** - Test both. Use `this.input.on('pointerdown')` not `'mousedown'`
+
+## Key Files Reference
+| File | Purpose |
+|------|---------|
+| [src/utils/LalelaGame.js](src/utils/LalelaGame.js) | **Read first** - base class with all lifecycle hooks |
+| [src/games/DragDropGame.js](src/games/DragDropGame.js) | Drag-drop base with tile/zone helpers |
+| [src/games/AdjacentNumbers.js](src/games/AdjacentNumbers.js) | Reference implementation |
+| [src/index.js](src/index.js) | Bootstrap, manager creation, scene registration |
+| [src/scenes/GameMenuScene.js](src/scenes/GameMenuScene.js) | Menu + `allGames` registry |
+| [src/tests/setup.js](src/tests/setup.js) | Jest mocks for Phaser objects |
+| [src/components/DraggableTile.js](src/components/DraggableTile.js) | Reusable drag component |

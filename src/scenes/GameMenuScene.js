@@ -1656,6 +1656,7 @@ export class GameMenuScene extends Phaser.Scene {
 
   scrollContent(pointer, gameObjects, deltaX, deltaY, deltaZ) {
     if (this.gridContainer) {
+      const previousY = this.gridContainer.y;
       this.gridContainer.y -= deltaY * 0.5; // Adjust the scroll speed
 
       // Calculate the bounds
@@ -1677,6 +1678,17 @@ export class GameMenuScene extends Phaser.Scene {
       }
       if (this.gridContainer.y < max_y) {
           this.gridContainer.y = max_y;
+      }
+
+      // Play scroll sound if actually scrolling (with throttle to avoid spam)
+      const actuallyScrolled = this.gridContainer.y !== previousY;
+      const now = Date.now();
+      if (actuallyScrolled && this.app?.audioManager) {
+        // Throttle scroll sound to play at most every 150ms
+        if (!this.lastScrollSoundTime || now - this.lastScrollSoundTime > 150) {
+          this.app.audioManager.playScrollSound();
+          this.lastScrollSoundTime = now;
+        }
       }
     }
   }

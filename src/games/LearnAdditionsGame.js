@@ -1,7 +1,7 @@
 /**
  * LearnAdditionsGame - Visual addition learning game
  * Interactive addition problems with clickable circles to represent the sum
- * Based on GCompris learn_additions activity
+ * Based on GCompris learn_additions activity - uses hillside background
  */
 import { InteractiveGame } from './InteractiveGame.js';
 
@@ -19,6 +19,8 @@ export class LearnAdditionsGame extends InteractiveGame {
     this.selectedCircles = [];
     this.maxCircles = 4;
     this.level = 1;
+    this.questionsCompleted = 0;
+    this.questionsPerLevel = 3;
 
     // Level configuration based on GCompris data
     this.levels = [
@@ -52,8 +54,15 @@ export class LearnAdditionsGame extends InteractiveGame {
   preload() {
     super.preload();
 
-    // Load background
-    this.load.svg('learn_additions_bg', 'assets/game-icons/learn_additions_bg.svg');
+    // Load GCompris hillside background
+    this.load.svg('hillside_bg', 'assets/braille_fun/hillside.svg');
+    
+    // Load GCompris bar icons
+    this.load.svg('bar_home', 'assets/game-icons/bar_home.svg');
+    this.load.svg('bar_help', 'assets/game-icons/bar_help.svg');
+    this.load.svg('bar_previous', 'assets/game-icons/bar_previous.svg');
+    this.load.svg('bar_next', 'assets/game-icons/bar_next.svg');
+    this.load.svg('bar_reload', 'assets/game-icons/bar_reload.svg');
   }
 
   /**
@@ -72,179 +81,323 @@ export class LearnAdditionsGame extends InteractiveGame {
   }
 
   /**
-   * Override: Create background
+   * Override: Create background - GCompris hillside with sky
    */
   createBackground() {
     const { width, height } = this.scale;
 
-    // Background image with proper depth - ensure nature theme
-    this.background = this.add.image(width / 2, height / 2, 'learn_additions_bg');
-    this.background.setDisplaySize(width, height);
-    this.background.setDepth(-10);
+    // Create gradient sky background
+    const skyGradient = this.add.graphics();
+    skyGradient.setDepth(-10);
+    
+    // Sky gradient from light blue at top to lighter blue at horizon
+    const skyColors = [
+      { y: 0, color: 0x87CEEB },      // Light sky blue at top
+      { y: 0.4, color: 0xADD8E6 },    // Lighter blue
+      { y: 0.7, color: 0xE0F4FF }     // Almost white near hills
+    ];
+    
+    for (let i = 0; i < height * 0.65; i++) {
+      const ratio = i / (height * 0.65);
+      let color;
+      if (ratio < 0.4) {
+        color = this.lerpColor(0x87CEEB, 0xADD8E6, ratio / 0.4);
+      } else if (ratio < 0.7) {
+        color = this.lerpColor(0xADD8E6, 0xE0F4FF, (ratio - 0.4) / 0.3);
+      } else {
+        color = 0xE0F4FF;
+      }
+      skyGradient.fillStyle(color, 1);
+      skyGradient.fillRect(0, i, width, 1);
+    }
+
+    // Draw rolling green hills (GCompris style)
+    this.drawHillside(width, height);
+    
+    // Add decorative cloud in top-right (near score)
+    this.drawCloud(width - 120, 60, 80);
   }
 
   /**
-   * Override: Create UI elements
+   * Interpolate between two colors
+   */
+  lerpColor(color1, color2, t) {
+    const r1 = (color1 >> 16) & 0xff;
+    const g1 = (color1 >> 8) & 0xff;
+    const b1 = color1 & 0xff;
+    const r2 = (color2 >> 16) & 0xff;
+    const g2 = (color2 >> 8) & 0xff;
+    const b2 = color2 & 0xff;
+    
+    const r = Math.round(r1 + (r2 - r1) * t);
+    const g = Math.round(g1 + (g2 - g1) * t);
+    const b = Math.round(b1 + (b2 - b1) * t);
+    
+    return (r << 16) | (g << 8) | b;
+  }
+
+  /**
+   * Draw GCompris-style rolling hills
+   */
+  drawHillside(width, height) {
+    const hillsGraphics = this.add.graphics();
+    hillsGraphics.setDepth(-5);
+    
+    // Back hills (darker green)
+    hillsGraphics.fillStyle(0x5D8A3E, 1);
+    hillsGraphics.beginPath();
+    hillsGraphics.moveTo(0, height * 0.65);
+    
+    // Rolling hill curve
+    for (let x = 0; x <= width; x += 10) {
+      const y = height * 0.65 + Math.sin(x * 0.005) * 30 + Math.sin(x * 0.002) * 20;
+      hillsGraphics.lineTo(x, y);
+    }
+    hillsGraphics.lineTo(width, height);
+    hillsGraphics.lineTo(0, height);
+    hillsGraphics.closePath();
+    hillsGraphics.fill();
+
+    // Middle hills (medium green)
+    hillsGraphics.fillStyle(0x6B9B4A, 1);
+    hillsGraphics.beginPath();
+    hillsGraphics.moveTo(0, height * 0.72);
+    
+    for (let x = 0; x <= width; x += 10) {
+      const y = height * 0.72 + Math.sin(x * 0.004 + 1) * 25 + Math.sin(x * 0.0015) * 15;
+      hillsGraphics.lineTo(x, y);
+    }
+    hillsGraphics.lineTo(width, height);
+    hillsGraphics.lineTo(0, height);
+    hillsGraphics.closePath();
+    hillsGraphics.fill();
+
+    // Front hills (lighter green)
+    hillsGraphics.fillStyle(0x7DB356, 1);
+    hillsGraphics.beginPath();
+    hillsGraphics.moveTo(0, height * 0.80);
+    
+    for (let x = 0; x <= width; x += 10) {
+      const y = height * 0.80 + Math.sin(x * 0.003 + 2) * 20 + Math.sin(x * 0.001) * 10;
+      hillsGraphics.lineTo(x, y);
+    }
+    hillsGraphics.lineTo(width, height);
+    hillsGraphics.lineTo(0, height);
+    hillsGraphics.closePath();
+    hillsGraphics.fill();
+  }
+
+  /**
+   * Draw a decorative cloud
+   */
+  drawCloud(x, y, size) {
+    const cloud = this.add.graphics();
+    cloud.setDepth(5);
+    cloud.fillStyle(0xFFFFFF, 0.9);
+    
+    // Cloud made of overlapping circles
+    cloud.fillCircle(x, y, size * 0.4);
+    cloud.fillCircle(x - size * 0.35, y + size * 0.1, size * 0.3);
+    cloud.fillCircle(x + size * 0.35, y + size * 0.1, size * 0.3);
+    cloud.fillCircle(x - size * 0.2, y - size * 0.15, size * 0.25);
+    cloud.fillCircle(x + size * 0.2, y - size * 0.15, size * 0.25);
+    
+    return cloud;
+  }
+
+  /**
+   * Override: Create UI elements - GCompris style
    */
   createUI() {
     const { width, height } = this.scale;
 
-    // Math problem display (huge, top center)
-    this.questionText = this.add.text(width / 2, 80, '1 + 2', {
-      fontSize: '100px',
-      color: '#FACA2A',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'center',
-      backgroundColor: '#FFFFFF',
-      padding: { left: 40, right: 40, top: 20, bottom: 20 }
-    }).setOrigin(0.5).setDepth(10);
-    this.questionText.setStroke('#000000', 6);
-
-    // OK button (massive, center-right next to circles)
-    this.okButton = this.add.circle(width * 0.75, height / 2, 80, 0x00B378);
-    this.okButton.setStrokeStyle(8, 0xFFFFFF);
-    this.okButton.setInteractive({ useHandCursor: true });
-    this.okButton.setDepth(15);
-    this.okButton.setVisible(false); // Initially hidden
-
-    // OK text
-    this.okButtonText = this.add.text(width * 0.75, height / 2, 'OK', {
-      fontSize: '32px',
-      color: '#FFFFFF',
+    // Math problem display - GCompris orange style (no background box)
+    this.questionText = this.add.text(width / 2 - 80, 70, '1 + 1', {
+      fontSize: '90px',
+      color: '#D2611D',  // GCompris orange
       fontFamily: 'Fredoka One, cursive',
       align: 'center'
+    }).setOrigin(0.5).setDepth(10);
+    this.questionText.setStroke('#FFFFFF', 8);
+
+    // OK button (green circle next to equation - GCompris style)
+    const okX = width / 2 + 80;
+    const okY = 70;
+    
+    this.okButton = this.add.circle(okX, okY, 45, 0x00B378);
+    this.okButton.setStrokeStyle(4, 0xFFFFFF);
+    this.okButton.setInteractive({ useHandCursor: true });
+    this.okButton.setDepth(15);
+
+    // OK text on button
+    this.okButtonText = this.add.text(okX, okY, 'OK', {
+      fontSize: '24px',
+      color: '#FFFFFF',
+      fontFamily: 'Fredoka One, cursive',
+      fontStyle: 'bold',
+      align: 'center'
     }).setOrigin(0.5).setDepth(16);
-    this.okButtonText.setVisible(false); // Initially hidden
 
     // OK button click handler
     this.okButton.on('pointerdown', () => this.checkAnswer());
+    this.okButton.on('pointerover', () => this.okButton.setScale(1.1));
+    this.okButton.on('pointerout', () => this.okButton.setScale(1));
 
-    // Progress badge (top-right, inside light blue rounded rectangle)
-    const progressBg = this.add.graphics();
-    progressBg.fillStyle(0x87CEEB, 0.8); // Light blue
-    progressBg.fillRoundedRect(width - 200, 20, 160, 60, 20);
-    progressBg.lineStyle(4, 0x0062FF, 1);
-    progressBg.strokeRoundedRect(width - 200, 20, 160, 60, 20);
-    progressBg.setDepth(10);
+    // Progress badge (cloud style, top-right)
+    this.progressBg = this.add.graphics();
+    this.progressBg.fillStyle(0xE8F4EA, 0.95);
+    this.progressBg.fillRoundedRect(width - 130, 30, 100, 50, 15);
+    this.progressBg.lineStyle(2, 0x7DB356, 1);
+    this.progressBg.strokeRoundedRect(width - 130, 30, 100, 50, 15);
+    this.progressBg.setDepth(10);
 
-    this.progressText = this.add.text(width - 120, 50, '0/3', {
-      fontSize: '24px',
-      color: '#FFFFFF',
+    this.progressText = this.add.text(width - 80, 55, '0/3', {
+      fontSize: '22px',
+      color: '#5D8A3E',
       fontFamily: 'Fredoka One, cursive',
       align: 'center'
     }).setOrigin(0.5).setDepth(11);
-    this.progressText.setStroke('#000000', 2);
 
-    // Level display (top-left)
-    this.levelText = this.add.text(50, 50, 'Level 1', {
-      fontSize: '28px',
-      color: '#0062FF',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'left'
-    }).setOrigin(0).setDepth(10);
-    this.levelText.setStroke('#000000', 2);
+    // Create white rounded container for circles (GCompris style)
+    this.createCirclesContainer(width, height);
 
-    // Instruction text (below question, above circles)
-    this.instructionText = this.add.text(width / 2, 180, 'Click on the circles to show the answer!', {
-      fontSize: '24px',
-      color: '#333333',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'center'
-    }).setOrigin(0.5).setDepth(10);
-    this.instructionText.setStroke('#FFFFFF', 4);
-
-    // Create navigation dock
-    this.createNavigationDock(width, height);
+    // Create navigation bar
+    this.createNavigationBar(width, height);
   }
 
   /**
-   * Create navigation dock (GCompris style bottom dock)
+   * Create white rounded container for circles (GCompris style)
    */
-  createNavigationDock(width, height) {
-    const dockY = height - 80;
-    const buttonSize = 90;
-    const spacing = 130;
+  createCirclesContainer(width, height) {
+    const containerWidth = width - 60;
+    const containerHeight = 180;
+    const containerY = height * 0.45;
+    
+    // White rounded background for circles
+    this.circlesBg = this.add.graphics();
+    this.circlesBg.setDepth(5);
+    this.circlesBg.fillStyle(0xFFFFFF, 0.85);
+    this.circlesBg.fillRoundedRect(30, containerY - containerHeight / 2, containerWidth, containerHeight, 20);
+    this.circlesBg.lineStyle(3, 0xDDDDDD, 1);
+    this.circlesBg.strokeRoundedRect(30, containerY - containerHeight / 2, containerWidth, containerHeight, 20);
+  }
 
-    // Dock background
-    const dockBg = this.add.graphics();
-    dockBg.fillStyle(0xFFFFFF, 0.95);
-    dockBg.fillRoundedRect(width / 2 - (width - 60) / 2, dockY - 60, width - 60, 120, 60);
-    dockBg.setDepth(100);
+  /**
+   * Create GCompris-style navigation bar (rounded square buttons)
+   */
+  createNavigationBar(width, height) {
+    const barY = height - 50;
+    const buttonSize = 50;
+    const spacing = 65;
 
-    // Dock shadow
-    const dockShadow = this.add.graphics();
-    dockShadow.fillStyle(0x000000, 0.3);
-    dockShadow.fillRoundedRect(width / 2 - (width - 60) / 2 + 4, dockY - 56, width - 60, 120, 60);
-    dockShadow.setDepth(99);
-
-    // Dock border
-    const dockBorder = this.add.graphics();
-    dockBorder.lineStyle(5, 0x0062FF, 1);
-    dockBorder.strokeRoundedRect(width / 2 - (width - 60) / 2, dockY - 60, width - 60, 120, 60);
-    dockBorder.setDepth(100);
-
+    // Navigation controls - GCompris style with rounded square buttons
     const controls = [
-      { icon: 'help.svg', action: 'help', color: 0x00B378, label: 'Help' },
-      { icon: 'home.svg', action: 'home', color: 0x0062FF, label: 'Home' },
-      { icon: 'settings.svg', action: 'levels', color: 0xFACA2A, label: 'Levels' },
-      { icon: 'exit.svg', action: 'menu', color: 0xAB47BC, label: 'Menu' }
+      { icon: 'bar_reload', action: 'menu', color: 0x8BC34A, borderColor: 0x689F38, hasStroke: true },
+      { icon: 'bar_help', action: 'help', color: 0xFFFFFF, borderColor: 0x4FC3F7, hasStroke: true },
+      { icon: 'bar_home', action: 'home', color: 0x42A5F5, borderColor: 0x1E88E5, hasStroke: true },
+      { icon: 'bar_previous', action: 'prevLevel', color: 0xFFFFFF, borderColor: 0xFFB74D, hasStroke: true },
+      { text: '1', action: 'levels', color: 0xFFFFFF, borderColor: 0x666666, hasStroke: false },
+      { icon: 'bar_next', action: 'nextLevel', color: 0xFFFFFF, borderColor: 0xFFB74D, hasStroke: true },
+      { icon: 'bar_reload', action: 'levelSelect', color: 0xAB47BC, borderColor: 0x7B1FA2, hasStroke: true }
     ];
 
     const totalWidth = (controls.length - 1) * spacing + buttonSize;
-    const startX = (width - totalWidth) / 2 + buttonSize / 2;
+    const startX = (width - totalWidth) / 2;
 
     controls.forEach((control, index) => {
       const x = startX + index * spacing;
 
-      // Button shadow
-      const buttonShadow = this.add.circle(x + 4, dockY + 4, buttonSize / 2, 0x000000, 0.4);
-      buttonShadow.setDepth(100);
+      // Button background (rounded square)
+      const btn = this.add.graphics();
+      btn.setDepth(100);
+      
+      // Fill with color
+      btn.fillStyle(control.color, 1);
+      btn.fillRoundedRect(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize, 10);
+      
+      // Border stroke
+      if (control.hasStroke) {
+        btn.lineStyle(3, control.borderColor, 1);
+        btn.strokeRoundedRect(x - buttonSize / 2, barY - buttonSize / 2, buttonSize, buttonSize, 10);
+      }
 
-      // Button
-      const button = this.add.circle(x, dockY, buttonSize / 2, control.color);
-      button.setStrokeStyle(5, 0xFFFFFF);
-      button.setInteractive({ useHandCursor: true });
-      button.setDepth(100);
+      // Interactive zone
+      const hitArea = this.add.rectangle(x, barY, buttonSize, buttonSize, 0x000000, 0);
+      hitArea.setInteractive({ useHandCursor: true });
+      hitArea.setDepth(101);
 
-      // Icon
-      const icon = this.add.sprite(x, dockY, control.icon.replace('.svg', ''));
-      icon.setScale((buttonSize * 0.7) / 100);
-      icon.setTint(0xFFFFFF);
-      icon.setDepth(101);
-
-      // Label
-      const label = this.add.text(x, dockY + buttonSize / 2 + 20, control.label, {
-        fontSize: '14px',
-        color: '#FFFFFF',
-        fontFamily: 'Fredoka One, cursive',
-        align: 'center'
-      }).setOrigin(0.5).setDepth(101);
+      // Icon or text
+      if (control.icon) {
+        if (this.textures.exists(control.icon)) {
+          const icon = this.add.image(x, barY, control.icon);
+          icon.setDisplaySize(buttonSize * 0.6, buttonSize * 0.6);
+          icon.setDepth(102);
+        }
+      } else if (control.text) {
+        const levelNum = this.add.text(x, barY, this.level.toString(), {
+          fontSize: '24px',
+          color: '#333333',
+          fontFamily: 'Fredoka One, cursive',
+          align: 'center'
+        }).setOrigin(0.5).setDepth(102);
+        this.levelNumText = levelNum;
+      }
 
       // Click handler
-      button.on('pointerdown', () => this.onNavigationClick(control.action));
+      hitArea.on('pointerdown', () => this.onNavigationClick(control.action));
+      hitArea.on('pointerover', () => btn.setAlpha(0.8));
+      hitArea.on('pointerout', () => btn.setAlpha(1));
     });
   }
 
   /**
-   * Handle navigation dock clicks
+   * Handle navigation clicks
    */
   onNavigationClick(action) {
     switch (action) {
       case 'help':
-        // Show help modal using HelpSystem
         if (this.helpSystem) {
           this.helpSystem.showHelpModal('LearnAdditionsGame');
         }
         break;
       case 'home':
       case 'menu':
-        // Go to main menu
         this.scene.start('GameMenu');
         break;
       case 'levels':
-        // Show level selection modal
+      case 'levelSelect':
         this.showLevelSelector();
         break;
+      case 'prevLevel':
+        if (this.level > 1) {
+          this.level--;
+          this.questionsCompleted = 0;
+          this.recreateCirclesForLevel();
+          this.generateQuestion();
+          this.updateLevelDisplay();
+        }
+        break;
+      case 'nextLevel':
+        if (this.level < this.levels.length) {
+          this.level++;
+          this.questionsCompleted = 0;
+          this.recreateCirclesForLevel();
+          this.generateQuestion();
+          this.updateLevelDisplay();
+        }
+        break;
+    }
+  }
+
+  /**
+   * Update level number display
+   */
+  updateLevelDisplay() {
+    if (this.levelNumText) {
+      this.levelNumText.setText(this.level.toString());
+    }
+    if (this.progressText) {
+      this.progressText.setText(`${this.questionsCompleted}/${this.questionsPerLevel}`);
     }
   }
 
@@ -516,10 +669,11 @@ export class LearnAdditionsGame extends InteractiveGame {
    */
   createCountingCircles() {
     const { width, height } = this.scale;
-    const circlesY = height / 2;
+    const circlesY = height * 0.45;  // Match the container position
 
     // Container for circles
     this.circlesContainer = this.add.container(width / 2, circlesY);
+    this.circlesContainer.setDepth(10);
 
     // Create circles based on current level
     this.circles = [];
@@ -527,8 +681,12 @@ export class LearnAdditionsGame extends InteractiveGame {
 
     const levelData = this.levels[this.level - 1];
     const numCircles = levelData.circlesModel;
-    const circleRadius = 50; // Larger circles for better touch targets
-    const spacing = 120;
+    
+    // Calculate circle size based on available space
+    const containerWidth = width - 120;
+    const maxCircleSize = Math.min(containerWidth / (numCircles + 1), 120);
+    const circleRadius = maxCircleSize / 2 - 5;
+    const spacing = maxCircleSize + 10;
 
     // Calculate starting position to center the circles
     const totalWidth = (numCircles - 1) * spacing;
@@ -539,46 +697,32 @@ export class LearnAdditionsGame extends InteractiveGame {
       const circle = this.createClickableCircle(x, 0, circleRadius, i);
       this.circles.push(circle);
       this.circlesContainer.add(circle.bg);
-      this.circlesContainer.add(circle.label);
     }
   }
 
   /**
-   * Create a clickable circle
+   * Create a clickable circle (GCompris style - outline only, fills with orange when clicked)
    */
   createClickableCircle(x, y, radius, index) {
-    // Circle background (white with very thick border - GCompris "chunky" style)
-    const circleBg = this.add.circle(x, y, radius, 0xFFFFFF);
-    circleBg.setStrokeStyle(8, 0x000000); // Very thick 8px border for better visibility
+    // Circle background - transparent with dark border (GCompris style)
+    const circleBg = this.add.circle(x, y, radius, 0xFFFFFF, 0);  // Transparent fill
+    circleBg.setStrokeStyle(4, 0x333333);  // Dark border
 
     // Make it interactive
     circleBg.setInteractive({ useHandCursor: true });
     circleBg.on('pointerdown', () => this.onCircleClick(index));
     circleBg.on('pointerover', () => {
       if (!this.selectedCircles.includes(index)) {
-        circleBg.setFillStyle(0xF0F0F0); // Light gray hover
+        circleBg.setFillStyle(0xFFE0B2, 0.3);  // Light orange hover
       }
     });
     circleBg.on('pointerout', () => {
       if (!this.selectedCircles.includes(index)) {
-        circleBg.setFillStyle(0xFFFFFF); // Back to white
+        circleBg.setFillStyle(0xFFFFFF, 0);  // Back to transparent
       }
     });
 
-    // Number label (initially hidden)
-    const label = this.add.text(x, y, (index + 1).toString(), {
-      fontSize: '32px',
-      color: '#000000',
-      fontFamily: 'Fredoka One, cursive',
-      align: 'center',
-      fontWeight: 'bold'
-    }).setOrigin(0.5);
-    label.setVisible(false);
-    // Make label extra bold when visible (selected)
-    label.setFontSize(36);
-    label.setStroke('#FFFFFF', 2);
-
-    return { bg: circleBg, label: label, selected: false };
+    return { bg: circleBg, selected: false };
   }
 
   /**
@@ -642,15 +786,14 @@ export class LearnAdditionsGame extends InteractiveGame {
   }
 
   /**
-   * Select a circle
+   * Select a circle (GCompris style - fills with orange)
    */
   selectCircle(circleIndex) {
     const circle = this.circles[circleIndex];
 
     if (!circle.selected) {
       circle.selected = true;
-      circle.bg.setFillStyle(0xFACA2A); // Yellow when selected
-      circle.label.setVisible(true);
+      circle.bg.setFillStyle(0xD2611D, 1);  // GCompris orange when selected
 
       this.selectedCircles.push(circleIndex);
 
@@ -669,15 +812,14 @@ export class LearnAdditionsGame extends InteractiveGame {
   }
 
   /**
-   * Deselect a circle
+   * Deselect a circle (GCompris style - back to transparent)
    */
   deselectCircle(circleIndex) {
     const circle = this.circles[circleIndex];
 
     if (circle.selected) {
       circle.selected = false;
-      circle.bg.setFillStyle(0xFFFFFF); // Back to white
-      circle.label.setVisible(false);
+      circle.bg.setFillStyle(0xFFFFFF, 0);  // Back to transparent
 
       // Remove from selected array
       const index = this.selectedCircles.indexOf(circleIndex);
@@ -691,45 +833,13 @@ export class LearnAdditionsGame extends InteractiveGame {
   }
 
   /**
-   * Update the visual display of selection
+   * Update the visual display of selection (simplified - no instruction text)
    */
   updateSelectionDisplay() {
-    // Update instruction to show current selection
-    const count = this.selectedCircles.length;
-    const correctCount = this.currentAnswer;
-
-    if (count === 0) {
-      this.instructionText.setText('Click on the circles to show the answer!');
-      this.okButton.setVisible(false);
-      this.okButtonText.setVisible(false);
-      // Stop pulsing if it was active
-      this.tweens.killTweensOf([this.okButton, this.okButtonText]);
-      this.okButton.setScale(1);
-      this.okButtonText.setScale(1);
-    } else if (count === correctCount) {
-      this.instructionText.setText(`Perfect! You selected ${count} circles. Click OK to continue!`);
-      this.okButton.setVisible(true);
-      this.okButtonText.setVisible(true);
-      // Start pulsing the OK button with glow effect
-      this.tweens.add({
-        targets: [this.okButton, this.okButtonText],
-        scale: 1.3,
-        duration: 600,
-        yoyo: true,
-        repeat: -1,
-        ease: 'Sine.easeInOut'
-      });
-      // Add glow effect
-      this.okButton.setStrokeStyle(12, 0xFFFFFF);
-    } else {
-      this.instructionText.setText(`You selected ${count} circle${count !== 1 ? 's' : ''}. Click OK when ready!`);
-      this.okButton.setVisible(true);
-      this.okButtonText.setVisible(true);
-      // Stop pulsing and glow if it was active
-      this.tweens.killTweensOf([this.okButton, this.okButtonText]);
-      this.okButton.setScale(1);
-      this.okButtonText.setScale(1);
-      this.okButton.setStrokeStyle(8, 0xFFFFFF);
+    // In GCompris style, the OK button is always visible
+    // Just update the progress counter
+    if (this.progressText) {
+      this.progressText.setText(`${this.questionsCompleted}/${this.questionsPerLevel}`);
     }
   }
 
@@ -737,14 +847,20 @@ export class LearnAdditionsGame extends InteractiveGame {
    * Clear all selections
    */
   clearSelection() {
-    this.selectedCircles.forEach(circleIndex => {
-      this.deselectCircle(circleIndex);
-    });
+    if (this.selectedCircles) {
+      this.selectedCircles.forEach(circleIndex => {
+        if (this.circles && this.circles[circleIndex]) {
+          this.deselectCircle(circleIndex);
+        }
+      });
+    }
     this.selectedCircles = [];
     this.updateSelectionDisplay();
 
-    // Clear feedback
-    this.feedbackText.setText('');
+    // Clear feedback if exists
+    if (this.feedbackText) {
+      this.feedbackText.setText('');
+    }
 
     this.playSound('click');
   }
@@ -757,31 +873,37 @@ export class LearnAdditionsGame extends InteractiveGame {
 
     if (selectedCount === this.currentAnswer) {
       // Correct answer!
+      this.questionsCompleted++;
+      this.updateSelectionDisplay();
+      
       this.showFeedback('Excellent! 🎉', '#00B378');
       this.playSound('success');
 
       // Celebrate with animations
       this.celebrateCorrect();
 
-      // Next question after delay
-      this.time.delayedCall(2500, () => this.nextQuestion());
+      // Check if level complete
+      if (this.questionsCompleted >= this.questionsPerLevel) {
+        // Advance to next level
+        this.time.delayedCall(2000, () => this.advanceLevel());
+      } else {
+        // Next question after delay
+        this.time.delayedCall(1500, () => this.nextQuestion());
+      }
     } else {
-      // Incorrect answer - encourage correction without clearing selection
-      this.showFeedback(`Not quite! Try counting again - the answer needs ${this.currentAnswer} circles.`, '#FF6B6B');
+      // Incorrect answer - shake and show feedback
+      this.showFeedback('Try again!', '#FF6B6B');
       this.playSound('error');
 
       // Shake the circles container
       this.tweens.add({
         targets: this.circlesContainer,
-        x: '+=20',
-        duration: 100,
+        x: '+=15',
+        duration: 80,
         yoyo: true,
         repeat: 3,
         ease: 'Power2'
       });
-
-      // Update instruction to encourage correction
-      this.instructionText.setText(`You have ${selectedCount} circles. The answer needs ${this.currentAnswer}. Try again!`);
     }
   }
 
@@ -792,21 +914,24 @@ export class LearnAdditionsGame extends InteractiveGame {
     // Scale up selected circles
     this.selectedCircles.forEach(circleIndex => {
       const circle = this.circles[circleIndex];
-      this.tweens.add({
-        targets: [circle.bg, circle.label],
-        scale: 1.3,
-        duration: 400,
-        yoyo: true,
-        ease: 'Back.easeOut'
-      });
+      if (circle && circle.bg) {
+        this.tweens.add({
+          targets: circle.bg,
+          scale: 1.2,
+          duration: 300,
+          yoyo: true,
+          ease: 'Back.easeOut'
+        });
+      }
     });
 
     // Create star particle burst
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 15; i++) {
       const star = this.add.star(this.circlesContainer.x, this.circlesContainer.y, 5, 8, 16, 0xFFD700);
       star.setScale(0.3);
+      star.setDepth(50);
       const angle = Math.random() * Math.PI * 2;
-      const speed = 100 + Math.random() * 150;
+      const speed = 80 + Math.random() * 120;
 
       this.tweens.add({
         targets: star,
@@ -815,7 +940,7 @@ export class LearnAdditionsGame extends InteractiveGame {
         alpha: 0,
         scale: 0,
         rotation: Math.PI * 2,
-        duration: 800,
+        duration: 600,
         ease: 'Power2',
         onComplete: () => star.destroy()
       });
@@ -826,43 +951,47 @@ export class LearnAdditionsGame extends InteractiveGame {
    * Show feedback text
    */
   showFeedback(text, color) {
+    const { width, height } = this.scale;
+    
     if (!this.feedbackText) {
-      this.feedbackText = this.add.text(this.scale.width / 2, this.scale.height / 2 + 100, '', {
-        fontSize: '48px',
+      this.feedbackText = this.add.text(width / 2, height * 0.7, '', {
+        fontSize: '36px',
         color: color,
         fontFamily: 'Fredoka One, cursive',
         align: 'center',
         backgroundColor: '#FFFFFF',
         padding: { left: 20, right: 20, top: 10, bottom: 10 }
       }).setOrigin(0.5).setDepth(200);
-      this.feedbackText.setStroke('#000000', 4);
+      this.feedbackText.setStroke('#333333', 3);
     }
 
     this.feedbackText.setText(text);
     this.feedbackText.setColor(color);
 
-    // "Pop" animation with Back.easeOut
+    // "Pop" animation
     this.feedbackText.setScale(0);
+    this.feedbackText.setAlpha(1);
     this.tweens.add({
       targets: this.feedbackText,
       scale: 1,
-      duration: 600,
+      duration: 400,
       ease: 'Back.easeOut'
     });
 
-    // Clear after delay
-    this.time.delayedCall(2000, () => {
+    // Fade out after delay
+    this.time.delayedCall(1500, () => {
       if (this.feedbackText) {
         this.tweens.add({
           targets: this.feedbackText,
           alpha: 0,
           scale: 0.8,
-          duration: 500,
+          duration: 400,
           ease: 'Power2',
           onComplete: () => {
-            this.feedbackText.setText('');
-            this.feedbackText.setAlpha(1);
-            this.feedbackText.setScale(1);
+            if (this.feedbackText) {
+              this.feedbackText.setText('');
+              this.feedbackText.setScale(1);
+            }
           }
         });
       }
@@ -878,17 +1007,14 @@ export class LearnAdditionsGame extends InteractiveGame {
 
     // Generate new question
     this.generateQuestion();
-
-    // Clear feedback
-    this.feedbackText.setText('');
   }
 
   /**
    * Generate a new question
    */
   generateQuestion() {
-    // Ensure UI is initialized before proceeding
-    if (!this.questionText || !this.levelText || !this.instructionText) {
+    // Ensure UI is initialized
+    if (!this.questionText) {
       console.warn('LearnAdditionsGame: UI not fully initialized, delaying generateQuestion');
       this.time.delayedCall(100, () => this.generateQuestion());
       return;
@@ -896,7 +1022,7 @@ export class LearnAdditionsGame extends InteractiveGame {
 
     const levelData = this.levels[this.level - 1];
 
-    // Pick a random question from current level (avoid repeating current question)
+    // Pick a random question from current level (avoid repeating)
     let randomIndex;
     do {
       randomIndex = Math.floor(Math.random() * levelData.questions.length);
@@ -908,12 +1034,11 @@ export class LearnAdditionsGame extends InteractiveGame {
     this.currentQuestion = question;
     this.currentAnswer = answer;
 
-    // Update display
-    this.questionText.setText(question + ' = ?');
-
-    // Update level display
-    this.levelText.setText(`Level ${this.level}`);
-    this.instructionText.setText(`${levelData.objective}\nClick on the circles to show the answer!`);
+    // Update display - GCompris shows just "1 + 1" without "= ?"
+    this.questionText.setText(question);
+    
+    // Update progress
+    this.updateLevelDisplay();
   }
 
   /**
@@ -922,11 +1047,15 @@ export class LearnAdditionsGame extends InteractiveGame {
   advanceLevel() {
     if (this.level < this.levels.length) {
       this.level++;
+      this.questionsCompleted = 0;
       this.recreateCirclesForLevel();
-      this.showFeedback(`Level ${this.level}!`, '#FACA2A');
+      this.showFeedback(`Level ${this.level}!`, '#D2611D');
       this.generateQuestion();
+      this.updateLevelDisplay();
     } else {
       this.showFeedback('All levels completed! 🎊', '#00B378');
+      // Return to menu after celebration
+      this.time.delayedCall(2500, () => this.scene.start('GameMenu'));
     }
   }
 
@@ -934,23 +1063,27 @@ export class LearnAdditionsGame extends InteractiveGame {
    * Recreate circles for new level
    */
   recreateCirclesForLevel() {
-    // Destroy existing circles
+    // Destroy existing circles container
     if (this.circlesContainer) {
       this.circlesContainer.destroy();
     }
 
+    // Clear arrays
+    this.circles = [];
+    this.selectedCircles = [];
+
     // Create new circles for the level
-    this.createCirclesArea();
+    this.createCountingCircles();
   }
 
   /**
    * Start the game
    */
   create() {
-    // Call super.create() first to set up base functionality
+    // Call super.create() first
     super.create();
 
-    // Now create game-specific elements
+    // Create game-specific elements
     this.createGameElements();
   }
 
@@ -958,12 +1091,13 @@ export class LearnAdditionsGame extends InteractiveGame {
    * Play sound effect
    */
   playSound(soundName) {
-    // For now, just log - we'll implement proper audio later
-    console.log(`Playing sound: ${soundName}`);
+    if (this.audioManager) {
+      this.audioManager.playSound(soundName);
+    }
   }
 
   /**
-   * Update method - called every frame
+   * Update method
    */
   update(time, delta) {
     // Game logic updates if needed

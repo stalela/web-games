@@ -157,14 +157,16 @@ export class VerticalAdditionGame extends InteractiveGame {
     }).setOrigin(0.5);
     this.progressBadge.add([badgeBg, this.progressText]);
 
-    // Instructions
-    this.instructionText = this.add.text(width / 2, 120, 'Click on the boxes to enter your answers!\nAdd from right to left, carrying over when needed.', {
-      fontSize: '20px',
-      color: '#101012',
+    // Instructions - white text with shadow for visibility on wood background
+    this.instructionText = this.add.text(width / 2, 100, 'Click on the boxes to enter your answers!\nAdd from right to left, carrying over when needed.', {
+      fontSize: '18px',
+      color: '#FFFFFF',
       fontFamily: 'Nunito, sans-serif',
       align: 'center',
-      wordWrap: { width: width * 0.8 }
-    }).setOrigin(0.5);
+      wordWrap: { width: width * 0.8 },
+      stroke: '#000000',
+      strokeThickness: 3
+    }).setOrigin(0.5).setDepth(5);
 
     // Create the addition grid area
     this.createAdditionGrid();
@@ -544,12 +546,17 @@ export class VerticalAdditionGame extends InteractiveGame {
         const number = this.currentProblem.numbers[row];
         const digit = Math.floor(number / Math.pow(10, digits - 1 - col)) % 10;
 
-        // Create cell background - GCompris sticker style: white with thick black border and rounded corners
+        // Create cell background - GCompris sticker style: white with thick black border, rounded corners, and shadow
+        const cellShadow = this.add.graphics();
+        cellShadow.fillStyle(0x000000, 0.3);
+        cellShadow.fillRoundedRect(x - cellWidth/2 + 3, y - cellHeight/2 + 3, cellWidth, cellHeight, 12);
+        this.gridContainer.add(cellShadow);
+        
         const cellBg = this.add.graphics();
         cellBg.fillStyle(0xFFFFFF);
-        cellBg.fillRoundedRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight, 10);
-        cellBg.lineStyle(4, 0x000000);
-        cellBg.strokeRoundedRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight, 10);
+        cellBg.fillRoundedRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight, 12);
+        cellBg.lineStyle(3, 0x333333);
+        cellBg.strokeRoundedRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight, 12);
 
         // Create digit text - chunky 40px for problem numbers
         const digitText = this.add.text(x, y, digit.toString(), {
@@ -593,12 +600,17 @@ export class VerticalAdditionGame extends InteractiveGame {
       const x = startX + col * (cellWidth + spacing);
       const y = answerY;
 
-      // Create answer cell (interactive) - GCompris sticker style: white with thick black border and rounded corners
+      // Create answer cell (interactive) - GCompris sticker style: white with thick black border, rounded corners, and shadow
+      const answerShadow = this.add.graphics();
+      answerShadow.fillStyle(0x000000, 0.3);
+      answerShadow.fillRoundedRect(x - cellWidth/2 + 3, y - cellHeight/2 + 3, cellWidth, cellHeight, 12);
+      this.gridContainer.add(answerShadow);
+      
       const answerBg = this.add.graphics();
       answerBg.fillStyle(0xFFFFFF);
-      answerBg.fillRoundedRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight, 10);
-      answerBg.lineStyle(4, 0x000000);
-      answerBg.strokeRoundedRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight, 10);
+      answerBg.fillRoundedRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight, 12);
+      answerBg.lineStyle(3, 0x333333);
+      answerBg.strokeRoundedRect(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight, 12);
       answerBg.setInteractive(new Phaser.Geom.Rectangle(x - cellWidth/2, y - cellHeight/2, cellWidth, cellHeight), Phaser.Geom.Rectangle.Contains);
 
       // Create answer text (initially empty) - chunky 48px for result numbers

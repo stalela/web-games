@@ -386,6 +386,7 @@ export class AudioManager {
       await this.loadSound('error', 'assets/sounds/crash.wav');
       await this.loadSound('fail', 'assets/sounds/crash.wav');
       await this.loadSound('level-complete', 'assets/sounds/win.wav');
+      await this.loadSound('scroll', 'assets/sounds/scroll.wav');
     } catch (error) {
       console.warn("Could not preload common sounds:", error);
     }
@@ -396,6 +397,13 @@ export class AudioManager {
    */
   playClickSound() {
     this.playSound('click');
+  }
+
+  /**
+   * Play the scroll sound (used for scrolling UI elements)
+   */
+  playScrollSound() {
+    this.playSound('scroll');
   }
 
   /**
