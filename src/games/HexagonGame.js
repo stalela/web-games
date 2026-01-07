@@ -87,52 +87,11 @@ export class HexagonGame extends InteractiveGame {
     if (this.objectiveText) this.objectiveText.setVisible(false);
     if (this.hintButton) this.hintButton.setVisible(false);
 
-    // Instruction panel background (GCompris style) - responsive width
-    // Measure text width to create appropriately sized background
-    const tempText = this.add.text(0, 0, 'Find the strawberry by clicking on the hexagons!', {
-      fontSize: '24px',
-      fontFamily: 'Fredoka One, cursive'
-    });
-    const textWidth = tempText.width;
-    tempText.destroy(); // Clean up temp text
+    // No instruction panel shown at top - GCompris doesn't have one visible
+    // The game is intuitive - just click hexagons
 
-    const instructionPanelBg = this.add.rectangle(
-      this.scale.width / 2,
-      50,
-      Math.min(textWidth + 40, this.scale.width - 40), // Responsive width with minimum margins
-      60,
-      0x000000,
-      0.7
-    ).setOrigin(0.5).setDepth(50);
-
-    // Instruction text
-    this.instructionText = this.add.text(
-      this.scale.width / 2,
-      50,
-      'Find the strawberry by clicking on the hexagons!',
-      {
-        fontSize: '24px',
-        color: '#ffffff',
-        fontFamily: 'Fredoka One, cursive',
-        align: 'center'
-      }
-    ).setOrigin(0.5).setDepth(50);
-
-    // Level display
-    this.levelDisplay = this.add.text(
-      this.scale.width - 20,
-      20,
-      `Level ${this.currentLevel + 1}`,
-      {
-        fontSize: '20px',
-        color: '#ffffff',
-        fontFamily: 'Fredoka One, cursive',
-        fontStyle: 'bold'
-      }
-    ).setOrigin(1, 0).setDepth(50);
-
-    // Create navigation dock
-    this.createNavigationDock(this.scale.width, this.scale.height);
+    // Create GCompris-style navigation bar at bottom
+    this.createGComprisNavBar(this.scale.width, this.scale.height);
   }
 
   /**
@@ -230,10 +189,8 @@ export class HexagonGame extends InteractiveGame {
     this.inputLocked = false;
     this.strawberryFound = false;
 
-    // Update level display
-    if (this.levelDisplay) {
-      this.levelDisplay.setText(`Level ${this.currentLevel + 1}`);
-    }
+    // Update level display in nav bar
+    this.updateLevelText();
   }
 
   /**
@@ -667,120 +624,90 @@ export class HexagonGame extends InteractiveGame {
   }
 
   /**
-   * Create navigation dock (GCompris style)
+   * Create GCompris-style navigation bar at bottom left
    */
-  createNavigationDock(width, height) {
-    const dockY = height - 80;
-    const buttonSize = 90;
-    const spacing = 130;
+  createGComprisNavBar(width, height) {
+    const navY = height - 45;
+    const spacing = 65;
+    let x = 40;
 
-    // Dock background
-    const dockBg = this.add.graphics();
-    dockBg.fillStyle(0xFFFFFF, 0.95);
-    dockBg.fillRoundedRect(width / 2 - (width - 60) / 2, dockY - 60, width - 60, 120, 60);
-    dockBg.setDepth(100);
+    // Menu/hamburger button (brown)
+    this.createGComprisNavButton(x, navY, 0x5D4037, '☰', () => {});
+    x += spacing;
 
-    // Dock shadow
-    const dockShadow = this.add.graphics();
-    dockShadow.fillStyle(0x000000, 0.3);
-    dockShadow.fillRoundedRect(width / 2 - (width - 60) / 2 + 4, dockY - 56, width - 60, 120, 60);
-    dockShadow.setDepth(99);
+    // Help button (green with ?)
+    this.createGComprisNavButton(x, navY, 0x4CAF50, '?', () => this.showHelp());
+    x += spacing;
 
-    // Dock border
-    const dockBorder = this.add.graphics();
-    dockBorder.lineStyle(5, 0x0062FF, 1);
-    dockBorder.strokeRoundedRect(width / 2 - (width - 60) / 2, dockY - 60, width - 60, 120, 60);
-    dockBorder.setDepth(100);
+    // Home button (cyan with house)
+    this.createGComprisNavButton(x, navY, 0x4FC3F7, '⌂', () => this.returnToMenu());
+    x += spacing;
 
-    const controls = [
-      { icon: 'help.svg', action: 'help', color: 0x00B378, label: 'Help' },
-      { icon: 'home.svg', action: 'home', color: 0x0062FF, label: 'Home' },
-      { icon: 'settings.svg', action: 'levels', color: 0xFACA2A, label: 'Levels' },
-      { icon: 'exit.svg', action: 'menu', color: 0xAB47BC, label: 'Menu' }
-    ];
+    // Previous level (orange <)
+    this.createGComprisNavButton(x, navY, 0xF57C00, '❮', () => this.previousLevel());
+    x += spacing;
 
-    const totalWidth = (controls.length - 1) * spacing + buttonSize;
-    const startX = (width - totalWidth) / 2 + buttonSize / 2;
+    // Level number
+    this.levelText = this.add.text(x, navY, String(this.currentLevel + 1), {
+      fontFamily: 'Fredoka One, Arial Black, sans-serif',
+      fontSize: '32px',
+      color: '#5D4037'
+    }).setOrigin(0.5).setDepth(101);
+    x += 50;
 
-    controls.forEach((control, index) => {
-      const x = startX + index * spacing;
+    // Next level (orange >)
+    this.createGComprisNavButton(x, navY, 0xF57C00, '❯', () => this.nextLevel());
+  }
 
-      // Button shadow
-      const buttonShadow = this.add.circle(x + 4, dockY + 4, buttonSize / 2, 0x000000, 0.4);
-      buttonShadow.setDepth(100);
+  /**
+   * Create a GCompris-style navigation button
+   */
+  createGComprisNavButton(x, y, color, symbol, callback) {
+    const radius = 25;
 
-      // Button
-      const button = this.add.circle(x, dockY, buttonSize / 2, control.color);
-      button.setStrokeStyle(5, 0xFFFFFF);
-      button.setInteractive({ useHandCursor: true });
-      button.setDepth(100);
+    // Shadow
+    this.add.circle(x + 2, y + 3, radius, 0x000000, 0.3).setDepth(99);
 
-      // Icon
-      const icon = this.add.sprite(x, dockY, control.icon.replace('.svg', ''));
-      icon.setScale((buttonSize * 0.7) / 100);
-      icon.setTint(0xFFFFFF);
-      icon.setDepth(100);
+    // Button
+    const btn = this.add.circle(x, y, radius, color);
+    btn.setStrokeStyle(3, 0xFFFFFF);
+    btn.setInteractive({ useHandCursor: true });
+    btn.setDepth(100);
 
-      // Label (Fredoka One font as specified)
-      const label = this.add.text(x, dockY + buttonSize / 2 + 25, control.label, {
-        fontSize: '20px',
-        color: '#101012',
-        fontFamily: 'Fredoka One, cursive',
-        fontStyle: 'bold',
-        align: 'center'
-      }).setOrigin(0.5).setDepth(100);
+    // Icon
+    const icon = this.add.text(x, y, symbol, {
+      fontSize: '24px',
+      color: '#FFFFFF',
+      fontFamily: 'Arial'
+    }).setOrigin(0.5).setDepth(101);
 
-      // Hover effects
-      button.on('pointerover', () => {
-        this.tweens.add({
-          targets: button,
-          scale: 1.2,
-          duration: 150,
-          ease: 'Back.easeOut'
-        });
-      });
-
-      button.on('pointerout', () => {
-        this.tweens.add({
-          targets: button,
-          scale: 1.0,
-          duration: 150,
-          ease: 'Back.easeOut'
-        });
-      });
-
-      button.on('pointerdown', () => {
-        this.handleDockAction(control.action);
-      });
+    btn.on('pointerover', () => {
+      btn.setScale(1.1);
+      icon.setScale(1.1);
     });
+
+    btn.on('pointerout', () => {
+      btn.setScale(1);
+      icon.setScale(1);
+    });
+
+    btn.on('pointerdown', () => {
+      this.tweens.add({
+        targets: [btn, icon],
+        scale: 0.9,
+        duration: 100,
+        yoyo: true
+      });
+      callback();
+    });
+
+    return { btn, icon };
   }
 
-  /**
-   * Handle navigation dock actions
-   */
-  handleDockAction(action) {
-    // Close any open modals before performing actions
-    this.closeHelpModal();
-    this.closeLevelSelector();
 
-    switch (action) {
-      case 'help':
-        this.showHelp();
-        break;
-      case 'home':
-        this.returnToMenu();
-        break;
-      case 'levels':
-        this.showLevelSelector();
-        break;
-      case 'menu':
-        this.showMenu();
-        break;
-    }
-  }
 
   /**
-   * Show help modal dialog
+   * Show help modal dialog (GCompris style)
    */
   showHelp() {
     const { width, height } = this.scale;
@@ -792,35 +719,35 @@ export class HexagonGame extends InteractiveGame {
     overlay.on('pointerdown', () => this.closeHelpModal());
 
     // Modal background
-    const modalBg = this.add.rectangle(width / 2, height / 2, 550, 450, 0xFDFAED, 1);
-    modalBg.setStrokeStyle(4, 0xFACA2A);
+    const modalBg = this.add.rectangle(width / 2, height / 2, 500, 350, 0xFFFFFF, 0.95);
+    modalBg.setStrokeStyle(4, 0x4CAF50);
     modalBg.setDepth(151);
 
     // Help content
-    const helpText = this.add.text(width / 2, height / 2, '🍓 Hexagon Game Help! 🍓\n\n' +
-      '• Click on hexagons to reveal their colors\n' +
-      '• The colors get redder as you get closer to the strawberry\n' +
-      '• Blue means you\'re far away\n' +
-      '• Red means you\'re very close!\n' +
-      '• Yellow and green are in between\n\n' +
-      'Find the hidden strawberry in the honeycomb!', {
-      fontSize: '18px',
-      color: '#101012',
+    const helpText = this.add.text(width / 2, height / 2, '🍓 Find the Strawberry! 🍓\n\n' +
+      'Click on hexagons to reveal colors:\n\n' +
+      '🔴 Red = Very close!\n' +
+      '🟡 Yellow/Green = Getting warmer\n' +
+      '🔵 Blue = Far away\n\n' +
+      'Use the color hints to find the hidden strawberry!', {
+      fontSize: '20px',
+      color: '#333333',
       fontFamily: 'Fredoka One, cursive',
       align: 'center',
-      wordWrap: { width: 500 }
+      wordWrap: { width: 450 }
     }).setOrigin(0.5).setDepth(152);
 
     // Close button
-    const closeBtn = this.add.circle(width / 2 + 250, height / 2 - 210, 20, 0xE32528);
+    const closeBtn = this.add.circle(width / 2 + 230, height / 2 - 160, 20, 0xF44336);
     closeBtn.setInteractive({ useHandCursor: true });
+    closeBtn.setStrokeStyle(2, 0xFFFFFF);
     closeBtn.setDepth(153);
     closeBtn.on('pointerdown', () => this.closeHelpModal());
 
-    const closeText = this.add.text(width / 2 + 250, height / 2 - 210, '×', {
+    const closeText = this.add.text(width / 2 + 230, height / 2 - 160, '×', {
       fontSize: '24px',
       color: '#FFFFFF',
-      fontFamily: 'Fredoka One, cursive'
+      fontFamily: 'Arial Black'
     }).setOrigin(0.5).setDepth(154);
 
     // Store modal elements for cleanup
@@ -838,9 +765,20 @@ export class HexagonGame extends InteractiveGame {
   }
 
   /**
-   * Show level selector modal
+   * Update level text display
+   */
+  updateLevelText() {
+    if (this.levelText) {
+      this.levelText.setText(String(this.currentLevel + 1));
+    }
+  }
+
+  /**
+   * Show level selector modal (simplified - just use nav buttons)
    */
   showLevelSelector() {
+    // Level selection is now done via < > buttons in nav bar
+    // This method kept for compatibility
     const { width, height } = this.scale;
 
     // Overlay
@@ -965,22 +903,7 @@ export class HexagonGame extends InteractiveGame {
     this.initLevel();
 
     // Update level display
-    if (this.levelDisplay) {
-      this.levelDisplay.setText(`Level ${this.currentLevel + 1}`);
-    }
-  }
-
-  /**
-   * Show menu
-   */
-  showMenu() {
-    if (this.uiManager) {
-      this.uiManager.showNotification(
-        'Menu: Use the buttons to navigate levels or return home.',
-        'info',
-        3000
-      );
-    }
+    this.updateLevelText();
   }
 
   /**
@@ -998,14 +921,8 @@ export class HexagonGame extends InteractiveGame {
    */
   destroy() {
     // Clean up modals if open
-    if (this.helpModal) {
-      this.helpModal.forEach(element => element.destroy());
-      this.helpModal = null;
-    }
-    if (this.levelSelectorModal) {
-      this.levelSelectorModal.forEach(element => element.destroy());
-      this.levelSelectorModal = null;
-    }
+    this.closeHelpModal();
+    this.closeLevelSelector();
 
     this.clearHexagons();
     super.destroy();
