@@ -34,44 +34,54 @@ export class BabyMatchGame extends LalelaGame {
    */
   loadLevelData() {
     return [
-      // Level 1: Simple household items
+      // Level 1: Simple household items (using actual GCompris assets)
       {
         instruction: "Drag and drop the items to match them.",
         pairs: [
-          { sidebar: 'lamp', target: 'light', label: 'Lamp' },
-          { sidebar: 'mailbox', target: 'postcard', label: 'Mail' },
-          { sidebar: 'sailingboat', target: 'fishingboat', label: 'Boat' }
+          { sidebar: 'lamp', target: 'light', label: 'Lamp', sidebarImg: 'lamp', targetImg: 'light' },
+          { sidebar: 'postpoint', target: 'postcard', label: 'Mail', sidebarImg: 'postpoint', targetImg: 'postcard' },
+          { sidebar: 'sailingboat', target: 'fishingboat', label: 'Boat', sidebarImg: 'sailingboat', targetImg: 'fishingboat' }
         ]
       },
-      // Level 2: Animals
+      // Level 2: More items
       {
-        instruction: "Match the animals with their homes.",
+        instruction: "Match the related items.",
         pairs: [
-          { sidebar: 'bird', target: 'nest', label: 'Bird' },
-          { sidebar: 'fish', target: 'fishbowl', label: 'Fish' },
-          { sidebar: 'dog', target: 'doghouse', label: 'Dog' }
+          { sidebar: 'flower', target: 'flowerpot', label: 'Flower', sidebarImg: 'flower', targetImg: 'flowerpot' },
+          { sidebar: 'egg', target: 'eggpot', label: 'Egg', sidebarImg: 'egg', targetImg: 'eggpot' },
+          { sidebar: 'sun', target: 'tree', label: 'Sun', sidebarImg: 'sun', targetImg: 'tree' }
         ]
       },
-      // Level 3: Food
-      {
-        instruction: "Match the foods with their containers.",
-        pairs: [
-          { sidebar: 'apple', target: 'basket', label: 'Apple' },
-          { sidebar: 'milk', target: 'bottle', label: 'Milk' },
-          { sidebar: 'bread', target: 'plate', label: 'Bread' }
-        ]
-      },
-      // Level 4: Vehicles
+      // Level 3: Vehicles
       {
         instruction: "Match the vehicles.",
         pairs: [
-          { sidebar: 'car', target: 'garage', label: 'Car' },
-          { sidebar: 'plane', target: 'airport', label: 'Plane' },
-          { sidebar: 'train', target: 'station', label: 'Train' },
-          { sidebar: 'ship', target: 'harbor', label: 'Ship' }
+          { sidebar: 'car', target: 'minivan', label: 'Car', sidebarImg: 'car', targetImg: 'minivan' },
+          { sidebar: 'truck', target: 'bicycle', label: 'Transport', sidebarImg: 'truck', targetImg: 'bicycle' },
+          { sidebar: 'tuxplane', target: 'tuxhelico', label: 'Aircraft', sidebarImg: 'tuxplane', targetImg: 'tuxhelico' }
         ]
       },
-      // Level 5: Colors and shapes
+      // Level 4: Buildings and places
+      {
+        instruction: "Match the buildings.",
+        pairs: [
+          { sidebar: 'house', target: 'castle', label: 'Building', sidebarImg: 'house', targetImg: 'castle' },
+          { sidebar: 'lighthouse', target: 'lifebuoy', label: 'Sea', sidebarImg: 'lighthouse', targetImg: 'lifebuoy' },
+          { sidebar: 'football', target: 'raquette', label: 'Sports', sidebarImg: 'football', targetImg: 'raquette' },
+          { sidebar: 'crown', target: 'star', label: 'Royal', sidebarImg: 'crown', targetImg: 'star' }
+        ]
+      },
+      // Level 5: Food and kitchen
+      {
+        instruction: "Match the food items.",
+        pairs: [
+          { sidebar: 'apple', target: 'carrot', label: 'Food', sidebarImg: 'apple', targetImg: 'carrot' },
+          { sidebar: 'bottle', target: 'glass', label: 'Drinks', sidebarImg: 'bottle', targetImg: 'glass' },
+          { sidebar: 'pencil', target: 'bell', label: 'School', sidebarImg: 'pencil', targetImg: 'bell' },
+          { sidebar: 'sofa', target: 'lamp', label: 'Home', sidebarImg: 'sofa', targetImg: 'lamp' }
+        ]
+      },
+      // Level 6: Colors and shapes
       {
         instruction: "Match the colored shapes.",
         pairs: [
@@ -79,16 +89,6 @@ export class BabyMatchGame extends LalelaGame {
           { sidebar: 'blue_square', target: 'square_outline', label: 'Square', color: 0x0062FF },
           { sidebar: 'green_triangle', target: 'triangle_outline', label: 'Triangle', color: 0x00B378 },
           { sidebar: 'yellow_star', target: 'star_outline', label: 'Star', color: 0xFACA2A }
-        ]
-      },
-      // Level 6: Numbers
-      {
-        instruction: "Match the numbers with the quantities.",
-        pairs: [
-          { sidebar: 'one', target: 'one_dot', label: '1' },
-          { sidebar: 'two', target: 'two_dots', label: '2' },
-          { sidebar: 'three', target: 'three_dots', label: '3' },
-          { sidebar: 'four', target: 'four_dots', label: '4' }
         ]
       },
       // Level 7: Letters
@@ -117,6 +117,18 @@ export class BabyMatchGame extends LalelaGame {
     const uiIcons = ['exit.svg', 'settings.svg', 'help.svg', 'home.svg'];
     uiIcons.forEach(icon => {
       this.load.svg(icon.replace('.svg', ''), `assets/category-icons/${icon}`);
+    });
+
+    // Load all babymatch SVG assets
+    const babymatchAssets = [
+      'lamp', 'light', 'postpoint', 'postcard', 'sailingboat', 'fishingboat',
+      'flower', 'flowerpot', 'egg', 'eggpot', 'sun', 'tree',
+      'car', 'minivan', 'truck', 'bicycle', 'tuxplane', 'tuxhelico',
+      'house', 'castle', 'lighthouse', 'lifebuoy', 'football', 'raquette',
+      'crown', 'star', 'apple', 'carrot', 'bottle', 'glass', 'pencil', 'bell', 'sofa'
+    ];
+    babymatchAssets.forEach(asset => {
+      this.load.svg(asset, `assets/babymatch/${asset}.svg`);
     });
   }
 
@@ -454,8 +466,28 @@ export class BabyMatchGame extends LalelaGame {
       }
       graphics.setDepth(5);
       this.backgroundItems.push(graphics);
+    } else if (pair.targetImg && this.textures.exists(pair.targetImg)) {
+      // Use actual SVG image from babymatch assets
+      const image = this.add.image(x, y, pair.targetImg);
+      image.setDisplaySize(size, size);
+      image.setDepth(5);
+      this.backgroundItems.push(image);
+    } else if (pair.label && pair.label.length === 1) {
+      // Single character (letter matching) - show larger letter
+      const letterBg = this.add.circle(x, y, size / 2 + 5, 0xFFFFFF, 0.9);
+      letterBg.setStrokeStyle(3, 0x888888);
+      letterBg.setDepth(5);
+
+      const letter = this.add.text(x, y, pair.target.toLowerCase(), {
+        fontSize: '48px',
+        color: '#5D4037',
+        fontFamily: 'Fredoka One, cursive'
+      }).setOrigin(0.5).setDepth(6);
+
+      this.backgroundItems.push(letterBg);
+      this.backgroundItems.push(letter);
     } else {
-      // Create a placeholder rectangle with label
+      // Fallback to placeholder rectangle with label
       const placeholder = this.add.rectangle(x, y, size, size, 0xFFFFFF, 0.8);
       placeholder.setStrokeStyle(3, 0x888888);
       placeholder.setDepth(5);
@@ -520,8 +552,23 @@ export class BabyMatchGame extends LalelaGame {
         graphics.fillCircle(0, 0, itemSize / 2);
       }
       container.add(graphics);
+    } else if (pair.sidebarImg && this.textures.exists(pair.sidebarImg)) {
+      // Use actual SVG image from babymatch assets
+      const image = this.add.image(0, 0, pair.sidebarImg);
+      image.setDisplaySize(itemSize, itemSize);
+      container.add(image);
+    } else if (pair.label && pair.label.length === 1) {
+      // Single character (letter matching) - show in a colored circle
+      const circleBg = this.add.circle(0, 0, itemSize / 2, 0xFACA2A);
+      circleBg.setStrokeStyle(2, 0xF57C00);
+      const letter = this.add.text(0, 0, pair.sidebar.toUpperCase(), {
+        fontSize: '32px',
+        color: '#FFFFFF',
+        fontFamily: 'Fredoka One, cursive'
+      }).setOrigin(0.5);
+      container.add([circleBg, letter]);
     } else {
-      // Colored rectangle with label
+      // Fallback to colored rectangle with label
       const rect = this.add.rectangle(0, 0, itemSize, itemSize, 0xFACA2A);
       rect.setStrokeStyle(2, 0xF57C00);
       const label = this.add.text(0, 0, pair.label?.charAt(0) || '?', {
