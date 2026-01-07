@@ -356,12 +356,15 @@ export class SoundButtonGame extends InteractiveGame {
   }
 
   /**
-   * Create sound control buttons
+   * Create sound control buttons and GCompris navigation bar
    */
   createSoundControls() {
     const { width, height } = this.scale;
 
-    // Sound toggle button
+    // Create GCompris-style navigation bar
+    this.createNavigationBar();
+
+    // Sound toggle button (keep on right side)
     this.soundToggleBtn = this.add.graphics();
     this.soundToggleBtn.fillStyle(0xFFD93D, 0.9);
     this.soundToggleBtn.fillRoundedRect(width - 80, height - 80, 60, 60, 15);
@@ -401,6 +404,148 @@ export class SoundButtonGame extends InteractiveGame {
         duration: 150,
         ease: 'Power2'
       });
+    });
+  }
+
+  /**
+   * Create GCompris-style navigation bar
+   */
+  createNavigationBar() {
+    const { width, height } = this.scale;
+    this.navContainer = this.add.container(0, 0).setDepth(200);
+    const btnSize = 60;
+    const spacing = 8;
+    let x = 15;
+    const y = height - btnSize / 2 - 12;
+
+    // Brown menu button (hamburger)
+    this.createNavButton(x + btnSize / 2, y, btnSize, 0x8B4513, '☰', 'menu');
+    x += btnSize + spacing;
+
+    // Green help button
+    this.createNavButton(x + btnSize / 2, y, btnSize, 0x2ECC71, '?', 'help');
+    x += btnSize + spacing;
+
+    // Cyan home button
+    this.createNavButton(x + btnSize / 2, y, btnSize, 0x17A2B8, '⌂', 'home');
+    x += btnSize + spacing;
+
+    // Blue reload button
+    this.createNavButton(x + btnSize / 2, y, btnSize, 0x3498DB, '↻', 'reload');
+  }
+
+  /**
+   * Create a circular navigation button
+   */
+  createNavButton(x, y, size, color, symbol, action) {
+    const btn = this.add.container(x, y).setDepth(200);
+
+    // Circle background
+    const bg = this.add.graphics();
+    bg.fillStyle(color, 1);
+    bg.fillCircle(0, 0, size / 2);
+    bg.lineStyle(3, 0xFFFFFF, 0.3);
+    bg.strokeCircle(0, 0, size / 2);
+
+    // Symbol text
+    const text = this.add.text(0, 0, symbol, {
+      fontSize: `${size * 0.5}px`,
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF'
+    }).setOrigin(0.5);
+
+    btn.add([bg, text]);
+    this.navContainer.add(btn);
+
+    // Make interactive
+    const hitArea = this.add.circle(x, y, size / 2).setInteractive({ useHandCursor: true });
+    hitArea.setAlpha(0.001);
+    hitArea.on('pointerdown', () => this.handleNavAction(action));
+  }
+
+  /**
+   * Handle navigation button actions
+   */
+  handleNavAction(action) {
+    switch (action) {
+      case 'home':
+        this.scene.start('GameMenu');
+        break;
+      case 'help':
+        this.showHelpModal();
+        break;
+      case 'menu':
+        // Settings menu - could be expanded
+        break;
+      case 'reload':
+        this.restartGame();
+        break;
+    }
+  }
+
+  /**
+   * Show help modal
+   */
+  showHelpModal() {
+    const { width, height } = this.scale;
+
+    // Overlay
+    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7)
+      .setDepth(300)
+      .setInteractive();
+
+    // Help panel
+    const panel = this.add.graphics().setDepth(301);
+    const panelWidth = 500;
+    const panelHeight = 300;
+    const panelX = width / 2 - panelWidth / 2;
+    const panelY = height / 2 - panelHeight / 2;
+
+    panel.fillStyle(0x3d5a80, 0.95);
+    panel.fillRoundedRect(panelX, panelY, panelWidth, panelHeight, 16);
+    panel.lineStyle(3, 0xFFD93D);
+    panel.strokeRoundedRect(panelX, panelY, panelWidth, panelHeight, 16);
+
+    // Title
+    const title = this.add.text(width / 2, panelY + 40, '🔊 Sound Explorer', {
+      fontSize: '28px',
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFD93D'
+    }).setOrigin(0.5).setDepth(302);
+
+    // Instructions
+    const instructions = this.add.text(width / 2, panelY + 130, 
+      'Explore different sound categories!\n\n' +
+      '• Choose a category from the top tabs\n' +
+      '• Click on buttons to hear sounds\n' +
+      '• Use the speaker button to toggle sound',
+      {
+        fontSize: '18px',
+        fontFamily: 'Arial',
+        color: '#FFFFFF',
+        align: 'center',
+        lineSpacing: 8
+      }
+    ).setOrigin(0.5).setDepth(302);
+
+    // Close button
+    const closeBtn = this.add.text(width / 2, panelY + panelHeight - 45, 'Got it!', {
+      fontSize: '22px',
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF',
+      backgroundColor: '#2ECC71',
+      padding: { x: 30, y: 10 }
+    }).setOrigin(0.5).setDepth(302).setInteractive({ useHandCursor: true });
+
+    closeBtn.on('pointerdown', () => {
+      overlay.destroy();
+      panel.destroy();
+      title.destroy();
+      instructions.destroy();
+      closeBtn.destroy();
     });
   }
 
