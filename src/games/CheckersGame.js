@@ -298,19 +298,31 @@ export class CheckersGame extends Phaser.Scene {
   }
 
   // --- Fixed Coordinate Mapping ---
-  // Matches GCompris pattern for 10x10 with (0,0) as playable
-  // White pieces at visual BOTTOM (engine 31-50), Black at TOP (engine 1-20)
+  // Engine external numbering (1-50):
+  //   Row 0 (even): squares 1-5 at cols 1,3,5,7,9 (indented)
+  //   Row 1 (odd):  squares 6-10 at cols 0,2,4,6,8 (left edge)
+  // Our board has (row+col)%2===0 as playable:
+  //   Row 0 (even): playable at cols 0,2,4,6,8
+  //   Row 1 (odd):  playable at cols 1,3,5,7,9
+  // So we need to account for this offset difference
   viewPosToEngine(pos) {
     const row = Math.floor(pos / 10);
     const col = pos % 10;
-    // Engine index: row * 5 + which playable square in that row + 1
-    const engineIndex = row * 5 + Math.floor(col / 2) + 1;
+    // For even rows: our cols 0,2,4,6,8 map to engine's "indented" squares
+    // For odd rows: our cols 1,3,5,7,9 map to engine's "left edge" squares
+    // The engine numbers squares left-to-right within each row
+    const colIndex = Math.floor(col / 2); // 0-4 within the row
+    const engineIndex = row * 5 + colIndex + 1;
     return engineIndex;
   }
 
   engineToViewPos(pos) {
     const row = Math.floor((pos - 1) / 5);
-    const col = ((pos - 1) % 5) * 2 + (row % 2);
+    const colIndex = (pos - 1) % 5; // 0-4 within the row
+    // Engine even rows are indented (cols 1,3,5,7,9), but our even rows have cols 0,2,4,6,8
+    // Engine odd rows start at left (cols 0,2,4,6,8), but our odd rows have cols 1,3,5,7,9
+    // So we need: even rows -> cols 0,2,4,6,8, odd rows -> cols 1,3,5,7,9
+    const col = colIndex * 2 + (row % 2);
     return row * 10 + col;
   }
 
