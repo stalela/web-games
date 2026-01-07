@@ -299,18 +299,18 @@ export class CheckersGame extends Phaser.Scene {
 
   // --- Fixed Coordinate Mapping ---
   // Matches GCompris pattern for 10x10 with (0,0) as playable
+  // White pieces at visual BOTTOM (engine 31-50), Black at TOP (engine 1-20)
   viewPosToEngine(pos) {
     const row = Math.floor(pos / 10);
     const col = pos % 10;
+    // Engine index: row * 5 + which playable square in that row + 1
     const engineIndex = row * 5 + Math.floor(col / 2) + 1;
-    // Flip so White (engine 31-50) is at visual Top
-    return 51 - engineIndex;
+    return engineIndex;
   }
 
   engineToViewPos(pos) {
-    const flipped = 51 - pos;
-    const row = Math.floor((flipped - 1) / 5);
-    const col = ((flipped - 1) % 5) * 2 + (row % 2);
+    const row = Math.floor((pos - 1) / 5);
+    const col = ((pos - 1) % 5) * 2 + (row % 2);
     return row * 10 + col;
   }
 
@@ -350,7 +350,8 @@ export class CheckersGame extends Phaser.Scene {
 
   checkPromotion(piece, to) {
     const isWhite = piece.pieceType.startsWith('w');
-    if ((isWhite && to < 10) || (!isWhite && to > 89)) {
+    // White promotes when reaching top row (0-9), Black at bottom row (90-99)
+    if ((isWhite && to < 10) || (!isWhite && to >= 90)) {
         const newKey = isWhite ? 'wk' : 'bk';
         piece.pieceType = newKey;
         piece.setTexture(newKey);
@@ -358,31 +359,170 @@ export class CheckersGame extends Phaser.Scene {
   }
 
   createBottomControls(width, height) {
-    const barY = height - 50;
-    const spacing = 95;
-    const actions = ['help', 'home', 'undo', 'reload', 'redo'];
-    const startX = (width - (actions.length * spacing)) / 2 + spacing / 2;
+    this.navContainer = this.add.container(0, 0).setDepth(200);
+    const btnSize = 70;
+    const spacing = 10;
+    let x = 20;
+    const y = height - btnSize / 2 - 15;
 
-    actions.forEach((action, i) => {
-        const x = startX + i * spacing;
-        const btn = this.add.container(x, barY).setDepth(200);
-        const bg = this.add.graphics();
-        bg.fillStyle(0xFFFFFF, 0.9).fillRoundedRect(-40, -30, 80, 60, 8);
-        bg.lineStyle(2, 0xCCCCCC).strokeRoundedRect(-40, -30, 80, 60, 8);
-        const icon = this.add.image(0, 0, action === 'reload' ? 'reload' : action === 'undo' ? 'undo' : action === 'redo' ? 'redo' : action);
-        icon.setDisplaySize(40, 40);
-        btn.add([bg, icon]);
-        bg.setInteractive(new Phaser.Geom.Rectangle(-40, -30, 80, 60), Phaser.Geom.Rectangle.Contains);
-        bg.on('pointerdown', () => this.handleControlAction(action));
-    });
+    // Brown menu button (hamburger)
+    this.createNavButton(x + btnSize / 2, y, btnSize, 0x8B4513, '☰', 'menu');
+    x += btnSize + spacing;
+
+    // Green help button
+    this.createNavButton(x + btnSize / 2, y, btnSize, 0x2ECC71, '?', 'help');
+    x += btnSize + spacing;
+
+    // Cyan home button
+    this.createNavButton(x + btnSize / 2, y, btnSize, 0x17A2B8, '⌂', 'home');
+    x += btnSize + spacing;
+
+    // Orange left arrow (prev level)
+    this.createNavButton(x + btnSize / 2, y, btnSize * 0.7, 0xE67E22, '❮', 'prevLevel');
+    x += btnSize * 0.7 + spacing;
+
+    // Level number display
+    this.levelText = this.add.text(x + 20, y, '1', {
+      fontSize: '36px',
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF'
+    }).setOrigin(0.5).setDepth(201);
+    this.navContainer.add(this.levelText);
+    x += 50;
+
+    // Orange right arrow (next level) 
+    this.createNavButton(x + btnSize / 2, y, btnSize * 0.7, 0xE67E22, '❯', 'nextLevel');
+    x += btnSize * 0.7 + spacing;
+
+    // Blue undo button
+    this.createNavButton(x + btnSize / 2, y, btnSize, 0x3498DB, '↩', 'reload');
+  }
+
+  createNavButton(x, y, size, color, symbol, action) {
+    const btn = this.add.container(x, y).setDepth(200);
+
+    // Circle background
+    const bg = this.add.graphics();
+    bg.fillStyle(color, 1);
+    bg.fillCircle(0, 0, size / 2);
+    bg.lineStyle(3, 0xFFFFFF, 0.3);
+    bg.strokeCircle(0, 0, size / 2);
+
+    // Symbol text
+    const text = this.add.text(0, 0, symbol, {
+      fontSize: `${size * 0.5}px`,
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF'
+    }).setOrigin(0.5);
+
+    btn.add([bg, text]);
+    this.navContainer.add(btn);
+
+    // Make interactive
+    const hitArea = this.add.circle(x, y, size / 2).setInteractive();
+    hitArea.setAlpha(0.001);
+    hitArea.on('pointerdown', () => this.handleControlAction(action));
   }
 
   handleControlAction(action) {
-    if (action === 'home') {
+    switch (action) {
+      case 'home':
         this.scene.stop('CheckersGame');
         this.app.showGameMenu();
-    } else if (action === 'reload') {
+        break;
+      case 'reload':
         this.initLevel();
+        break;
+      case 'help':
+        this.showHelp();
+        break;
+      case 'menu':
+        // Menu action - could show settings
+        break;
+      case 'prevLevel':
+        if (this.gameConfig.currentLevel > 1) {
+          this.gameConfig.currentLevel--;
+          this.updateLevelText();
+          this.initLevel();
+        }
+        break;
+      case 'nextLevel':
+        if (this.gameConfig.currentLevel < this.gameConfig.numberOfLevel) {
+          this.gameConfig.currentLevel++;
+          this.updateLevelText();
+          this.initLevel();
+        }
+        break;
     }
+  }
+
+  updateLevelText() {
+    if (this.levelText) {
+      this.levelText.setText(this.gameConfig.currentLevel.toString());
+    }
+  }
+
+  showHelp() {
+    const { width, height } = this.game.config;
+
+    // Overlay
+    const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7)
+      .setDepth(300)
+      .setInteractive();
+
+    // Help panel
+    const panel = this.add.graphics().setDepth(301);
+    const panelWidth = 500;
+    const panelHeight = 300;
+    const panelX = width / 2 - panelWidth / 2;
+    const panelY = height / 2 - panelHeight / 2;
+
+    panel.fillStyle(0x2E1B0C, 0.95);
+    panel.fillRoundedRect(panelX, panelY, panelWidth, panelHeight, 16);
+    panel.lineStyle(3, 0x8B4513);
+    panel.strokeRoundedRect(panelX, panelY, panelWidth, panelHeight, 16);
+
+    // Title
+    const title = this.add.text(width / 2, panelY + 40, 'Checkers (International Draughts)', {
+      fontSize: '24px',
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF'
+    }).setOrigin(0.5).setDepth(302);
+
+    // Instructions
+    const instructions = this.add.text(width / 2, panelY + 130, 
+      'Play checkers against the computer.\n\n' +
+      'Click or drag your white pieces to move.\n' +
+      'Capture opponent pieces by jumping over them.\n' +
+      'Reach the opposite end to promote to a King!',
+      {
+        fontSize: '18px',
+        fontFamily: 'Arial',
+        color: '#CCCCCC',
+        align: 'center',
+        lineSpacing: 8
+      }
+    ).setOrigin(0.5).setDepth(302);
+
+    // Close button
+    const closeBtn = this.add.text(width / 2, panelY + panelHeight - 40, 'Got it!', {
+      fontSize: '20px',
+      fontFamily: 'Arial',
+      fontWeight: 'bold',
+      color: '#FFFFFF',
+      backgroundColor: '#2ECC71',
+      padding: { x: 30, y: 10 }
+    }).setOrigin(0.5).setDepth(302).setInteractive();
+
+    closeBtn.on('pointerdown', () => {
+      overlay.destroy();
+      panel.destroy();
+      title.destroy();
+      instructions.destroy();
+      closeBtn.destroy();
+    });
   }
 }
