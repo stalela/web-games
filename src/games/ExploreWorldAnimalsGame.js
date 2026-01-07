@@ -2,7 +2,7 @@
  * ExploreWorldAnimalsGame - Learn about wild animals from around the world
  * 
  * Adapted from GCompris explore_world_animals activity
- * Uses actual world map and animal photos from GCompris
+ * Restyled to match GCompris visual design with wood background
  * 
  * Features:
  * - Level 1: Explore - Click on animals to learn about them
@@ -162,6 +162,9 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
     preload() {
         super.preload();
         
+        // Load wood background (same as ExploreLevels uses)
+        this.load.svg('wood-background', 'assets/chess/background-wood.svg');
+        
         // Load world map
         this.load.svg('world-map', 'assets/explore-world/world-map.svg');
         
@@ -190,6 +193,7 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         this.questions = [];
         this.animalSprites = [];
         this.descriptionPanel = null;
+        this.navElements = [];
         
         this.createBackground();
         this.createUI();
@@ -199,142 +203,194 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
     createBackground() {
         const { width, height } = this.scale;
         
-        // Use actual world map SVG
+        // GCompris uses brown wood background
+        if (this.textures.exists('wood-background')) {
+            const woodBg = this.add.image(width / 2, height / 2, 'wood-background');
+            const scaleX = width / woodBg.width;
+            const scaleY = height / woodBg.height;
+            woodBg.setScale(Math.max(scaleX, scaleY));
+            woodBg.setDepth(-2);
+        } else {
+            // Fallback: programmatic wood-like brown
+            const gfx = this.add.graphics();
+            gfx.fillStyle(0x5D4037, 1);
+            gfx.fillRect(0, 0, width, height);
+            gfx.setDepth(-2);
+        }
+        
+        // Calculate map size (centered, with margins for UI)
+        const barHeight = 80;
+        const topMargin = 70;
+        const availableHeight = height - barHeight - topMargin;
+        const availableWidth = width * 0.65;
+        
+        // World map centered on wood background
         if (this.textures.exists('world-map')) {
-            const bg = this.add.image(width / 2, height / 2, 'world-map');
+            const map = this.add.image(width / 2, (height - barHeight + topMargin) / 2, 'world-map');
             
-            // GCompris logic: Play area is a 1000x1000 square centered in a 3000x3000 background
-            // We calculate the play area size to fit within the screen (leaving space for UI)
-            const availableHeight = height - 100; // Subtract space for top/bottom bars
-            const playAreaSize = Math.min(width, availableHeight);
+            // Scale to fit within available space while preserving aspect ratio
+            const scaleX = availableWidth / map.width;
+            const scaleY = availableHeight / map.height;
+            const mapScale = Math.min(scaleX, scaleY);
+            map.setScale(mapScale);
+            map.setDepth(-1);
             
-            // The background image (3000px) should be 3 times the play area size
-            // But since the SVG is 3000x3000 and play area is 1000x1000, the ratio is 3.
-            // So we scale the background such that its displayed width is 3 * playAreaSize
-            const scale = (3 * playAreaSize) / bg.width;
+            // Store actual displayed map bounds for positioning animals
+            const displayedWidth = map.width * mapScale;
+            const displayedHeight = map.height * mapScale;
+            const mapCenterX = width / 2;
+            const mapCenterY = (height - barHeight + topMargin) / 2;
             
-            bg.setScale(scale);
-            bg.setDepth(-1);
-            
-            // Store map bounds for positioning animals (this is the Play Area)
             this.mapBounds = {
-                x: (width - playAreaSize) / 2,
-                y: (height - playAreaSize) / 2,
-                width: playAreaSize,
-                height: playAreaSize
+                x: mapCenterX - displayedWidth / 2,
+                y: mapCenterY - displayedHeight / 2,
+                width: displayedWidth,
+                height: displayedHeight
             };
         } else {
-            // Fallback: programmatic world map - use full screen
-            const bg = this.add.graphics();
-            bg.fillStyle(0x4682B4, 1);
-            bg.fillRect(0, 0, width, height);
+            // Fallback: create simple programmatic map
+            const mapWidth = availableWidth;
+            const mapHeight = availableHeight * 0.7;
+            const mapX = (width - mapWidth) / 2;
+            const mapY = topMargin + (availableHeight - mapHeight) / 2;
             
-            // Simple continents
-            bg.fillStyle(0x228B22, 1);
-            bg.fillRoundedRect(width * 0.08, height * 0.25, width * 0.20, height * 0.30, 20);
-            bg.fillRoundedRect(width * 0.22, height * 0.50, width * 0.14, height * 0.30, 20);
-            bg.fillRoundedRect(width * 0.42, height * 0.30, width * 0.10, height * 0.20, 15);
-            bg.fillRoundedRect(width * 0.44, height * 0.45, width * 0.15, height * 0.30, 20);
-            bg.fillRoundedRect(width * 0.52, height * 0.22, width * 0.25, height * 0.35, 25);
-            bg.fillRoundedRect(width * 0.78, height * 0.55, width * 0.15, height * 0.20, 15);
+            const mapGfx = this.add.graphics();
+            mapGfx.fillStyle(0x87CEEB, 1);
+            mapGfx.fillRect(mapX, mapY, mapWidth, mapHeight);
+            mapGfx.setDepth(-1);
             
-            bg.setDepth(-1);
-            
-            // Use full screen as map bounds
-            this.mapBounds = { x: 0, y: 0, width, height };
+            this.mapBounds = {
+                x: mapX,
+                y: mapY,
+                width: mapWidth,
+                height: mapHeight
+            };
         }
     }
 
     createUI() {
         const { width, height } = this.scale;
         
-        // Title/instruction panel
+        // GCompris-style instruction panel (white with blue border)
+        const panelWidth = Math.min(650, width * 0.65);
+        const panelHeight = 50;
+        const panelX = (width - panelWidth) / 2 - 40; // Offset left for score
+        
         this.instructionPanel = this.add.graphics();
-        this.instructionPanel.fillStyle(0x3d5a5a, 0.9);
-        this.instructionPanel.fillRoundedRect(width / 2 - 280, 10, 560, 45, 10);
+        this.instructionPanel.fillStyle(0xF5F5F5, 0.95);
+        this.instructionPanel.fillRoundedRect(panelX, 10, panelWidth, panelHeight, 8);
+        this.instructionPanel.lineStyle(2, 0x3E7BB8, 1);
+        this.instructionPanel.strokeRoundedRect(panelX, 10, panelWidth, panelHeight, 8);
         this.instructionPanel.setDepth(10);
         
-        this.instructionText = this.add.text(width / 2, 32, '', {
+        this.instructionText = this.add.text(panelX + panelWidth / 2, 35, '', {
             fontFamily: 'Arial',
-            fontSize: '18px',
-            color: '#ffffff',
+            fontSize: '22px',
+            color: '#333333'
+        }).setOrigin(0.5).setDepth(11);
+        
+        // GCompris-style score display (white rounded box at top right)
+        const scoreBoxWidth = 65;
+        const scoreBoxHeight = 45;
+        
+        this.scoreBox = this.add.graphics();
+        this.scoreBox.fillStyle(0xFFFFFF, 0.95);
+        this.scoreBox.fillRoundedRect(width - scoreBoxWidth - 15, 10, scoreBoxWidth, scoreBoxHeight, 8);
+        this.scoreBox.lineStyle(2, 0x3E7BB8, 1);
+        this.scoreBox.strokeRoundedRect(width - scoreBoxWidth - 15, 10, scoreBoxWidth, scoreBoxHeight, 8);
+        this.scoreBox.setDepth(10);
+        
+        this.scoreText = this.add.text(width - scoreBoxWidth / 2 - 15, 32, '1/2', {
+            fontFamily: 'Arial',
+            fontSize: '22px',
+            color: '#333333',
             fontStyle: 'bold'
         }).setOrigin(0.5).setDepth(11);
         
-        // Score display
-        this.scoreText = this.add.text(width - 20, 15, '', {
-            fontFamily: 'Arial',
-            fontSize: '16px',
-            color: '#ffffff',
-            backgroundColor: '#333333',
-            padding: { x: 8, y: 4 }
-        }).setOrigin(1, 0).setDepth(10);
-        
-        // Create navigation
-        this.createNavigationDock();
+        // Create GCompris-style navigation bar
+        this.createNavigationBar();
     }
 
-    createNavigationDock() {
+    createNavigationBar() {
         const { width, height } = this.scale;
-        const buttonSize = 45;
-        const padding = 10;
-        const y = height - buttonSize / 2 - 10;
+        const buttonSize = 60;
+        const buttonSpacing = 70;
+        const y = height - buttonSize / 2 - 12;
         
-        let x = 40;
+        let x = 50;
         
-        // Home button
-        this.createNavButton(x, y, 0x26c6da, '⌂', () => {
+        // Menu button (brown/tan with hamburger icon)
+        this.createNavButton(x, y, buttonSize, 0x8B7355, '☰', () => {
             this.scene.start('GameMenu');
         });
-        x += buttonSize + padding;
+        x += buttonSpacing;
         
-        // Previous level
-        this.createNavButton(x, y, 0xf57c00, '❮', () => {
+        // Help button (green with white ?)
+        this.createNavButton(x, y, buttonSize, 0x4CAF50, '?', () => {
+            this.showHelpModal();
+        });
+        x += buttonSpacing;
+        
+        // Home button (orange with house icon)
+        this.createNavButton(x, y, buttonSize, 0xF5A623, '⌂', () => {
+            this.scene.start('GameMenu');
+        });
+        x += buttonSpacing;
+        
+        // Previous level (orange arrow)
+        this.createNavButton(x, y, buttonSize, 0xF5A623, '❮', () => {
             if (this.level > 1) {
                 this.level--;
                 this.restartLevel();
             }
         });
-        x += buttonSize + padding;
+        x += buttonSpacing * 0.75;
         
-        // Level indicator
-        const levelNames = ['', 'Explore', 'Quiz'];
-        this.levelText = this.add.text(x + 30, y, levelNames[this.level], {
+        // Level indicator (number between arrows)
+        this.levelText = this.add.text(x, y, String(this.level), {
             fontFamily: 'Arial Black',
-            fontSize: '18px',
-            color: '#ffffff',
-            stroke: '#000000',
-            strokeThickness: 2
-        }).setOrigin(0.5).setDepth(10);
-        x += 70;
+            fontSize: '32px',
+            color: '#333333'
+        }).setOrigin(0.5).setDepth(101);
+        x += buttonSpacing * 0.75;
         
-        // Next level
-        this.createNavButton(x, y, 0xeeeeee, '❯', () => {
+        // Next level (orange arrow)
+        this.createNavButton(x, y, buttonSize, 0xF5A623, '❯', () => {
             if (this.level < this.maxLevel) {
                 this.level++;
                 this.restartLevel();
             }
-        }, '#333333');
-        x += buttonSize + padding;
+        });
+        x += buttonSpacing;
         
-        // Restart
-        this.createNavButton(x, y, 0x26c6da, '↻', () => {
+        // Reload/Restart button (gray-blue)
+        this.createNavButton(x, y, buttonSize, 0x7B8B9A, '↻', () => {
             this.restartLevel();
         });
     }
     
-    createNavButton(x, y, color, icon, callback, textColor = '#ffffff') {
-        const button = this.add.circle(x, y, 20, color)
-            .setInteractive({ useHandCursor: true })
-            .setDepth(10);
+    createNavButton(x, y, size, color, icon, callback) {
+        const radius = size / 2;
         
-        this.add.circle(x, y + 2, 20, 0x000000, 0.3).setDepth(9);
+        // Shadow
+        const shadow = this.add.circle(x, y + 3, radius, 0x000000, 0.3);
+        shadow.setDepth(99);
+        this.navElements.push(shadow);
         
+        // Button background
+        const button = this.add.circle(x, y, radius, color);
+        button.setStrokeStyle(3, 0xFFFFFF);
+        button.setInteractive({ useHandCursor: true });
+        button.setDepth(100);
+        this.navElements.push(button);
+        
+        // Icon
         const text = this.add.text(x, y, icon, {
             fontFamily: 'Arial',
-            fontSize: '18px',
-            color: textColor
-        }).setOrigin(0.5).setDepth(11);
+            fontSize: `${size * 0.45}px`,
+            color: '#FFFFFF'
+        }).setOrigin(0.5).setDepth(101);
+        this.navElements.push(text);
 
         button.on('pointerover', () => {
             button.setScale(1.1);
@@ -346,7 +402,78 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         });
         button.on('pointerdown', callback);
         
-        return { button, text };
+        return { button, text, shadow };
+    }
+
+    showHelpModal() {
+        if (this.helpModal) return;
+        
+        const { width, height } = this.scale;
+        
+        // Create modal container
+        this.helpModal = this.add.container(0, 0).setDepth(200);
+        
+        // Overlay
+        const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7);
+        overlay.setInteractive();
+        this.helpModal.add(overlay);
+        
+        // Panel
+        const panelWidth = Math.min(500, width * 0.8);
+        const panelHeight = 280;
+        const panel = this.add.graphics();
+        panel.fillStyle(0xFFFFFF, 0.98);
+        panel.fillRoundedRect(width / 2 - panelWidth / 2, height / 2 - panelHeight / 2, panelWidth, panelHeight, 15);
+        panel.lineStyle(3, 0x4CAF50, 1);
+        panel.strokeRoundedRect(width / 2 - panelWidth / 2, height / 2 - panelHeight / 2, panelWidth, panelHeight, 15);
+        this.helpModal.add(panel);
+        
+        // Title
+        const title = this.add.text(width / 2, height / 2 - panelHeight / 2 + 35, 'World Animals', {
+            fontFamily: 'Arial Black',
+            fontSize: '26px',
+            color: '#4CAF50'
+        }).setOrigin(0.5);
+        this.helpModal.add(title);
+        
+        // Instructions based on level
+        const instructions = [
+            '',
+            'Level 1: Explore\nClick on each animal marker to discover wild animals from around the world!',
+            'Level 2: Quiz\nClick on the location where the given animal lives.'
+        ];
+        
+        const text = this.add.text(width / 2, height / 2, instructions[this.level], {
+            fontFamily: 'Arial',
+            fontSize: '18px',
+            color: '#333333',
+            align: 'center',
+            wordWrap: { width: panelWidth - 40 }
+        }).setOrigin(0.5);
+        this.helpModal.add(text);
+        
+        // Close button
+        const closeBtn = this.add.circle(width / 2 + panelWidth / 2 - 25, height / 2 - panelHeight / 2 + 25, 18, 0xE53935);
+        closeBtn.setStrokeStyle(2, 0xFFFFFF);
+        closeBtn.setInteractive({ useHandCursor: true });
+        this.helpModal.add(closeBtn);
+        
+        const closeX = this.add.text(width / 2 + panelWidth / 2 - 25, height / 2 - panelHeight / 2 + 25, '✕', {
+            fontFamily: 'Arial',
+            fontSize: '18px',
+            color: '#FFFFFF'
+        }).setOrigin(0.5);
+        this.helpModal.add(closeX);
+        
+        closeBtn.on('pointerdown', () => {
+            this.helpModal.destroy();
+            this.helpModal = null;
+        });
+        
+        overlay.on('pointerdown', () => {
+            this.helpModal.destroy();
+            this.helpModal = null;
+        });
     }
 
     setupGameLogic() {
@@ -376,13 +503,13 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         });
         this.animalSprites = [];
         
-        const markerSize = Math.min(width, height) * 0.06;
+        const markerSize = Math.min(width, height) * 0.055;
         
         // Use map bounds to position animals relative to the map
-        const mapBounds = this.mapBounds || { x: 0, y: 0, width, height };
+        const mapBounds = this.mapBounds;
         
         this.animals.forEach((animal, index) => {
-            // Position relative to the map bounds, not the full screen
+            // Position relative to the map bounds
             const x = mapBounds.x + mapBounds.width * animal.x;
             const y = mapBounds.y + mapBounds.height * animal.y;
             
@@ -396,29 +523,26 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
                 const scale = markerSize / Math.max(marker.width, marker.height);
                 marker.setScale(scale);
                 
-                // Add circular mask effect with border
-                const maskGraphics = this.add.graphics();
-                maskGraphics.fillStyle(0xffffff, 1);
-                maskGraphics.fillCircle(x, y, markerSize / 2);
-                
                 // Border circle
                 const border = this.add.graphics();
-                border.lineStyle(3, 0xffffff, 1);
+                border.lineStyle(3, 0xFFFFFF, 1);
                 border.strokeCircle(x, y, markerSize / 2 + 2);
                 border.setDepth(2);
                 marker.border = border;
             } else {
-                // Fallback: colored circle with first letter
-                marker = this.add.graphics();
-                marker.fillStyle(0x4CAF50, 1);
-                marker.fillCircle(0, 0, markerSize / 2);
-                marker.lineStyle(2, 0xffffff, 1);
-                marker.strokeCircle(0, 0, markerSize / 2);
-                marker.setPosition(x, y);
+                // Fallback: question mark marker (GCompris style)
+                const gfx = this.add.graphics();
+                gfx.fillStyle(0xD4A574, 1);
+                gfx.fillCircle(0, 0, markerSize / 2);
+                gfx.lineStyle(2, 0xFFFFFF, 1);
+                gfx.strokeCircle(0, 0, markerSize / 2);
+                gfx.setPosition(x, y);
                 
-                this.add.text(x, y, animal.name[0], {
-                    fontSize: '16px',
-                    color: '#ffffff',
+                marker = gfx;
+                
+                this.add.text(x, y, '?', {
+                    fontSize: `${markerSize * 0.6}px`,
+                    color: '#FFFFFF',
                     fontStyle: 'bold'
                 }).setOrigin(0.5).setDepth(3);
             }
@@ -434,29 +558,30 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
             hitArea.setData('index', index);
             hitArea.marker = marker;
             
-            // Region label
-            const regionLabel = this.add.text(x, y + markerSize / 2 + 12, animal.region, {
+            // Region label (smaller, below marker)
+            const regionLabel = this.add.text(x, y + markerSize / 2 + 10, animal.region, {
                 fontFamily: 'Arial',
-                fontSize: '10px',
-                color: '#ffffff',
-                backgroundColor: '#333333aa',
-                padding: { x: 4, y: 2 }
+                fontSize: '9px',
+                color: '#FFFFFF',
+                backgroundColor: '#333333cc',
+                padding: { x: 3, y: 2 }
             }).setOrigin(0.5).setDepth(4);
             hitArea.label = regionLabel;
             
             // Star indicator (for explore mode)
-            const star = this.add.text(x, y - markerSize / 2 - 12, '⭐', {
-                fontSize: '16px'
+            const star = this.add.text(x, y - markerSize / 2 - 10, '⭐', {
+                fontSize: '14px'
             }).setOrigin(0.5).setDepth(5).setVisible(false);
             hitArea.star = star;
             
             // Hover effect
+            const originalScale = marker.scale || 1;
             hitArea.on('pointerover', () => {
-                marker.setScale(marker.scale * 1.2);
+                if (marker.setScale) marker.setScale(originalScale * 1.2);
                 if (marker.border) marker.border.setScale(1.2);
             });
             hitArea.on('pointerout', () => {
-                marker.setScale(marker.scale / 1.2);
+                if (marker.setScale) marker.setScale(originalScale);
                 if (marker.border) marker.border.setScale(1);
             });
             
@@ -492,62 +617,76 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         const { width, height } = this.scale;
         
         // Remove existing panel
-        if (this.descriptionPanel) {
-            this.descriptionPanel.destroy();
-            this.descriptionTitle?.destroy();
-            this.descriptionText?.destroy();
-            this.regionLabel?.destroy();
-            this.closeBtn?.destroy();
-            this.animalPhoto?.destroy();
-        }
+        this.hideDescriptionPanel();
         
-        // Create panel
+        // Create panel container
+        this.descriptionContainer = this.add.container(0, 0).setDepth(50);
+        
+        // Panel background
+        const panelWidth = Math.min(550, width * 0.8);
+        const panelHeight = Math.min(320, height * 0.5);
+        const panelX = (width - panelWidth) / 2;
+        const panelY = (height - panelHeight) / 2;
+        
         this.descriptionPanel = this.add.graphics();
-        this.descriptionPanel.fillStyle(0xffffff, 0.95);
-        this.descriptionPanel.fillRoundedRect(width * 0.1, height * 0.15, width * 0.8, height * 0.6, 15);
-        this.descriptionPanel.lineStyle(3, 0x333333, 1);
-        this.descriptionPanel.strokeRoundedRect(width * 0.1, height * 0.15, width * 0.8, height * 0.6, 15);
-        this.descriptionPanel.setDepth(20);
+        this.descriptionPanel.fillStyle(0xFFFFFF, 0.98);
+        this.descriptionPanel.fillRoundedRect(panelX, panelY, panelWidth, panelHeight, 15);
+        this.descriptionPanel.lineStyle(3, 0x4CAF50, 1);
+        this.descriptionPanel.strokeRoundedRect(panelX, panelY, panelWidth, panelHeight, 15);
+        this.descriptionContainer.add(this.descriptionPanel);
         
-        // Animal photo (larger in info panel)
+        // Animal photo
         const photoKey = `${animal.id}-photo`;
+        const photoX = panelX + panelWidth * 0.25;
+        const photoY = panelY + panelHeight * 0.5;
+        
         if (this.textures.exists(photoKey)) {
-            this.animalPhoto = this.add.image(width * 0.28, height * 0.42, photoKey);
-            const maxPhotoSize = Math.min(width * 0.25, height * 0.35);
+            this.animalPhoto = this.add.image(photoX, photoY, photoKey);
+            const maxPhotoSize = Math.min(panelWidth * 0.35, panelHeight * 0.6);
             const photoScale = Math.min(maxPhotoSize / this.animalPhoto.width, maxPhotoSize / this.animalPhoto.height);
             this.animalPhoto.setScale(photoScale);
-            this.animalPhoto.setDepth(21);
+            this.descriptionContainer.add(this.animalPhoto);
         }
         
         // Title
-        this.descriptionTitle = this.add.text(width * 0.6, height * 0.24, animal.name, {
+        const titleX = panelX + panelWidth * 0.65;
+        this.descriptionTitle = this.add.text(titleX, panelY + 35, animal.name, {
             fontFamily: 'Arial Black',
-            fontSize: '28px',
+            fontSize: '26px',
             color: '#333333'
-        }).setOrigin(0.5).setDepth(21);
+        }).setOrigin(0.5);
+        this.descriptionContainer.add(this.descriptionTitle);
         
         // Region label
-        this.regionLabel = this.add.text(width * 0.6, height * 0.33, `📍 ${animal.region}`, {
+        this.regionLabel = this.add.text(titleX, panelY + 70, `📍 ${animal.region}`, {
             fontFamily: 'Arial',
-            fontSize: '18px',
+            fontSize: '16px',
             color: '#666666'
-        }).setOrigin(0.5).setDepth(21);
+        }).setOrigin(0.5);
+        this.descriptionContainer.add(this.regionLabel);
         
         // Description
-        this.descriptionText = this.add.text(width * 0.6, height * 0.50, animal.description, {
+        this.descriptionText = this.add.text(titleX, panelY + panelHeight * 0.55, animal.description, {
             fontFamily: 'Arial',
-            fontSize: '15px',
+            fontSize: '14px',
             color: '#555555',
-            wordWrap: { width: width * 0.35 },
+            wordWrap: { width: panelWidth * 0.42 },
             align: 'center'
-        }).setOrigin(0.5).setDepth(21);
+        }).setOrigin(0.5);
+        this.descriptionContainer.add(this.descriptionText);
         
         // Close button
-        this.closeBtn = this.add.text(width * 0.87, height * 0.18, '✕', {
+        this.closeBtn = this.add.circle(panelX + panelWidth - 25, panelY + 25, 18, 0xE53935);
+        this.closeBtn.setStrokeStyle(2, 0xFFFFFF);
+        this.closeBtn.setInteractive({ useHandCursor: true });
+        this.descriptionContainer.add(this.closeBtn);
+        
+        const closeX = this.add.text(panelX + panelWidth - 25, panelY + 25, '✕', {
             fontFamily: 'Arial',
-            fontSize: '28px',
-            color: '#666666'
-        }).setOrigin(0.5).setDepth(22).setInteractive({ useHandCursor: true });
+            fontSize: '18px',
+            color: '#FFFFFF'
+        }).setOrigin(0.5);
+        this.descriptionContainer.add(closeX);
         
         this.closeBtn.on('pointerdown', () => {
             this.hideDescriptionPanel();
@@ -555,32 +694,30 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
     }
 
     hideDescriptionPanel() {
-        if (this.descriptionPanel) {
-            this.descriptionPanel.destroy();
-            this.descriptionTitle?.destroy();
-            this.descriptionText?.destroy();
-            this.regionLabel?.destroy();
-            this.closeBtn?.destroy();
-            this.animalPhoto?.destroy();
+        if (this.descriptionContainer) {
+            this.descriptionContainer.destroy();
+            this.descriptionContainer = null;
             this.descriptionPanel = null;
         }
     }
 
     updateInstructions() {
+        // GCompris-style instructions
         const instructions = [
             '',
-            'Click on each animal to learn about them!',
-            'Find the animal: '
+            'Explore wild animals from around the world.',
+            'Click on the location where the given animal lives.'
         ];
         
         if (this.level === 2 && this.questions[this.currentQuestion]) {
-            this.instructionText.setText(instructions[this.level] + this.questions[this.currentQuestion].name);
+            this.instructionText.setText(`Find the ${this.questions[this.currentQuestion].name}!`);
         } else {
             this.instructionText.setText(instructions[this.level]);
         }
     }
 
     updateExploreProgress() {
+        // Update level display for explore mode
         this.scoreText.setText(`${this.exploredAnimals.size}/${this.animals.length}`);
     }
 
@@ -597,10 +734,11 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
             return;
         }
         
+        // Update level/score display
         this.scoreText.setText(`${this.currentQuestion + 1}/${this.questions.length}`);
         
         const animal = this.questions[this.currentQuestion];
-        this.instructionText.setText(`Find the ${animal.name}!`);
+        this.instructionText.setText(`Click on the location where the ${animal.name} lives.`);
     }
 
     checkQuizAnswer(animal, sprite) {
@@ -626,13 +764,15 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         
         if (correct) {
             // Green pulse
-            this.tweens.add({
-                targets: marker,
-                scale: { from: marker.scale, to: marker.scale * 1.5 },
-                duration: 300,
-                yoyo: true,
-                ease: 'Power2'
-            });
+            if (marker.setScale) {
+                this.tweens.add({
+                    targets: marker,
+                    scale: { from: marker.scale, to: marker.scale * 1.5 },
+                    duration: 300,
+                    yoyo: true,
+                    ease: 'Power2'
+                });
+            }
             
             const check = this.add.text(sprite.x, sprite.y, '✓', {
                 fontSize: '40px',
@@ -649,16 +789,18 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
             });
         } else {
             // Shake
-            const originalX = marker.x;
-            this.tweens.add({
-                targets: marker,
-                x: originalX + 8,
-                duration: 50,
-                yoyo: true,
-                repeat: 3,
-                ease: 'Power2',
-                onComplete: () => marker.setX(originalX)
-            });
+            if (marker.x !== undefined) {
+                const originalX = marker.x;
+                this.tweens.add({
+                    targets: marker,
+                    x: originalX + 8,
+                    duration: 50,
+                    yoyo: true,
+                    repeat: 3,
+                    ease: 'Power2',
+                    onComplete: () => marker.setX(originalX)
+                });
+            }
             
             const wrong = this.add.text(sprite.x, sprite.y, '✗', {
                 fontSize: '30px',
@@ -680,22 +822,22 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         
         if (this.level < this.maxLevel) {
             const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7)
-                .setDepth(20);
+                .setDepth(150);
             
             const levelNames = ['', 'Exploration', 'Quiz'];
             const message = this.add.text(width / 2, height / 2 - 30, `🌍 ${levelNames[this.level]} Complete! 🌍`, {
                 fontFamily: 'Arial Black',
                 fontSize: '28px',
                 color: '#4CAF50'
-            }).setOrigin(0.5).setDepth(21);
+            }).setOrigin(0.5).setDepth(151);
             
             const nextBtn = this.add.text(width / 2, height / 2 + 30, 'Start Quiz →', {
                 fontFamily: 'Arial',
                 fontSize: '24px',
                 color: '#ffffff',
-                backgroundColor: '#0062FF',
+                backgroundColor: '#4CAF50',
                 padding: { x: 20, y: 10 }
-            }).setOrigin(0.5).setDepth(21).setInteractive({ useHandCursor: true });
+            }).setOrigin(0.5).setDepth(151).setInteractive({ useHandCursor: true });
             
             nextBtn.on('pointerdown', () => {
                 overlay.destroy();
@@ -713,27 +855,27 @@ export class ExploreWorldAnimalsGame extends LalelaGame {
         const { width, height } = this.scale;
         
         const overlay = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.7)
-            .setDepth(20);
+            .setDepth(150);
         
         const message = this.add.text(width / 2, height / 2 - 30, '🏆 World Animal Expert! 🏆', {
             fontFamily: 'Arial Black',
             fontSize: '28px',
             color: '#FFD700'
-        }).setOrigin(0.5).setDepth(21);
+        }).setOrigin(0.5).setDepth(151);
         
         const subMessage = this.add.text(width / 2, height / 2 + 10, `You learned about all ${this.animals.length} animals!`, {
             fontFamily: 'Arial',
             fontSize: '18px',
             color: '#ffffff'
-        }).setOrigin(0.5).setDepth(21);
+        }).setOrigin(0.5).setDepth(151);
         
         const menuBtn = this.add.text(width / 2, height / 2 + 60, 'Back to Menu', {
             fontFamily: 'Arial',
             fontSize: '24px',
             color: '#ffffff',
-            backgroundColor: '#333333',
+            backgroundColor: '#4CAF50',
             padding: { x: 20, y: 10 }
-        }).setOrigin(0.5).setDepth(21).setInteractive({ useHandCursor: true });
+        }).setOrigin(0.5).setDepth(151).setInteractive({ useHandCursor: true });
         
         menuBtn.on('pointerdown', () => {
             this.scene.start('GameMenu');
