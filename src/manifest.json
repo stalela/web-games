@@ -1,0 +1,116 @@
+{
+  "name": "Lalela Educational Games",
+  "short_name": "Lalela Games",
+  "description": "Fun educational games for children - math, reading, puzzles, science, and more!",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0062FF",
+  "background_color": "#FFFFFF",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["education", "games", "kids"],
+  "icons": [
+    {
+      "src": "/assets/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/assets/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/assets/screenshots/home-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Home screen with game categories"
+    },
+    {
+      "src": "/assets/screenshots/game-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Educational game in action"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Math Games",
+      "short_name": "Math",
+      "description": "Play math educational games",
+      "url": "/?category=math",
+      "icons": [{ "src": "/assets/category-icons/math.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Reading Games",
+      "short_name": "Reading",
+      "description": "Play reading and literacy games",
+      "url": "/?category=reading",
+      "icons": [{ "src": "/assets/category-icons/reading.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Puzzle Games",
+      "short_name": "Puzzles",
+      "description": "Play puzzle and logic games",
+      "url": "/?category=puzzle",
+      "icons": [{ "src": "/assets/category-icons/puzzle.svg", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
