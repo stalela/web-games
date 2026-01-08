@@ -3,6 +3,7 @@
  * Features layered background, animal category icons, square game cards, and bottom controls
  */
 import { InputManager } from '../utils/InputManager.js';
+import { authManager } from '../utils/AuthManager.js';
 
 export class GameMenuScene extends Phaser.Scene {
   constructor() {
@@ -62,8 +63,8 @@ export class GameMenuScene extends Phaser.Scene {
       }
     ];
 
-    // Game definitions with metadata
-    this.allGames = [
+    // Default game definitions (fallback if API unavailable)
+    this.defaultGames = [
       {
         scene: 'BabyKeyboardGame',
         name: 'Baby Keyboard',
@@ -1480,16 +1481,115 @@ export class GameMenuScene extends Phaser.Scene {
       }
     ];
 
+    // Games list - will be populated from API or fallback to defaults
+    this.allGames = [...this.defaultGames];
+
     // Current state
     this.currentCategory = 'all'; // 'all' or category id
     this.categoryButtons = [];
     this.gameCards = [];
     this.bottomControls = [];
+    this.filterChips = [];
     this.activityConfigMode = false;
+    this.isLoadingGames = false;
+    this.currentDifficultyFilter = 'all'; // 'all', 1, 2, 3
+    this.currentSortOrder = 'name'; // 'name', 'difficulty', 'recent'
   }
 
   init(data) {
     this.app = data.app;
+  }
+
+  /**
+   * Fetch games from API and update the game list
+   * Falls back to default games if API is unavailable
+   */
+  async fetchAndDisplayGames(width, height) {
+    const childId = authManager.getChildId();
+    
+    // If no child is authenticated, use default games
+    if (!childId) {
+      console.log('No child authenticated, using default games');
+      this.allGames = [...this.defaultGames];
+      return;
+    }
+
+    // Show loading indicator
+    this.isLoadingGames = true;
+    this.loadingText = this.add.text(width / 2, height / 2, 'Loading games...', {
+      fontSize: '24px',
+      fontFamily: 'Nunito, Arial, sans-serif',
+      color: '#ffffff',
+      backgroundColor: '#00000080',
+      padding: { x: 20, y: 10 }
+    }).setOrigin(0.5).setDepth(50);
+
+    try {
+      const games = await this.fetchChildGames(childId);
+      
+      if (games && games.length > 0) {
+        // Map API response to expected format
+        this.allGames = games.map(game => ({
+          scene: game.scene_name,
+          name: game.name,
+          icon: game.icon || `${game.scene_name.toLowerCase()}.svg`,
+          difficulty: game.difficulty,
+          category: game.category,
+          isLocked: game.is_locked || false,
+          lockReason: game.lock_reason || null,
+          lastPlayed: game.last_played || null,
+          bestScore: game.best_score || null
+        }));
+        console.log(`Loaded ${this.allGames.length} games from API`);
+      } else {
+        console.log('API returned empty games list, using defaults');
+        this.allGames = [...this.defaultGames];
+      }
+    } catch (error) {
+      console.warn('Failed to fetch games from API, using defaults:', error.message);
+      this.allGames = [...this.defaultGames];
+    } finally {
+      // Remove loading indicator
+      if (this.loadingText) {
+        this.loadingText.destroy();
+        this.loadingText = null;
+      }
+      this.isLoadingGames = false;
+    }
+  }
+
+  /**
+   * Fetch child's available games from the API
+   * @param {string} childId - The child's UUID
+   * @returns {Promise<Array>} Array of game objects
+   */
+  async fetchChildGames(childId) {
+    const apiBaseUrl = this.getApiBaseUrl();
+    const headers = authManager.getAuthHeaders();
+    
+    const response = await fetch(`${apiBaseUrl}/api/children/${childId}/games/`, {
+      method: 'GET',
+      headers: headers
+    });
+
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status} ${response.statusText}`);
+    }
+
+    return await response.json();
+  }
+
+  /**
+   * Get the API base URL based on environment
+   */
+  getApiBaseUrl() {
+    // In development, Django runs on port 8000
+    // In production, it's the same domain
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return 'http://localhost:8000';
+    }
+    // Production: API is on same domain
+    return window.location.origin;
   }
 
   preload() {
@@ -1552,12 +1652,19 @@ export class GameMenuScene extends Phaser.Scene {
     // Create layered background environment
     this.createBackground(width, height);
 
+    // Fetch games from API (with loading indicator)
+    await this.fetchAndDisplayGames(width, height);
+
     // Create title in top area (above category bar)
     // this.createTitle(width, height);
 
     // Clear and recreate category bar with animal icons
     this.clearCategoryButtons();
     this.createCategoryBar(width, height);
+
+    // Create filter bar with difficulty chips and sort
+    this.clearFilterChips();
+    this.createFilterBar(width, height);
 
     // Create game grid area (responsive)
     this.createGameGrid(width, height);
@@ -1898,6 +2005,426 @@ export class GameMenuScene extends Phaser.Scene {
   }
 
   /**
+   * Clear existing filter chips to prevent duplicates on scene restart
+   */
+  clearFilterChips() {
+    if (this.filterChips) {
+      this.filterChips.forEach(chip => {
+        if (chip && chip.destroy) chip.destroy();
+      });
+    }
+    this.filterChips = [];
+    if (this.sortDropdown) {
+      this.sortDropdown.destroy();
+      this.sortDropdown = null;
+    }
+  }
+
+  /**
+   * Create filter bar with difficulty chips and sort dropdown
+   */
+  createFilterBar(width, height) {
+    const barY = 200; // Below category bar (85 + 110 padding)
+    const barHeight = 50;
+    const chipHeight = 36;
+    const chipPadding = 15;
+    const chipSpacing = 10;
+    
+    // Define difficulty filters
+    const difficultyFilters = [
+      { id: 'all', label: 'All', color: 0x666666 },
+      { id: 1, label: 'Easy', color: 0x00B378 },     // Aloe Green
+      { id: 2, label: 'Medium', color: 0xF08A00 },   // Orange
+      { id: 3, label: 'Hard', color: 0xE32528 }      // Red
+    ];
+
+    // Calculate starting position (left-aligned with margin)
+    let chipX = 30;
+
+    // Create "Difficulty:" label
+    const labelText = this.add.text(chipX, barY, 'Difficulty:', {
+      fontSize: '16px',
+      fontFamily: 'Nunito, Arial, sans-serif',
+      color: '#ffffff',
+      fontWeight: 'bold'
+    }).setOrigin(0, 0.5).setDepth(15);
+    this.filterChips.push(labelText);
+    chipX += labelText.width + 15;
+
+    // Create difficulty filter chips
+    difficultyFilters.forEach((filter, index) => {
+      const chipContainer = this.add.container(chipX, barY).setDepth(15);
+      
+      // Calculate chip width based on text
+      const tempText = this.add.text(0, 0, filter.label, { fontSize: '14px', fontFamily: 'Nunito' });
+      const chipWidth = tempText.width + chipPadding * 2;
+      tempText.destroy();
+
+      // Chip background
+      const chipBg = this.add.graphics();
+      const isActive = this.currentDifficultyFilter === filter.id;
+      this.drawChip(chipBg, chipWidth, chipHeight, filter.color, isActive);
+      chipContainer.add(chipBg);
+
+      // Chip text
+      const chipText = this.add.text(chipWidth / 2, chipHeight / 2, filter.label, {
+        fontSize: '14px',
+        fontFamily: 'Nunito, Arial, sans-serif',
+        color: isActive ? '#ffffff' : '#cccccc',
+        fontWeight: isActive ? 'bold' : 'normal'
+      }).setOrigin(0.5);
+      chipContainer.add(chipText);
+
+      // Make interactive
+      chipBg.setInteractive(new Phaser.Geom.Rectangle(0, 0, chipWidth, chipHeight), Phaser.Geom.Rectangle.Contains);
+      
+      chipBg.on('pointerover', () => {
+        if (this.currentDifficultyFilter !== filter.id) {
+          chipBg.clear();
+          this.drawChip(chipBg, chipWidth, chipHeight, filter.color, false, true);
+        }
+      });
+      
+      chipBg.on('pointerout', () => {
+        chipBg.clear();
+        this.drawChip(chipBg, chipWidth, chipHeight, filter.color, this.currentDifficultyFilter === filter.id);
+      });
+      
+      chipBg.on('pointerdown', () => {
+        if (this.app?.audioManager) this.app.audioManager.playClickSound();
+        this.setDifficultyFilter(filter.id);
+      });
+
+      // Store reference
+      chipContainer.filterId = filter.id;
+      chipContainer.chipBg = chipBg;
+      chipContainer.chipText = chipText;
+      chipContainer.filterColor = filter.color;
+      chipContainer.chipWidth = chipWidth;
+      chipContainer.chipHeight = chipHeight;
+      this.filterChips.push(chipContainer);
+
+      chipX += chipWidth + chipSpacing;
+    });
+
+    // Create sort dropdown on the right side
+    this.createSortDropdown(width, barY);
+  }
+
+  /**
+   * Draw a filter chip with given state
+   */
+  drawChip(graphics, width, height, color, isActive, isHover = false) {
+    const radius = height / 2;
+    if (isActive) {
+      graphics.fillStyle(color, 1);
+      graphics.fillRoundedRect(0, 0, width, height, radius);
+    } else if (isHover) {
+      graphics.fillStyle(color, 0.3);
+      graphics.fillRoundedRect(0, 0, width, height, radius);
+      graphics.lineStyle(1, color, 0.8);
+      graphics.strokeRoundedRect(0, 0, width, height, radius);
+    } else {
+      graphics.fillStyle(0x333333, 0.5);
+      graphics.fillRoundedRect(0, 0, width, height, radius);
+      graphics.lineStyle(1, 0x666666, 0.5);
+      graphics.strokeRoundedRect(0, 0, width, height, radius);
+    }
+  }
+
+  /**
+   * Create sort dropdown on the right side of the filter bar
+   */
+  createSortDropdown(width, barY) {
+    const dropdownX = width - 150;
+    const dropdownWidth = 120;
+    const dropdownHeight = 36;
+    
+    const sortOptions = [
+      { id: 'name', label: 'Name' },
+      { id: 'difficulty', label: 'Difficulty' },
+      { id: 'recent', label: 'Recent' }
+    ];
+
+    const currentSort = sortOptions.find(s => s.id === this.currentSortOrder) || sortOptions[0];
+
+    // Create dropdown container
+    this.sortDropdown = this.add.container(dropdownX, barY).setDepth(20);
+
+    // "Sort:" label
+    const sortLabel = this.add.text(-50, dropdownHeight / 2, 'Sort:', {
+      fontSize: '16px',
+      fontFamily: 'Nunito, Arial, sans-serif',
+      color: '#ffffff',
+      fontWeight: 'bold'
+    }).setOrigin(0, 0.5);
+    this.sortDropdown.add(sortLabel);
+
+    // Dropdown button background
+    const dropdownBg = this.add.graphics();
+    dropdownBg.fillStyle(0x333333, 0.7);
+    dropdownBg.fillRoundedRect(0, 0, dropdownWidth, dropdownHeight, 5);
+    dropdownBg.lineStyle(1, 0x666666, 0.8);
+    dropdownBg.strokeRoundedRect(0, 0, dropdownWidth, dropdownHeight, 5);
+    this.sortDropdown.add(dropdownBg);
+
+    // Current selection text
+    const selectionText = this.add.text(10, dropdownHeight / 2, currentSort.label, {
+      fontSize: '14px',
+      fontFamily: 'Nunito, Arial, sans-serif',
+      color: '#ffffff'
+    }).setOrigin(0, 0.5);
+    this.sortDropdown.add(selectionText);
+
+    // Dropdown arrow
+    const arrow = this.add.text(dropdownWidth - 20, dropdownHeight / 2, '▼', {
+      fontSize: '12px',
+      color: '#ffffff'
+    }).setOrigin(0.5);
+    this.sortDropdown.add(arrow);
+
+    // Make interactive
+    dropdownBg.setInteractive(new Phaser.Geom.Rectangle(0, 0, dropdownWidth, dropdownHeight), Phaser.Geom.Rectangle.Contains);
+    
+    dropdownBg.on('pointerdown', () => {
+      if (this.app?.audioManager) this.app.audioManager.playClickSound();
+      this.toggleSortDropdown(dropdownX, barY + dropdownHeight + 5, dropdownWidth, sortOptions);
+    });
+
+    dropdownBg.on('pointerover', () => {
+      dropdownBg.clear();
+      dropdownBg.fillStyle(0x444444, 0.9);
+      dropdownBg.fillRoundedRect(0, 0, dropdownWidth, dropdownHeight, 5);
+      dropdownBg.lineStyle(1, 0x0062FF, 1);
+      dropdownBg.strokeRoundedRect(0, 0, dropdownWidth, dropdownHeight, 5);
+    });
+
+    dropdownBg.on('pointerout', () => {
+      if (!this.sortDropdownOpen) {
+        dropdownBg.clear();
+        dropdownBg.fillStyle(0x333333, 0.7);
+        dropdownBg.fillRoundedRect(0, 0, dropdownWidth, dropdownHeight, 5);
+        dropdownBg.lineStyle(1, 0x666666, 0.8);
+        dropdownBg.strokeRoundedRect(0, 0, dropdownWidth, dropdownHeight, 5);
+      }
+    });
+  }
+
+  /**
+   * Toggle sort dropdown menu
+   */
+  toggleSortDropdown(x, y, width, options) {
+    // Close if already open
+    if (this.sortDropdownMenu) {
+      this.sortDropdownMenu.destroy();
+      this.sortDropdownMenu = null;
+      this.sortDropdownOpen = false;
+      return;
+    }
+
+    this.sortDropdownOpen = true;
+    this.sortDropdownMenu = this.add.container(x, y).setDepth(200);
+
+    const itemHeight = 32;
+    const menuHeight = options.length * itemHeight;
+
+    // Menu background
+    const menuBg = this.add.graphics();
+    menuBg.fillStyle(0x222222, 0.95);
+    menuBg.fillRoundedRect(0, 0, width, menuHeight, 5);
+    menuBg.lineStyle(1, 0x666666, 0.8);
+    menuBg.strokeRoundedRect(0, 0, width, menuHeight, 5);
+    this.sortDropdownMenu.add(menuBg);
+
+    // Menu items
+    options.forEach((option, index) => {
+      const itemY = index * itemHeight;
+      const isSelected = this.currentSortOrder === option.id;
+
+      const itemBg = this.add.graphics();
+      if (isSelected) {
+        itemBg.fillStyle(0x0062FF, 0.5);
+        itemBg.fillRect(2, itemY + 2, width - 4, itemHeight - 4);
+      }
+      this.sortDropdownMenu.add(itemBg);
+
+      const itemText = this.add.text(10, itemY + itemHeight / 2, option.label, {
+        fontSize: '14px',
+        fontFamily: 'Nunito, Arial, sans-serif',
+        color: isSelected ? '#ffffff' : '#cccccc',
+        fontWeight: isSelected ? 'bold' : 'normal'
+      }).setOrigin(0, 0.5);
+      this.sortDropdownMenu.add(itemText);
+
+      // Make item interactive
+      itemBg.setInteractive(new Phaser.Geom.Rectangle(0, itemY, width, itemHeight), Phaser.Geom.Rectangle.Contains);
+      
+      itemBg.on('pointerover', () => {
+        itemBg.clear();
+        itemBg.fillStyle(0x0062FF, 0.3);
+        itemBg.fillRect(2, itemY + 2, width - 4, itemHeight - 4);
+      });
+      
+      itemBg.on('pointerout', () => {
+        itemBg.clear();
+        if (isSelected) {
+          itemBg.fillStyle(0x0062FF, 0.5);
+          itemBg.fillRect(2, itemY + 2, width - 4, itemHeight - 4);
+        }
+      });
+      
+      itemBg.on('pointerdown', () => {
+        if (this.app?.audioManager) this.app.audioManager.playClickSound();
+        this.setSortOrder(option.id);
+        this.sortDropdownMenu.destroy();
+        this.sortDropdownMenu = null;
+        this.sortDropdownOpen = false;
+        // Refresh the dropdown to show new selection
+        this.clearFilterChips();
+        this.createFilterBar(this.game.config.width, this.game.config.height);
+      });
+    });
+
+    // Close dropdown when clicking outside
+    this.input.once('pointerdown', (pointer) => {
+      if (this.sortDropdownMenu) {
+        const bounds = this.sortDropdownMenu.getBounds();
+        if (!bounds.contains(pointer.x, pointer.y)) {
+          this.sortDropdownMenu.destroy();
+          this.sortDropdownMenu = null;
+          this.sortDropdownOpen = false;
+        }
+      }
+    });
+  }
+
+  /**
+   * Set difficulty filter and refresh game grid
+   */
+  setDifficultyFilter(difficultyId) {
+    this.currentDifficultyFilter = difficultyId;
+    
+    // Refresh filter chips to show new active state
+    this.filterChips.forEach(chip => {
+      if (chip.filterId !== undefined) {
+        const isActive = chip.filterId === difficultyId;
+        chip.chipBg.clear();
+        this.drawChip(chip.chipBg, chip.chipWidth, chip.chipHeight, chip.filterColor, isActive);
+        chip.chipText.setColor(isActive ? '#ffffff' : '#cccccc');
+        chip.chipText.setFontStyle(isActive ? 'bold' : 'normal');
+      }
+    });
+    
+    // Apply combined filters
+    this.applyFilters();
+  }
+
+  /**
+   * Set sort order and refresh game grid
+   */
+  setSortOrder(sortId) {
+    this.currentSortOrder = sortId;
+    this.applyFilters();
+  }
+
+  /**
+   * Apply all active filters (category, difficulty, sort)
+   */
+  applyFilters() {
+    // Get base games from current category
+    let filteredGames;
+    if (this.currentCategory === 'all' || this.currentCategory === 'favorite') {
+      filteredGames = [...this.allGames];
+    } else {
+      filteredGames = this.allGames.filter(game => game.category === this.currentCategory);
+    }
+
+    // Apply difficulty filter
+    if (this.currentDifficultyFilter !== 'all') {
+      filteredGames = filteredGames.filter(game => game.difficulty === this.currentDifficultyFilter);
+    }
+
+    // Apply sort
+    switch (this.currentSortOrder) {
+      case 'name':
+        filteredGames.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'difficulty':
+        filteredGames.sort((a, b) => a.difficulty - b.difficulty);
+        break;
+      case 'recent':
+        // Sort by lastPlayed if available, otherwise by name
+        filteredGames.sort((a, b) => {
+          if (a.lastPlayed && b.lastPlayed) {
+            return new Date(b.lastPlayed) - new Date(a.lastPlayed);
+          } else if (a.lastPlayed) {
+            return -1;
+          } else if (b.lastPlayed) {
+            return 1;
+          }
+          return a.name.localeCompare(b.name);
+        });
+        break;
+    }
+
+    // Display filtered games
+    this.displayFilteredGames(filteredGames);
+  }
+
+  /**
+   * Display filtered games in the grid
+   */
+  displayFilteredGames(filteredGames) {
+    if (this.gridContainer) {
+      this.gridContainer.y = 0;
+    }
+
+    // Calculate grid layout
+    const gridWidth = this.gridConfig.areaRight - this.gridConfig.areaLeft;
+    const cols = Math.floor(gridWidth / (this.gridConfig.cardSize + this.gridConfig.spacing));
+
+    // Position visible cards
+    filteredGames.forEach((game, index) => {
+      const card = this.gameCards.find(c => c.gameData.scene === game.scene);
+      if (card) {
+        const row = Math.floor(index / cols);
+        const col = index % cols;
+
+        const totalWidth = cols * this.gridConfig.cardSize + (cols - 1) * this.gridConfig.spacing;
+        const startX = this.gridConfig.areaLeft + (gridWidth - totalWidth) / 2 + this.gridConfig.cardSize / 2;
+        const startY = this.gridConfig.areaTop + this.gridConfig.cardSize / 2;
+
+        const x = startX + col * (this.gridConfig.cardSize + this.gridConfig.spacing);
+        const y = startY + row * (this.gridConfig.cardSize * 1.7 + this.gridConfig.spacing);
+
+        card.setPosition(x, y);
+        card.setVisible(true);
+
+        // Pop effect animation
+        card.setScale(0);
+        card.setAlpha(1);
+        this.tweens.add({
+          targets: card,
+          scale: 1,
+          duration: 400,
+          delay: index * 50,
+          ease: 'Back.easeOut'
+        });
+      }
+    });
+
+    // Hide non-visible cards
+    this.allGames.forEach(game => {
+      if (!filteredGames.find(fg => fg.scene === game.scene)) {
+        const card = this.gameCards.find(c => c.gameData.scene === game.scene);
+        if (card) {
+          card.setVisible(false);
+        }
+      }
+    });
+  }
+
+  /**
    * Play a star burst animation at a given position
    */
   playStarAnimation(x, y) {
@@ -2068,66 +2595,17 @@ export class GameMenuScene extends Phaser.Scene {
   }
 
   /**
-   * Filter games by category
+   * Filter games by category (uses combined filter system)
    */
   filterGamesByCategory(categoryId) {
     if (this.gridContainer) {
       this.gridContainer.y = 0;
     }
     this.searchInput.style.display = 'none';
-    let visibleGames;
-
-    if (categoryId === 'all' || categoryId === 'favorite') {
-      visibleGames = this.allGames;
-    } else {
-      visibleGames = this.allGames.filter(game => game.category === categoryId);
-    }
-
-    // Calculate grid layout
-    const gridWidth = this.gridConfig.areaRight - this.gridConfig.areaLeft;
-    const cols = Math.floor(gridWidth / (this.gridConfig.cardSize + this.gridConfig.spacing));
-    const rows = Math.ceil(visibleGames.length / cols);
-
-    // Position visible cards
-    visibleGames.forEach((game, index) => {
-      const card = this.gameCards.find(c => c.gameData.scene === game.scene);
-      if (card) {
-        const row = Math.floor(index / cols);
-        const col = index % cols;
-
-        const totalWidth = cols * this.gridConfig.cardSize + (cols - 1) * this.gridConfig.spacing;
-        const startX = this.gridConfig.areaLeft + (gridWidth - totalWidth) / 2 + this.gridConfig.cardSize / 2;
-        const startY = this.gridConfig.areaTop + this.gridConfig.cardSize / 2;
-
-        const x = startX + col * (this.gridConfig.cardSize + this.gridConfig.spacing);
-        const y = startY + row * (this.gridConfig.cardSize * 1.7 + this.gridConfig.spacing);
-
-
-        card.setPosition(x, y);
-        card.setVisible(true);
-
-        // Pop effect animation (scale from 0 with Back.easeOut)
-        card.setScale(0);
-        card.setAlpha(1);
-        this.tweens.add({
-          targets: card,
-          scale: 1,
-          duration: 400,
-          delay: index * 80,
-          ease: 'Back.easeOut'
-        });
-      }
-    });
-
-    // Hide non-visible cards
-    this.allGames.forEach(game => {
-      if (!visibleGames.includes(game)) {
-        const card = this.gameCards.find(c => c.gameData.scene === game.scene);
-        if (card) {
-          card.setVisible(false);
-        }
-      }
-    });
+    
+    // Store current category and apply all filters
+    this.currentCategory = categoryId;
+    this.applyFilters();
   }
 
   /**
