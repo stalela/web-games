@@ -203,7 +203,21 @@ export class DragDropGame extends LalelaGame {
   handleDropInZone(tile, dropZone) {
     const isValid = dropZone.acceptTile(tile);
 
+    // Track the drop event
+    this.trackEvent('tile_dropped', {
+      tile_value: tile.value,
+      expected_value: dropZone.expectedValue,
+      correct: isValid,
+      zone_label: dropZone.label || null
+    });
+
     if (isValid) {
+      // Track correct answer
+      this.trackCorrectAnswer({
+        tile_value: tile.value,
+        zone: dropZone.expectedValue
+      });
+      
       // Successful drop
       this.onValidDrop(tile, dropZone);
 
@@ -225,6 +239,12 @@ export class DragDropGame extends LalelaGame {
       this.checkLevelCompletion();
 
     } else {
+      // Track wrong answer
+      this.trackWrongAnswer({
+        tile_value: tile.value,
+        expected_value: dropZone.expectedValue
+      });
+      
       // Invalid drop - return to start
       this.returnTileToStart(tile);
 
@@ -446,6 +466,12 @@ export class DragDropGame extends LalelaGame {
    * Show hint for current level
    */
   showHint() {
+    // Track hint usage
+    this.trackHintUsed({
+      tiles_placed: this.correctPlacements,
+      tiles_remaining: this.dropZones.length - this.correctPlacements
+    });
+    
     // Provide visual hint for stuck players
     if (this.uiManager) {
       this.uiManager.showTutorial(
