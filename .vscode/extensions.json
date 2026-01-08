@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.pylance",
+    "github.copilot",
+    "github.copilot-chat",
+    "batisteo.vscode-django",
+    "ms-vscode.js-debug",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.live-server"
+  ]
+}

@@ -1,6 +1,25 @@
 {
     "cSpell.words": [
         "Coudoin",
-        "gcompris"
-    ]
+        "gcompris",
+        "lalela",
+        "phaser",
+        "howler",
+        "djangorestframework",
+        "simplejwt"
+    ],
+    "github.copilot.chat.codeGeneration.instructions": [
+        {
+            "file": ".github/copilot-instructions.md"
+        }
+    ],
+    "python.analysis.extraPaths": [
+        "../DF/https___superchill.org_en_/superchill.org/lalela"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
