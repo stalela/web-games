@@ -6,6 +6,8 @@ import { PerformanceMonitor } from './PerformanceMonitor.js';
 import { ObjectPool, GameObjectPool, TweenPool } from './ObjectPool.js';
 import { HelpSystem } from './HelpSystem.js';
 import { RenderingOptimizer } from './RenderingOptimizer.js';
+import { trackingManager } from './TrackingManager.js';
+import { badgeManager } from './BadgeManager.js';
 
 export class LalelaGame extends Phaser.Scene {
   constructor(config = {}) {
@@ -46,6 +48,9 @@ export class LalelaGame extends Phaser.Scene {
     this.renderingOptimizer = null;
     this.helpSystem = null;
     this.performanceMonitor = null;
+    
+    // Tracking
+    this.sessionStarted = false;
   }
 
   /**
@@ -229,6 +234,9 @@ export class LalelaGame extends Phaser.Scene {
 
     // Initialize performance optimizations
     this.initializePerformanceOptimizations();
+    
+    // Start tracking session
+    this.startTrackingSession();
 
     // Create game world
     this.createWorld();
@@ -689,6 +697,9 @@ export class LalelaGame extends Phaser.Scene {
    * Clean up when scene is destroyed
    */
   destroy() {
+    // End tracking session
+    this.endTrackingSession();
+    
     // Save final progress
     this.saveProgress();
 
@@ -703,6 +714,101 @@ export class LalelaGame extends Phaser.Scene {
 
     // Call parent destroy
     super.destroy();
+  }
+
+  /**
+   * Start tracking session for analytics
+   */
+  async startTrackingSession() {
+    // Derive game slug from scene key or config
+    // Convert CamelCase scene key to snake_case (e.g., BabyKeyboardGame -> baby_keyboard)
+    let gameSlug = this.gameConfig.id;
+    if (!gameSlug) {
+      gameSlug = this.scene.key
+        .replace(/Game$/i, '')                    // Remove trailing "Game"
+        .replace(/([a-z])([A-Z])/g, '$1_$2')      // Insert underscore before capitals
+        .toLowerCase();                            // Convert to lowercase
+    }
+    
+    try {
+      await trackingManager.startSession(gameSlug, this.level);
+      this.sessionStarted = true;
+      
+      // Track level start event
+      this.trackEvent('level_start', { level: this.level });
+    } catch (error) {
+      console.warn('Failed to start tracking session:', error.message);
+    }
+  }
+
+  /**
+   * End tracking session
+   */
+  async endTrackingSession() {
+    if (!this.sessionStarted) return;
+    
+    try {
+      await trackingManager.endSession(
+        this.score,
+        this.level,
+        this.gameState === 'completed'
+      );
+      this.sessionStarted = false;
+      
+      // Check for newly earned badges
+      await badgeManager.checkForNewBadges(this);
+    } catch (error) {
+      console.warn('Failed to end tracking session:', error.message);
+    }
+  }
+
+  /**
+   * Track a game event
+   * @param {string} eventType - Event type (level_start, correct_answer, etc.)
+   * @param {object} eventData - Additional event data
+   */
+  trackEvent(eventType, eventData = {}) {
+    if (!this.sessionStarted) return;
+    
+    trackingManager.trackEvent(eventType, {
+      game: this.gameConfig.id || this.scene.key,
+      ...eventData
+    }, this.level);
+  }
+
+  /**
+   * Track correct answer
+   * @param {object} details - Answer details
+   */
+  trackCorrectAnswer(details = {}) {
+    this.trackEvent('correct_answer', details);
+  }
+
+  /**
+   * Track wrong answer
+   * @param {object} details - Answer details
+   */
+  trackWrongAnswer(details = {}) {
+    this.trackEvent('wrong_answer', details);
+  }
+
+  /**
+   * Track level completion
+   * @param {object} details - Completion details
+   */
+  trackLevelComplete(details = {}) {
+    this.trackEvent('level_complete', {
+      score: this.score,
+      ...details
+    });
+  }
+
+  /**
+   * Track hint usage
+   * @param {object} details - Hint details
+   */
+  trackHintUsed(details = {}) {
+    this.trackEvent('hint_used', details);
   }
 
   /**
