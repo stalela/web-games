@@ -8,6 +8,7 @@ import { InputManager } from './utils/InputManager.js';
 import { AudioManager } from './utils/AudioManager.js';
 import { DataManager } from './utils/DataManager.js';
 import { PerformanceMonitor } from './utils/PerformanceMonitor.js';
+import { authManager } from './utils/AuthManager.js';
 import { AdjacentNumbers } from './games/AdjacentNumbers.js';
 import { HexagonGame } from './games/HexagonGame.js';
 import { CheckersGame } from './games/CheckersGame.js';
@@ -255,6 +256,22 @@ class LalelaGamesApp {
 
   async init() {
     try {
+      // Check authentication (skip in development if no token)
+      const isDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const hasToken = new URLSearchParams(window.location.search).has('child_token') || 
+                       localStorage.getItem('lalela_child_token');
+      
+      if (hasToken || !isDev) {
+        const isAuthenticated = await authManager.initialize();
+        if (!isAuthenticated) {
+          console.log('Not authenticated, redirecting to login...');
+          return; // AuthManager handles redirect
+        }
+        console.log(`Authenticated as child: ${authManager.getChildName()}`);
+      } else {
+        console.log('Development mode: skipping authentication');
+      }
+
       // Start performance monitoring
       this.performanceMonitor = new PerformanceMonitor();
       this.performanceMonitor.startMonitoring();
@@ -1046,7 +1063,110 @@ class LalelaGamesApp {
 // Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   window.lalelaGames = new LalelaGamesApp();
+  
+  // Register service worker for PWA support
+  registerServiceWorker();
 });
+
+/**
+ * Register service worker for offline support and PWA features
+ */
+async function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) {
+    console.log('Service Workers not supported in this browser');
+    return;
+  }
+
+  try {
+    const registration = await navigator.serviceWorker.register('/service-worker.js', {
+      scope: '/'
+    });
+
+    console.log('Service Worker registered successfully:', registration.scope);
+
+    // Listen for updates
+    registration.addEventListener('updatefound', () => {
+      const newWorker = registration.installing;
+      
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          // New version available
+          showUpdateNotification(registration);
+        }
+      });
+    });
+
+    // Check for updates periodically (every hour)
+    setInterval(() => {
+      registration.update();
+    }, 60 * 60 * 1000);
+
+  } catch (error) {
+    console.error('Service Worker registration failed:', error);
+  }
+}
+
+/**
+ * Show notification when a new version is available
+ */
+function showUpdateNotification(registration) {
+  // Create a subtle notification bar
+  const notification = document.createElement('div');
+  notification.id = 'sw-update-notification';
+  notification.innerHTML = `
+    <div style="
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0062FF;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 10000;
+      font-family: 'Nunito', sans-serif;
+    ">
+      <span>🎉 A new version is available!</span>
+      <button id="sw-update-btn" style="
+        background: white;
+        color: #0062FF;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+      ">Update Now</button>
+      <button id="sw-dismiss-btn" style="
+        background: transparent;
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        cursor: pointer;
+        opacity: 0.8;
+      ">✕</button>
+    </div>
+  `;
+  
+  document.body.appendChild(notification);
+
+  // Handle update button
+  document.getElementById('sw-update-btn').addEventListener('click', () => {
+    if (registration.waiting) {
+      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+    }
+    notification.remove();
+    window.location.reload();
+  });
+
+  // Handle dismiss button
+  document.getElementById('sw-dismiss-btn').addEventListener('click', () => {
+    notification.remove();
+  });
+}
 
 // Export for debugging
 if (process.env.NODE_ENV === 'development') {
