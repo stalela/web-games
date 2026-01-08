@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -36,6 +37,11 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+      'process.env.API_BASE_URL': JSON.stringify(process.env.API_BASE_URL || 'http://localhost:8000/api'),
+      'process.env.DJANGO_LOGIN_URL': JSON.stringify(process.env.DJANGO_LOGIN_URL || 'http://localhost:8000/webapp/login/')
+    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       title: 'Lalela Web Games',
@@ -56,6 +62,14 @@ module.exports = {
           globOptions: {
             ignore: ['**/*.js', '**/*.html']
           }
+        },
+        {
+          from: 'src/service-worker.js',
+          to: 'service-worker.js'
+        },
+        {
+          from: 'src/manifest.json',
+          to: 'manifest.json'
         }
       ]
     })
