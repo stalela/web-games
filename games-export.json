@@ -1,0 +1,1615 @@
+{
+  "version": "1.0.0",
+  "exported_at": "2026-01-07T16:42:43.323Z",
+  "count": 201,
+  "games": [
+    {
+      "scene": "BabyKeyboardGame",
+      "name": "Baby Keyboard",
+      "icon": "baby_keyboard.svg",
+      "difficulty": 1,
+      "category": "computer",
+      "slug": "baby_keyboard"
+    },
+    {
+      "scene": "BabyMouseGame",
+      "name": "Baby Mouse",
+      "icon": "baby_mouse.svg",
+      "difficulty": 1,
+      "category": "computer",
+      "slug": "baby_mouse"
+    },
+    {
+      "scene": "ClickGame",
+      "name": "Click Game",
+      "icon": "clickgame.svg",
+      "difficulty": 1,
+      "category": "computer",
+      "slug": "click"
+    },
+    {
+      "scene": "EraseGame",
+      "name": "Erase",
+      "icon": "erase.svg",
+      "difficulty": 1,
+      "category": "computer",
+      "slug": "erase"
+    },
+    {
+      "scene": "EraseClickGame",
+      "name": "Erase Click",
+      "icon": "erase_clic.svg",
+      "difficulty": 1,
+      "category": "computer",
+      "slug": "erase_click"
+    },
+    {
+      "scene": "ClickAndDrawGame",
+      "name": "Click and Draw",
+      "icon": "clickanddraw.svg",
+      "difficulty": 1,
+      "category": "computer",
+      "slug": "click_and_draw"
+    },
+    {
+      "scene": "LeftRightClickGame",
+      "name": "Mouse Click Training",
+      "icon": "left_right_click.svg",
+      "difficulty": 1,
+      "category": "computer",
+      "slug": "left_right_click"
+    },
+    {
+      "scene": "FollowLineGame",
+      "name": "Control the Hose-pipe",
+      "icon": "followline.svg",
+      "difficulty": 1,
+      "category": "computer",
+      "slug": "follow_line"
+    },
+    {
+      "scene": "BabyShapesGame",
+      "name": "Baby Shapes",
+      "icon": "babyshapes.svg",
+      "difficulty": 1,
+      "category": "puzzle",
+      "slug": "baby_shapes"
+    },
+    {
+      "scene": "BabyTangramGame",
+      "name": "Baby Tangram",
+      "icon": "baby_tangram.svg",
+      "difficulty": 1,
+      "category": "puzzle",
+      "slug": "baby_tangram"
+    },
+    {
+      "scene": "TangramGame",
+      "name": "Tangram",
+      "icon": "tangram.svg",
+      "difficulty": 2,
+      "category": "puzzle",
+      "slug": "tangram"
+    },
+    {
+      "scene": "DetailsGame",
+      "name": "Details",
+      "icon": "details.svg",
+      "difficulty": 2,
+      "category": "puzzle",
+      "slug": "details"
+    },
+    {
+      "scene": "PaintingsGame",
+      "name": "Paintings",
+      "icon": "paintings.svg",
+      "difficulty": 1,
+      "category": "puzzle",
+      "slug": "paintings"
+    },
+    {
+      "scene": "LandSafeGame",
+      "name": "Land Safe",
+      "icon": "land_safe.svg",
+      "difficulty": 3,
+      "category": "discovery",
+      "slug": "land_safe"
+    },
+    {
+      "scene": "MelodyGame",
+      "name": "Melody",
+      "icon": "melody.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "melody"
+    },
+    {
+      "scene": "FamilyGame",
+      "name": "Family",
+      "icon": "family.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "family"
+    },
+    {
+      "scene": "CanalLockGame",
+      "name": "Canal Lock",
+      "icon": "canal_lock.svg",
+      "difficulty": 3,
+      "category": "discovery",
+      "slug": "canal_lock"
+    },
+    {
+      "scene": "WaterCycleGame",
+      "name": "Water Cycle",
+      "icon": "watercycle.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "water_cycle"
+    },
+    {
+      "scene": "SolarSystemGame",
+      "name": "Solar System",
+      "icon": "solar_system.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "solar_system"
+    },
+    {
+      "scene": "Erase2ClicGame",
+      "name": "Erase (Double Click)",
+      "icon": "erase_2clic.svg",
+      "difficulty": 2,
+      "category": "computer",
+      "slug": "erase2_clic"
+    },
+    {
+      "scene": "FamilyFindRelativeGame",
+      "name": "Find Relative",
+      "icon": "family_find_relative.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "family_find_relative"
+    },
+    {
+      "scene": "MemoryCaseAssociationGame",
+      "name": "Case Association",
+      "icon": "memory-case-association.svg",
+      "difficulty": 2,
+      "category": "memory",
+      "slug": "memory_case_association"
+    },
+    {
+      "scene": "MemoryCaseAssociationTuxGame",
+      "name": "Case Association (Tux)",
+      "icon": "memory-case-association-tux.svg",
+      "difficulty": 2,
+      "category": "memory",
+      "slug": "memory_case_association_tux"
+    },
+    {
+      "scene": "MemoryEnumerateGame",
+      "name": "Memory Enumeration",
+      "icon": "memory-enumerate.svg",
+      "difficulty": 2,
+      "category": "memory",
+      "slug": "memory_enumerate"
+    },
+    {
+      "scene": "AdjacentNumbers",
+      "name": "Adjacent Numbers",
+      "icon": "adjacent_numbers.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "adjacent_numbers"
+    },
+    {
+      "scene": "SmallnumbersGame",
+      "name": "Numbers with Dice",
+      "icon": "dice1.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "smallnumbers"
+    },
+    {
+      "scene": "Smallnumbers2Game",
+      "name": "Numbers with Dominoes",
+      "icon": "smallnumbers2.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "smallnumbers2"
+    },
+    {
+      "scene": "LearnQuantitiesGame",
+      "name": "Learn Quantities",
+      "icon": "learn_quantities.svg",
+      "difficulty": 1,
+      "category": "math",
+      "slug": "learn_quantities"
+    },
+    {
+      "scene": "LearnAdditionsGame",
+      "name": "Learn Addition",
+      "icon": "learn_additions.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "learn_additions"
+    },
+    {
+      "scene": "LearnSubtractionsGame",
+      "name": "Learn Subtraction",
+      "icon": "learn_subtractions.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "learn_subtractions"
+    },
+    {
+      "scene": "VerticalAdditionGame",
+      "name": "Vertical Addition",
+      "icon": "vertical_addition.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "vertical_addition"
+    },
+    {
+      "scene": "Guesscount",
+      "name": "Guesscount Math",
+      "icon": "guesscount.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "guesscount"
+    },
+    {
+      "scene": "MemoryImageGame",
+      "name": "Memory Images",
+      "icon": "memory.svg",
+      "difficulty": 2,
+      "category": "memory",
+      "slug": "memory_image"
+    },
+    {
+      "scene": "MemorySoundGame",
+      "name": "Memory Sounds",
+      "icon": "memory-sound.svg",
+      "difficulty": 2,
+      "category": "memory",
+      "slug": "memory_sound"
+    },
+    {
+      "scene": "BabyMatchGame",
+      "name": "Baby Match",
+      "icon": "babymatch.svg",
+      "difficulty": 1,
+      "category": "logic",
+      "slug": "baby_match"
+    },
+    {
+      "scene": "ColorMixGame",
+      "name": "Color Mix",
+      "icon": "color_mix.svg",
+      "difficulty": 2,
+      "category": "logic",
+      "slug": "color_mix"
+    },
+    {
+      "scene": "HexagonGame",
+      "name": "Hexagon",
+      "icon": "hexagon.svg",
+      "difficulty": 2,
+      "category": "logic",
+      "slug": "hexagon"
+    },
+    {
+      "scene": "CheckersGame",
+      "name": "Checkers",
+      "icon": "checkers.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "checkers"
+    },
+    {
+      "scene": "GeographyMapGame",
+      "name": "Geography Map",
+      "icon": "geography.svg",
+      "difficulty": 2,
+      "category": "world",
+      "slug": "geography_map"
+    },
+    {
+      "scene": "SoundButtonGame",
+      "name": "Sound Buttons",
+      "icon": "instruments.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "sound_button"
+    },
+    {
+      "scene": "ColorsGame",
+      "name": "Colors",
+      "icon": "colors.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "colors"
+    },
+    {
+      "scene": "AdvancedColorsGame",
+      "name": "Advanced Colors",
+      "icon": "advanced_colors.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "advanced_colors"
+    },
+    {
+      "scene": "ColorMixPaintGame",
+      "name": "Mix Paint Colors",
+      "icon": "color_mix.svg",
+      "difficulty": 4,
+      "category": "discovery",
+      "slug": "color_mix_paint"
+    },
+    {
+      "scene": "ColorMixLightGame",
+      "name": "Mix Light Colors",
+      "icon": "color_mix_light.svg",
+      "difficulty": 4,
+      "category": "discovery",
+      "slug": "color_mix_light"
+    },
+    {
+      "scene": "ExploreFarmAnimalsGame",
+      "name": "Explore Farm Animals",
+      "icon": "explore_farm_animals.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "explore_farm_animals"
+    },
+    {
+      "scene": "ExploreWorldAnimalsGame",
+      "name": "Explore World Animals",
+      "icon": "explore_world_animals.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "explore_world_animals"
+    },
+    {
+      "scene": "ExploreMonumentsGame",
+      "name": "Explore Monuments",
+      "icon": "explore_monuments.svg",
+      "difficulty": 3,
+      "category": "discovery",
+      "slug": "explore_monuments"
+    },
+    {
+      "scene": "ExploreWorldMusicGame",
+      "name": "Explore World Music",
+      "icon": "explore_world_music.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "explore_world_music"
+    },
+    {
+      "scene": "InstrumentsGame",
+      "name": "Instruments",
+      "icon": "instruments.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "instruments"
+    },
+    {
+      "scene": "LearnDigitsGame",
+      "name": "Learn Digits",
+      "icon": "learn_digits.svg",
+      "difficulty": 1,
+      "category": "math",
+      "slug": "learn_digits"
+    },
+    {
+      "scene": "AlgebraPlusGame",
+      "name": "Addition Practice",
+      "icon": "algebra_plus.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "algebra_plus"
+    },
+    {
+      "scene": "AlgebraMinusGame",
+      "name": "Subtraction Practice",
+      "icon": "algebra_minus.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "algebra_minus"
+    },
+    {
+      "scene": "AlgebraByGame",
+      "name": "Multiplication Practice",
+      "icon": "algebra_by.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "algebra_by"
+    },
+    {
+      "scene": "AlgebraDivGame",
+      "name": "Division Practice",
+      "icon": "algebra_div.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "algebra_div"
+    },
+    {
+      "scene": "MoneyGame",
+      "name": "Money",
+      "icon": "money.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "money"
+    },
+    {
+      "scene": "MoneyCentsGame",
+      "name": "Money with Cents",
+      "icon": "money_cents.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "money_cents"
+    },
+    {
+      "scene": "MoneyBackGame",
+      "name": "Give Change",
+      "icon": "money_back.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "money_back"
+    },
+    {
+      "scene": "ClickOnLetterGame",
+      "name": "Click on a Lowercase Letter",
+      "icon": "click_on_letter.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "click_on_letter"
+    },
+    {
+      "scene": "ClickOnLetterUpGame",
+      "name": "Click on an Uppercase Letter",
+      "icon": "click_on_letter_up.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "click_on_letter_up"
+    },
+    {
+      "scene": "AlphabetSequenceGame",
+      "name": "Alphabet Sequence",
+      "icon": "alphabet-sequence.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "alphabet_sequence"
+    },
+    {
+      "scene": "LetterInWordGame",
+      "name": "Letter in Word",
+      "icon": "letter-in-word.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "letter_in_word"
+    },
+    {
+      "scene": "MissingLetterGame",
+      "name": "Missing Letter",
+      "icon": "missing-letter.svg",
+      "difficulty": 3,
+      "category": "reading",
+      "slug": "missing_letter"
+    },
+    {
+      "scene": "ReadingHGame",
+      "name": "Horizontal Reading",
+      "icon": "readingh.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "reading_h"
+    },
+    {
+      "scene": "ReadingVGame",
+      "name": "Vertical Reading",
+      "icon": "readingv.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "reading_v"
+    },
+    {
+      "scene": "WordsGame",
+      "name": "Falling Words",
+      "icon": "wordsgame.svg",
+      "difficulty": 3,
+      "category": "reading",
+      "slug": "words"
+    },
+    {
+      "scene": "ImageNameGame",
+      "name": "Name the Image",
+      "icon": "imagename.svg",
+      "difficulty": 3,
+      "category": "reading",
+      "slug": "image_name"
+    },
+    {
+      "scene": "DrawLettersGame",
+      "name": "Draw Letters",
+      "icon": "drawletters.svg",
+      "difficulty": 1,
+      "category": "reading",
+      "slug": "draw_letters"
+    },
+    {
+      "scene": "TicTacToeGame",
+      "name": "Tic Tac Toe",
+      "icon": "tic_tac_toe.svg",
+      "difficulty": 1,
+      "category": "strategy",
+      "slug": "tic_tac_toe"
+    },
+    {
+      "scene": "TicTacToeTwoPlayerGame",
+      "name": "Tic Tac Toe (2P)",
+      "icon": "tic_tac_toe.svg",
+      "difficulty": 1,
+      "category": "strategy",
+      "slug": "tic_tac_toe_two_player"
+    },
+    {
+      "scene": "Align4Game",
+      "name": "Connect Four",
+      "icon": "align4.svg",
+      "difficulty": 2,
+      "category": "strategy",
+      "slug": "align4"
+    },
+    {
+      "scene": "Align4TwoPlayerGame",
+      "name": "Connect Four (2P)",
+      "icon": "align4.svg",
+      "difficulty": 2,
+      "category": "strategy",
+      "slug": "align4_two_player"
+    },
+    {
+      "scene": "ChessGame",
+      "name": "Chess",
+      "icon": "chess.svg",
+      "difficulty": 3,
+      "category": "strategy",
+      "slug": "chess"
+    },
+    {
+      "scene": "ChessTwoPlayerGame",
+      "name": "Chess (2P)",
+      "icon": "chess.svg",
+      "difficulty": 3,
+      "category": "strategy",
+      "slug": "chess_two_player"
+    },
+    {
+      "scene": "MemoryMathAddGame",
+      "name": "Addition Memory",
+      "icon": "memory-math-add.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "memory_math_add"
+    },
+    {
+      "scene": "MemoryMathAddMinusGame",
+      "name": "Add/Sub Memory",
+      "icon": "memory-math-add-minus.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "memory_math_add_minus"
+    },
+    {
+      "scene": "HanoiGame",
+      "name": "Towers of Hanoi",
+      "icon": "hanoi.svg",
+      "difficulty": 3,
+      "category": "strategy",
+      "slug": "hanoi"
+    },
+    {
+      "scene": "HanoiRealGame",
+      "name": "Towers of Hanoi (Real)",
+      "icon": "hanoi_real.svg",
+      "difficulty": 3,
+      "category": "strategy",
+      "slug": "hanoi_real"
+    },
+    {
+      "scene": "FifteenGame",
+      "name": "Fifteen Puzzle",
+      "icon": "fifteen.svg",
+      "difficulty": 3,
+      "category": "strategy",
+      "slug": "fifteen"
+    },
+    {
+      "scene": "LightsOffGame",
+      "name": "Lights Off",
+      "icon": "lightsoff.svg",
+      "difficulty": 3,
+      "category": "strategy",
+      "slug": "lights_off"
+    },
+    {
+      "scene": "MazeGame",
+      "name": "Maze",
+      "icon": "maze.svg",
+      "difficulty": 2,
+      "category": "strategy",
+      "slug": "maze"
+    },
+    {
+      "scene": "MazeInvisibleGame",
+      "name": "Invisible Maze",
+      "icon": "mazeinvisible.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "maze_invisible"
+    },
+    {
+      "scene": "MazeRelativeGame",
+      "name": "Relative Maze",
+      "icon": "mazerelative.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "maze_relative"
+    },
+    {
+      "scene": "TrafficGame",
+      "name": "Traffic",
+      "icon": "traffic.svg",
+      "difficulty": 3,
+      "category": "strategy",
+      "slug": "traffic"
+    },
+    {
+      "scene": "HangmanGame",
+      "name": "Hangman",
+      "icon": "hangman.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "hangman"
+    },
+    {
+      "scene": "BrailleAlphabetsGame",
+      "name": "Discover Braille",
+      "icon": "braille_alphabets.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "braille_alphabets"
+    },
+    {
+      "scene": "BrailleFunGame",
+      "name": "Braille Fun",
+      "icon": "braille_fun.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "braille_fun"
+    },
+    {
+      "scene": "LouisBrailleGame",
+      "name": "Louis Braille",
+      "icon": "louis_braille.svg",
+      "difficulty": 3,
+      "category": "discovery",
+      "slug": "louis_braille"
+    },
+    {
+      "scene": "DrawNumbersGame",
+      "name": "Draw Numbers",
+      "icon": "drawnumbers.svg",
+      "difficulty": 1,
+      "category": "math",
+      "slug": "draw_numbers"
+    },
+    {
+      "scene": "LeftRightGame",
+      "name": "Left and Right",
+      "icon": "leftright.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "left_right"
+    },
+    {
+      "scene": "FractionsCreateGame",
+      "name": "Create Fractions",
+      "icon": "fractions_create.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "fractions_create"
+    },
+    {
+      "scene": "FractionsFindGame",
+      "name": "Find Fractions",
+      "icon": "fractions_find.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "fractions_find"
+    },
+    {
+      "scene": "CalcudokuGame",
+      "name": "Calcudoku",
+      "icon": "calcudoku.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "calcudoku"
+    },
+    {
+      "scene": "SudokuGame",
+      "name": "Sudoku",
+      "icon": "sudoku.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "sudoku"
+    },
+    {
+      "scene": "MagicHatPlusGame",
+      "name": "Magic Hat (+)",
+      "icon": "magic-hat-plus.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "magic_hat_plus"
+    },
+    {
+      "scene": "MagicHatMinusGame",
+      "name": "Magic Hat (-)",
+      "icon": "magic-hat-minus.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "magic_hat_minus"
+    },
+    {
+      "scene": "ClockGame",
+      "name": "Clock",
+      "icon": "clockgame.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "clock"
+    },
+    {
+      "scene": "CalendarGame",
+      "name": "Calendar",
+      "icon": "calendar.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "calendar"
+    },
+    {
+      "scene": "FindTheDayGame",
+      "name": "Find the Day",
+      "icon": "find_the_day.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "find_the_day"
+    },
+    {
+      "scene": "BalanceBoxGame",
+      "name": "Balance Box",
+      "icon": "balancebox.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "balance_box"
+    },
+    {
+      "scene": "GraduatedLineReadGame",
+      "name": "Read the Line",
+      "icon": "graduated_line_read.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "graduated_line_read"
+    },
+    {
+      "scene": "GraduatedLineUseGame",
+      "name": "Use the Line",
+      "icon": "graduated_line_use.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "graduated_line_use"
+    },
+    {
+      "scene": "LearnDecimalsGame",
+      "name": "Learn Decimals",
+      "icon": "learn_decimals.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "learn_decimals"
+    },
+    {
+      "scene": "LearnDecimalsAdditionsGame",
+      "name": "Decimal Additions",
+      "icon": "learn_decimals_additions.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "learn_decimals_additions"
+    },
+    {
+      "scene": "LearnDecimalsSubtractionsGame",
+      "name": "Decimal Subtractions",
+      "icon": "learn_decimals_subtractions.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "learn_decimals_subtractions"
+    },
+    {
+      "scene": "ComparatorGame",
+      "name": "Comparator",
+      "icon": "comparator.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "comparator"
+    },
+    {
+      "scene": "GnumchEqualityGame",
+      "name": "Gnumch Equality",
+      "icon": "gnumch-equality.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "gnumch_equality"
+    },
+    {
+      "scene": "GnumchFactorsGame",
+      "name": "Gnumch Factors",
+      "icon": "gnumch-factors.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "gnumch_factors"
+    },
+    {
+      "scene": "GnumchInequalityGame",
+      "name": "Gnumch Inequality",
+      "icon": "gnumch-inequality.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "gnumch_inequality"
+    },
+    {
+      "scene": "GnumchMultiplesGame",
+      "name": "Gnumch Multiples",
+      "icon": "gnumch-multiples.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "gnumch_multiples"
+    },
+    {
+      "scene": "GnumchPrimesGame",
+      "name": "Gnumch Primes",
+      "icon": "gnumch-primes.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "gnumch_primes"
+    },
+    {
+      "scene": "Guess24Game",
+      "name": "Make 24",
+      "icon": "guess24.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "guess24"
+    },
+    {
+      "scene": "GuessNumberGame",
+      "name": "Guess Number",
+      "icon": "guessnumber.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "guess_number"
+    },
+    {
+      "scene": "GlettersGame",
+      "name": "Falling Letters",
+      "icon": "gletters.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "gletters"
+    },
+    {
+      "scene": "CraneGame",
+      "name": "Crane",
+      "icon": "crane.svg",
+      "difficulty": 2,
+      "category": "puzzle",
+      "slug": "crane"
+    },
+    {
+      "scene": "FootballGame",
+      "name": "Football",
+      "icon": "football.svg",
+      "difficulty": 2,
+      "category": "fun",
+      "slug": "football"
+    },
+    {
+      "scene": "BallCatchGame",
+      "name": "Ball Catch",
+      "icon": "ballcatch.svg",
+      "difficulty": 2,
+      "category": "fun",
+      "slug": "ball_catch"
+    },
+    {
+      "scene": "PenaltyGame",
+      "name": "Penalty Kick",
+      "icon": "penalty.svg",
+      "difficulty": 1,
+      "category": "fun",
+      "slug": "penalty"
+    },
+    {
+      "scene": "BarGame",
+      "name": "Bar Game",
+      "icon": "bargame.svg",
+      "difficulty": 2,
+      "category": "strategy",
+      "slug": "bar"
+    },
+    {
+      "scene": "BarGame2Players",
+      "name": "Bar Game (2 Players)",
+      "icon": "bargame_2players.svg",
+      "difficulty": 2,
+      "category": "strategy",
+      "slug": "bar_game2_players"
+    },
+    {
+      "scene": "AlgorithmGame",
+      "name": "Algorithm",
+      "icon": "algorithm.svg",
+      "difficulty": 2,
+      "category": "strategy",
+      "slug": "algorithm"
+    },
+    {
+      "scene": "FriezeGame",
+      "name": "Frieze",
+      "icon": "frieze.svg",
+      "difficulty": 2,
+      "category": "strategy",
+      "slug": "frieze"
+    },
+    {
+      "scene": "MemoryMathAddMinusMultDivGame",
+      "name": "Memory All Ops",
+      "icon": "memory-math-add-minus-mult-div.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "memory_math_add_minus_mult_div"
+    },
+    {
+      "scene": "MemoryMathAddMinusMultDivTuxGame",
+      "name": "Memory All Ops (Tux)",
+      "icon": "memory-math-add-minus-mult-div-tux.svg",
+      "difficulty": 5,
+      "category": "math",
+      "slug": "memory_math_add_minus_mult_div_tux"
+    },
+    {
+      "scene": "MemoryMathAddMinusTuxGame",
+      "name": "Memory Add/Sub (Tux)",
+      "icon": "memory-math-add-minus-tux.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "memory_math_add_minus_tux"
+    },
+    {
+      "scene": "MemoryMathAddTuxGame",
+      "name": "Addition Memory (Tux)",
+      "icon": "memory-math-add-tux.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "memory_math_add_tux"
+    },
+    {
+      "scene": "MemoryMathDivGame",
+      "name": "Division Memory",
+      "icon": "memory-math-div.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "memory_math_div"
+    },
+    {
+      "scene": "MemoryMathDivTuxGame",
+      "name": "Division Memory (Tux)",
+      "icon": "memory-math-div-tux.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "memory_math_div_tux"
+    },
+    {
+      "scene": "MemoryMathMinusGame",
+      "name": "Subtraction Memory",
+      "icon": "memory-math-minus.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "memory_math_minus"
+    },
+    {
+      "scene": "MemoryMathMinusTuxGame",
+      "name": "Subtraction Memory (Tux)",
+      "icon": "memory-math-minus-tux.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "memory_math_minus_tux"
+    },
+    {
+      "scene": "MemoryMathMultGame",
+      "name": "Multiplication Memory",
+      "icon": "memory-math-mult.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "memory_math_mult"
+    },
+    {
+      "scene": "MemoryMathMultDivGame",
+      "name": "Mult/Div Memory",
+      "icon": "memory-math-mult-div.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "memory_math_mult_div"
+    },
+    {
+      "scene": "MemoryMathMultDivTuxGame",
+      "name": "Mult/Div Memory (Tux)",
+      "icon": "memory-math-mult-div-tux.svg",
+      "difficulty": 5,
+      "category": "math",
+      "slug": "memory_math_mult_div_tux"
+    },
+    {
+      "scene": "MemoryMathMultTuxGame",
+      "name": "Multiplication Memory (Tux)",
+      "icon": "memory-math-mult-tux.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "memory_math_mult_tux"
+    },
+    {
+      "scene": "MemorySoundTuxGame",
+      "name": "Memory Sound (Tux)",
+      "icon": "memory-sound-tux.svg",
+      "difficulty": 3,
+      "category": "memory",
+      "slug": "memory_sound_tux"
+    },
+    {
+      "scene": "MemoryTuxGame",
+      "name": "Memory (Tux)",
+      "icon": "memory-tux.svg",
+      "difficulty": 2,
+      "category": "memory",
+      "slug": "memory_tux"
+    },
+    {
+      "scene": "MemoryWordNumberGame",
+      "name": "Memory Word Number",
+      "icon": "memory-wordnumber.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "memory_word_number"
+    },
+    {
+      "scene": "GraphColoringGame",
+      "name": "Graph Coloring",
+      "icon": "graph-coloring.svg",
+      "difficulty": 2,
+      "category": "strategy",
+      "slug": "graph_coloring"
+    },
+    {
+      "scene": "GrammarAnalysisGame",
+      "name": "Grammar Analysis",
+      "icon": "grammar_analysis.svg",
+      "difficulty": 3,
+      "category": "reading",
+      "slug": "grammar_analysis"
+    },
+    {
+      "scene": "GrammarClassesGame",
+      "name": "Grammar Classes",
+      "icon": "grammar_classes.svg",
+      "difficulty": 3,
+      "category": "reading",
+      "slug": "grammar_classes"
+    },
+    {
+      "scene": "GravityGame",
+      "name": "Gravity",
+      "icon": "gravity.svg",
+      "difficulty": 3,
+      "category": "sciences",
+      "slug": "gravity"
+    },
+    {
+      "scene": "ChronosGame",
+      "name": "Chronos",
+      "icon": "chronos.svg",
+      "difficulty": 1,
+      "category": "sciences",
+      "slug": "chronos"
+    },
+    {
+      "scene": "AnalogElectricityGame",
+      "name": "Analog Electricity",
+      "icon": "analog_electricity.svg",
+      "difficulty": 6,
+      "category": "sciences",
+      "slug": "analog_electricity"
+    },
+    {
+      "scene": "DigitalElectricityGame",
+      "name": "Digital Electricity",
+      "icon": "digital_electricity.svg",
+      "difficulty": 6,
+      "category": "sciences",
+      "slug": "digital_electricity"
+    },
+    {
+      "scene": "RenewableEnergyGame",
+      "name": "Renewable Energy",
+      "icon": "renewable_energy.svg",
+      "difficulty": 4,
+      "category": "sciences",
+      "slug": "renewable_energy"
+    },
+    {
+      "scene": "BabyWordprocessorGame",
+      "name": "Baby Wordprocessor",
+      "icon": "baby_wordprocessor.svg",
+      "difficulty": 2,
+      "category": "computer",
+      "slug": "baby_wordprocessor"
+    },
+    {
+      "scene": "BinaryBulbGame",
+      "name": "Binary Bulb",
+      "icon": "binary_bulb.svg",
+      "difficulty": 4,
+      "category": "math",
+      "slug": "binary_bulb"
+    },
+    {
+      "scene": "CategorizationGame",
+      "name": "Categorization",
+      "icon": "categorization.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "categorization"
+    },
+    {
+      "scene": "ChessPartyEndGame",
+      "name": "Chess End Game",
+      "icon": "chess_partyend.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "chess_party_end"
+    },
+    {
+      "scene": "DrawingWheelsGame",
+      "name": "Drawing Wheels",
+      "icon": "drawing_wheels.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "drawing_wheels"
+    },
+    {
+      "scene": "GeoCountryGame",
+      "name": "Geography: France",
+      "icon": "geography.svg",
+      "difficulty": 3,
+      "category": "discovery",
+      "slug": "geo_country"
+    },
+    {
+      "scene": "MosaicGame",
+      "name": "Mosaic",
+      "icon": "mosaic.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "mosaic"
+    },
+    {
+      "scene": "NumbersOddEvenGame",
+      "name": "Odd & Even",
+      "icon": "numbers-odd-even.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "numbers_odd_even"
+    },
+    {
+      "scene": "NumberSequenceGame",
+      "name": "Number Sequence",
+      "icon": "number_sequence.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "number_sequence"
+    },
+    {
+      "scene": "OrderingAlphabetsGame",
+      "name": "Ordering Alphabets",
+      "icon": "ordering_alphabets.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "ordering_alphabets"
+    },
+    {
+      "scene": "Mosaic",
+      "name": "Mosaic",
+      "icon": "mosaic.svg",
+      "difficulty": 1,
+      "category": "puzzle",
+      "slug": "mosaic"
+    },
+    {
+      "scene": "NumberSequence",
+      "name": "Number Sequence",
+      "icon": "number_sequence.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "number_sequence"
+    },
+    {
+      "scene": "NumbersOddEven",
+      "name": "Odd Even Numbers",
+      "icon": "numbers-odd-even.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "numbers_odd_even"
+    },
+    {
+      "scene": "OrderingAlphabets",
+      "name": "Ordering Alphabets",
+      "icon": "ordering_alphabets.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "ordering_alphabets"
+    },
+    {
+      "scene": "OrderingNumbers",
+      "name": "Ordering Numbers",
+      "icon": "ordering_numbers.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "ordering_numbers"
+    },
+    {
+      "scene": "OrderingChronology",
+      "name": "Ordering Chronology",
+      "icon": "ordering_chronology.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "ordering_chronology"
+    },
+    {
+      "scene": "Oware",
+      "name": "Oware",
+      "icon": "oware.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "oware"
+    },
+    {
+      "scene": "OwareTwoPlayerGame",
+      "name": "Oware (2 Players)",
+      "icon": "oware_2players.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "oware_two_player"
+    },
+    {
+      "scene": "OrderingSentences",
+      "name": "Ordering Sentences",
+      "icon": "ordering_sentences.svg",
+      "difficulty": 2,
+      "category": "reading",
+      "slug": "ordering_sentences"
+    },
+    {
+      "scene": "PathDecoding",
+      "name": "Path Decoding",
+      "icon": "path_decoding.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "path_decoding"
+    },
+    {
+      "scene": "PathEncoding",
+      "name": "Path Encoding",
+      "icon": "path_encoding.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "path_encoding"
+    },
+    {
+      "scene": "PathEncodingRelative",
+      "name": "Path Encoding Relative",
+      "icon": "path_encoding_relative.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "path_encoding_relative"
+    },
+    {
+      "scene": "PathDecodingRelative",
+      "name": "Path Decoding Relative",
+      "icon": "path_decoding_relative.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "path_decoding_relative"
+    },
+    {
+      "scene": "PlaneGame",
+      "name": "Plane Game",
+      "icon": "planegame.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "plane"
+    },
+    {
+      "scene": "PlayPiano",
+      "name": "Play Piano",
+      "icon": "play_piano.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "play_piano"
+    },
+    {
+      "scene": "PlayRhythm",
+      "name": "Play Rhythm",
+      "icon": "play_rhythm.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "play_rhythm"
+    },
+    {
+      "scene": "PhotoHunter",
+      "name": "Photo Hunter",
+      "icon": "photo_hunter.svg",
+      "difficulty": 2,
+      "category": "fun",
+      "slug": "photo_hunter"
+    },
+    {
+      "scene": "Positions",
+      "name": "Positions",
+      "icon": "positions.svg",
+      "difficulty": 3,
+      "category": "discovery",
+      "slug": "positions"
+    },
+    {
+      "scene": "Railroad",
+      "name": "Railroad",
+      "icon": "railroad.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "railroad"
+    },
+    {
+      "scene": "Redraw",
+      "name": "Redraw",
+      "icon": "redraw.svg",
+      "difficulty": 3,
+      "category": "puzzle",
+      "slug": "redraw"
+    },
+    {
+      "scene": "RedrawSymmetrical",
+      "name": "Redraw Symmetrical",
+      "icon": "redraw_symmetrical.svg",
+      "difficulty": 4,
+      "category": "puzzle",
+      "slug": "redraw_symmetrical"
+    },
+    {
+      "scene": "Reversecount",
+      "name": "Reverse Count",
+      "icon": "reversecount.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "reversecount"
+    },
+    {
+      "scene": "RomanNumerals",
+      "name": "Roman Numerals",
+      "icon": "roman_numerals.svg",
+      "difficulty": 4,
+      "category": "sciences",
+      "slug": "roman_numerals"
+    },
+    {
+      "scene": "Scalesboard",
+      "name": "Scalesboard",
+      "icon": "scalesboard.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "scalesboard"
+    },
+    {
+      "scene": "Share",
+      "name": "Share",
+      "icon": "share.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "share"
+    },
+    {
+      "scene": "Simplepaint",
+      "name": "Simple Paint",
+      "icon": "simplepaint.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "simplepaint"
+    },
+    {
+      "scene": "Superbrain",
+      "name": "Super Brain",
+      "icon": "superbrain.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "superbrain"
+    },
+    {
+      "scene": "Target",
+      "name": "Target",
+      "icon": "target.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "target"
+    },
+    {
+      "scene": "MorseCodeGame",
+      "name": "Morse Code",
+      "icon": "morse_code.svg",
+      "difficulty": 3,
+      "category": "discovery",
+      "slug": "morse_code"
+    },
+    {
+      "scene": "NineMenMorrisGame",
+      "name": "Nine Men Morris",
+      "icon": "nine_men_morris.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "nine_men_morris"
+    },
+    {
+      "scene": "NineMenMorrisTwoPlayerGame",
+      "name": "Nine Men Morris (2P)",
+      "icon": "nine_men_morris_2players.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "nine_men_morris_two_player"
+    },
+    {
+      "scene": "NoteNamesGame",
+      "name": "Note Names",
+      "icon": "note_names.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "note_names"
+    },
+    {
+      "scene": "PianoCompositionGame",
+      "name": "Piano Composition",
+      "icon": "piano_composition.svg",
+      "difficulty": 2,
+      "category": "discovery",
+      "slug": "piano_composition"
+    },
+    {
+      "scene": "ProgrammingMazeGame",
+      "name": "Programming Maze",
+      "icon": "programmingMaze.svg",
+      "difficulty": 3,
+      "category": "discovery",
+      "slug": "programming_maze"
+    },
+    {
+      "scene": "ScalesboardWeightGame",
+      "name": "Scalesboard Weight",
+      "icon": "scalesboard_weight.svg",
+      "difficulty": 3,
+      "category": "sciences",
+      "slug": "scalesboard_weight"
+    },
+    {
+      "scene": "ScalesboardWeightAvoirdupoisGame",
+      "name": "Scalesboard Weight (Av)",
+      "icon": "scalesboard_weight_avoirdupois.svg",
+      "difficulty": 3,
+      "category": "sciences",
+      "slug": "scalesboard_weight_avoirdupois"
+    },
+    {
+      "scene": "SketchGame",
+      "name": "Sketch",
+      "icon": "sketch.svg",
+      "difficulty": 1,
+      "category": "discovery",
+      "slug": "sketch"
+    },
+    {
+      "scene": "SubmarineGame",
+      "name": "Submarine",
+      "icon": "submarine.svg",
+      "difficulty": 3,
+      "category": "sciences",
+      "slug": "submarine"
+    },
+    {
+      "scene": "CheckersTwoPlayerGame",
+      "name": "Checkers (2P)",
+      "icon": "checkers_2players.svg",
+      "difficulty": 4,
+      "category": "strategy",
+      "slug": "checkers_two_player"
+    },
+    {
+      "scene": "TensComplementCalculateGame",
+      "name": "Tens Complement Calculate",
+      "icon": "tens_complement_calculate.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "tens_complement_calculate"
+    },
+    {
+      "scene": "TensComplementFindGame",
+      "name": "Tens Complement Find",
+      "icon": "tens_complement_find.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "tens_complement_find"
+    },
+    {
+      "scene": "TensComplementSwapGame",
+      "name": "Tens Complement Swap",
+      "icon": "tens_complement_swap.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "tens_complement_swap"
+    },
+    {
+      "scene": "TensComplementUseGame",
+      "name": "Tens Complement Use",
+      "icon": "tens_complement_use.svg",
+      "difficulty": 2,
+      "category": "math",
+      "slug": "tens_complement_use"
+    },
+    {
+      "scene": "VerticalSubtractionGame",
+      "name": "Vertical Subtraction",
+      "icon": "vertical_subtraction.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "vertical_subtraction"
+    },
+    {
+      "scene": "VerticalSubtractionCompensationGame",
+      "name": "Vertical Subtraction Compensation",
+      "icon": "vertical_subtraction_compensation.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "vertical_subtraction_compensation"
+    },
+    {
+      "scene": "MoneyBackCentsGame",
+      "name": "Money Back Cents",
+      "icon": "money_back_cents.svg",
+      "difficulty": 3,
+      "category": "math",
+      "slug": "money_back_cents"
+    },
+    {
+      "scene": "LangGame",
+      "name": "Enrich your vocabulary",
+      "icon": "lang.svg",
+      "difficulty": 4,
+      "category": "reading",
+      "slug": "lang"
+    }
+  ]
+}
