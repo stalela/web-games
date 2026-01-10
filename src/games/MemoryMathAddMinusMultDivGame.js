@@ -12,7 +12,7 @@ export class MemoryMathAddMinusMultDivGame extends MemoryGame {
         });
     }
 
-    setupLevel() {
+    generateCardPairs() {
         const numPairs = Math.min(3 + this.level, 8);
         const operations = [];
         const operationTypes = ['+', '-', '×', '÷'];
@@ -67,10 +67,7 @@ export class MemoryMathAddMinusMultDivGame extends MemoryGame {
             });
         });
         
-        this.calculateGridDimensions(this.cardPairs.length);
-        const { width, height } = this.cameras.main;
-        this.calculateOptimalLayout(width, height);
-        this.shuffleAndPositionCards();
+        this.totalPairs = numPairs;
     }
 
     createCard(x, y, cardData, index) {
