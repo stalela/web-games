@@ -31,7 +31,7 @@ export class MemoryTuxGame extends MemoryTuxBaseGame {
         this.load.svg('icon-8', 'assets/game-icons/sudoku.svg');
     }
 
-    setupLevel() {
+    generateCardPairs() {
         const numPairs = Math.min(3 + this.level, 8);
         const availableIcons = ['icon-1', 'icon-2', 'icon-3', 'icon-4', 'icon-5', 'icon-6', 'icon-7', 'icon-8'];
         
@@ -60,6 +60,6 @@ export class MemoryTuxGame extends MemoryTuxBaseGame {
             });
         });
         
-        super.setupLevel();
+        this.totalPairs = numPairs;
     }
 }

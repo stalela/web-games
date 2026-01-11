@@ -18,7 +18,7 @@ export class MemoryMathAddTuxGame extends MemoryGame {
         this.playerScore = 0;
     }
 
-    setupLevel() {
+    generateCardPairs() {
         const numPairs = Math.min(3 + this.level, 8);
         const operations = [];
         
@@ -47,15 +47,16 @@ export class MemoryMathAddTuxGame extends MemoryGame {
             });
         });
         
+        this.totalPairs = numPairs;
+    }
+
+    initializeGame() {
+        super.initializeGame();
+        
         this.tuxMemory = [];
         this.tuxTurn = false;
         this.tuxScore = 0;
         this.playerScore = 0;
-        
-        this.calculateGridDimensions(this.cardPairs.length);
-        const { width, height } = this.cameras.main;
-        this.calculateOptimalLayout(width, height);
-        this.shuffleAndPositionCards();
         this.createScoreDisplay();
     }
     
