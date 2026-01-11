@@ -17,9 +17,9 @@ export class MemoryTuxBaseGame extends MemoryGame {
         this.createScoreDisplay();
     }
 
-    setupLevel() {
-        // To be implemented by subclasses
-        super.setupLevel();
+    initializeGame() {
+        super.initializeGame();
+        // Reset Tux state after cards are created
         this.tuxMemory = [];
         this.tuxTurn = false;
         this.tuxScore = 0;
