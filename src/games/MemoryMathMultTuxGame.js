@@ -10,7 +10,7 @@ export class MemoryMathMultTuxGame extends MemoryTuxBaseGame {
         });
     }
 
-    setupLevel() {
+    generateCardPairs() {
         const numPairs = Math.min(3 + this.level, 8);
         const operations = [];
         
@@ -39,6 +39,6 @@ export class MemoryMathMultTuxGame extends MemoryTuxBaseGame {
             });
         });
         
-        super.setupLevel();
+        this.totalPairs = numPairs;
     }
 }
