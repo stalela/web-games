@@ -22,8 +22,8 @@ export class MemorySoundTuxGame extends MemorySoundGame {
         this.createScoreDisplay();
     }
 
-    setupLevel() {
-        super.setupLevel();
+    initializeGame() {
+        super.initializeGame();
         this.tuxMemory = [];
         this.tuxTurn = false;
         this.tuxScore = 0;
