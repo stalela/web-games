@@ -1,4 +1,5 @@
 import { MemoryGame } from './MemoryGame.js';
+import { Card } from '../components/Card.js';
 
 export class MemoryWordNumberGame extends MemoryGame {
     constructor() {
@@ -23,7 +24,7 @@ export class MemoryWordNumberGame extends MemoryGame {
         ];
     }
 
-    setupLevel() {
+    generateCardPairs() {
         const numPairs = Math.min(3 + this.level, 10);
         
         // Shuffle
@@ -44,6 +45,32 @@ export class MemoryWordNumberGame extends MemoryGame {
             });
         });
         
-        super.setupLevel();
+        this.totalPairs = numPairs;
+    }
+
+    createCard(x, y, cardData, index) {
+        const content = cardData.value.toString();
+        
+        const card = new Card(this, {
+            x: x,
+            y: y,
+            width: this.cardSize,
+            height: this.cardSize,
+            value: cardData.matchId,
+            content: content,
+            backColor: 0x0062FF,
+            frontColor: 0xFFFFFF,
+            flipDuration: this.flipDuration
+        });
+
+        card.on('cardClicked', (clickedCard) => {
+            this.onCardClicked(clickedCard);
+        });
+
+        card.on('flipComplete', (flippedCard, isFlipped) => {
+            this.onCardFlipComplete(flippedCard, isFlipped);
+        });
+
+        return card;
     }
 }
